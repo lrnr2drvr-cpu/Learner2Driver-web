@@ -37,9 +37,9 @@
       FEED_ENDPOINT: env.INSTA_FEED_ENDPOINT || 'https://feeds.behold.so/JnT3KNlUepSxi6fR755B'
     },
 
-    // Hubsoft Instructor CRM System
-    HUBSOFT: {
-      CRM_URL: env.HUBSOFT_CRM_URL || 'https://hubsoft.co.uk'
+    // HubSpot CRM Platform Integration (Marketing, Sales, Live Chat, Lead Forms)
+    HUBSPOT: {
+      PORTAL_ID: env.HUBSPOT_PORTAL_ID || '' // User's HubSpot Hub ID (e.g. 12345678)
     },
 
     // Security Policy Flags
@@ -70,8 +70,8 @@
     return localStorage.getItem('l2d_insta_api_endpoint') || CONFIG.INSTAGRAM.FEED_ENDPOINT;
   };
 
-  CONFIG.getHubsoftCrmUrl = function() {
-    return localStorage.getItem('l2d_hubsoft_crm_url') || CONFIG.HUBSOFT.CRM_URL;
+  CONFIG.getHubSpotPortalId = function() {
+    return (window.L2D_ENV && window.L2D_ENV.HUBSPOT_PORTAL_ID) || localStorage.getItem('l2d_hubspot_portal_id') || CONFIG.HUBSPOT.PORTAL_ID;
   };
 
   // Attach to global scope
