@@ -5,7 +5,9 @@
  * ==========================================================================
  */
 
-const HARDCODED_GOOGLE_API_KEY = 'AIzaSyA8Uo-k_uQW_KlmzRFAQw-1GLCB5bYD8KM';
+const HARDCODED_GOOGLE_API_KEY = (window.L2D_CONFIG && typeof window.L2D_CONFIG.getGoogleApiKey === 'function') 
+  ? window.L2D_CONFIG.getGoogleApiKey() 
+  : (localStorage.getItem('l2d_google_places_api_key') || 'YOUR_GOOGLE_PLACES_API_KEY');
 const HARDCODED_GOOGLE_PLACE_ID = 'ChIJ_RNj_7Vze0gRHMPMQcHfW-I';
 
 const DEFAULT_REVIEWS = [

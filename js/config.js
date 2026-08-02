@@ -27,7 +27,7 @@
 
     // Google Places API Public Configuration
     GOOGLE_PLACES: {
-      API_KEY: env.GOOGLE_PLACES_API_KEY || 'AIzaSyA8Uo-k_uQW_KlmzRFAQw-1GLCB5bYD8KM',
+      API_KEY: env.GOOGLE_PLACES_API_KEY || 'YOUR_GOOGLE_PLACES_API_KEY',
       PLACE_ID: env.GOOGLE_PLACE_ID || 'ChIJ_RNj_7Vze0gRHMPMQcHfW-I',
       REFERRER_RESTRICTED: true
     },
