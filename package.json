@@ -1,0 +1,20 @@
+{
+  "name": "learner2driver-web",
+  "version": "3.0.0",
+  "description": "Learner2Driver Preston DVSA-Approved Driving Academy Web Platform",
+  "main": "index.html",
+  "scripts": {
+    "start": "npx serve .",
+    "build": "echo 'Static web build complete.'"
+  },
+  "keywords": [
+    "learner2driver",
+    "preston",
+    "driving-school",
+    "dvsa",
+    "lms"
+  ],
+  "author": "Learner2Driver Preston",
+  "license": "MIT",
+  "private": true
+}
