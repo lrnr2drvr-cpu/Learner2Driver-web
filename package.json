@@ -7,6 +7,9 @@
     "start": "npx serve .",
     "build": "echo 'Static web build complete.'"
   },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.0.0"
+  },
   "keywords": [
     "learner2driver",
     "preston",
