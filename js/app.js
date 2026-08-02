@@ -254,6 +254,21 @@ function initSmoothScroll() {
       } catch (err) {}
     });
   });
+
+  // Instant Page Prefetcher for ultra-fast seamless navigation
+  document.querySelectorAll('a[href]').forEach(link => {
+    const href = link.getAttribute('href');
+    if (href && (href.endsWith('.html') || href === '/' || href.includes('course.html'))) {
+      link.addEventListener('mouseenter', () => {
+        if (!document.querySelector(`link[rel="prefetch"][href="${href}"]`)) {
+          const prefetch = document.createElement('link');
+          prefetch.rel = 'prefetch';
+          prefetch.href = href;
+          document.head.appendChild(prefetch);
+        }
+      }, { once: true });
+    }
+  });
 }
 
 /**
