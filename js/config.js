@@ -37,6 +37,11 @@
       FEED_ENDPOINT: env.INSTA_FEED_ENDPOINT || 'https://feeds.behold.so/JnT3KNlUepSxi6fR755B'
     },
 
+    // Hubsoft Instructor CRM System
+    HUBSOFT: {
+      CRM_URL: env.HUBSOFT_CRM_URL || 'https://hubsoft.co.uk'
+    },
+
     // Security Policy Flags
     SECURITY: {
       ALLOW_LOCAL_OVERRIDE: true, // Allows admin hub settings override in localStorage
@@ -63,6 +68,10 @@
 
   CONFIG.getInstaEndpoint = function() {
     return localStorage.getItem('l2d_insta_api_endpoint') || CONFIG.INSTAGRAM.FEED_ENDPOINT;
+  };
+
+  CONFIG.getHubsoftCrmUrl = function() {
+    return localStorage.getItem('l2d_hubsoft_crm_url') || CONFIG.HUBSOFT.CRM_URL;
   };
 
   // Attach to global scope

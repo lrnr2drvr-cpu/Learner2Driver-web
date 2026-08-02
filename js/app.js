@@ -380,6 +380,10 @@ window.initAdminTopBar = function() {
   const savedEditMode = localStorage.getItem('l2d_admin_editing_mode') === 'true';
   const isLMSComingSoon = localStorage.getItem('l2d_course_coming_soon') === 'true';
 
+  const hubsoftCrmUrl = (window.L2D_CONFIG && typeof window.L2D_CONFIG.getHubsoftCrmUrl === 'function')
+    ? window.L2D_CONFIG.getHubsoftCrmUrl()
+    : (localStorage.getItem('l2d_hubsoft_crm_url') || 'https://hubsoft.co.uk');
+
   if (!bar) {
     bar = document.createElement('div');
     bar.id = 'floatingAdminBar';
@@ -398,6 +402,7 @@ window.initAdminTopBar = function() {
       <button id="toggleLMSBtn" class="toggle-edit-mode-btn ${isLMSComingSoon ? '' : 'off'}" style="background: ${isLMSComingSoon ? 'var(--color-amber, #F57C00)' : 'rgba(255,255,255,0.15)'}; margin-left: 0.4rem;" onclick="toggleLMSComingSoon()">
         ${isLMSComingSoon ? '🚧 LMS: Coming Soon' : '🌐 LMS: Live'}
       </button>
+      <a href="${hubsoftCrmUrl}" target="_blank" rel="noopener noreferrer" class="admin-hub-top-link" style="margin-left: 0.4rem; background: rgba(59, 130, 246, 0.2); border: 1px solid rgba(59, 130, 246, 0.4); color: #60A5FA;">Hubsoft CRM 📊</a>
       <a href="course.html#adminHubContainer" class="admin-hub-top-link">Admin Hub</a>
     </div>
     <div class="admin-bar-right">
