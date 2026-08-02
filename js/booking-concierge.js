@@ -49,7 +49,7 @@ function renderConciergeStep(stepNum) {
 
   const rateManual = parseInt(getCustomVal('book_rate_manual', '38')) || 38;
   const rateAuto = parseInt(getCustomVal('book_rate_auto', '38')) || 38;
-  const price10 = parseInt(getCustomVal('book_price_10', '350')) || 350;
+  const price10 = parseInt(getCustomVal('book_price_10_v2', '350')) || 350;
   const price20 = parseInt(getCustomVal('book_price_20', '680')) || 680;
 
   let html = `
@@ -117,7 +117,7 @@ function renderConciergeStep(stepNum) {
         <div class="concierge-option-card ${bookingState.hours === 10 ? 'selected' : ''}" onclick="selectPackage(event, getCustomVal('book_pkg2_name', '10-Hour Block Course'), 10, 0, true, ${price10})">
           <span class="badge badge-primary mb-1" data-editable-key="book_pkg2_badge">Most Popular ⭐ Block Package</span>
           <h3 style="margin: 0; font-size: 1.15rem;" data-editable-key="book_pkg2_name">10-Hour Block Course</h3>
-          <p style="margin: 0.4rem 0 0; font-size: 0.88rem; font-weight: 700; color: var(--color-green);">£<span data-editable-key="book_price_10">${price10}</span> <span data-editable-key="book_pkg2_was">(was £${bookingState.rate * 10})</span></p>
+          <p style="margin: 0.4rem 0 0; font-size: 0.88rem; font-weight: 700; color: var(--color-green);">£<span data-editable-key="book_price_10_v2">${price10}</span> <span data-editable-key="book_pkg2_was">(was £${bookingState.rate * 10})</span></p>
         </div>
         <div class="concierge-option-card ${bookingState.hours === 20 ? 'selected' : ''}" onclick="selectPackage(event, getCustomVal('book_pkg3_name', '20-Hour Intensive Pass'), 20, 0, true, ${price20})">
           <span class="badge badge-warning mb-1" data-editable-key="book_pkg3_badge_v2">Best Value • Block Package</span>
