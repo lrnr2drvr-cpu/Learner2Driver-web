@@ -197,7 +197,8 @@ function loadCourseDataFromStorage() {
     const stored = localStorage.getItem('l2d_custom_course_data');
     if (stored) {
       const parsed = JSON.parse(stored);
-      if (Array.isArray(parsed) && parsed.length > 0) {
+      if (Array.isArray(parsed)) {
+        // Allow empty arrays — the user intentionally deleted all modules
         window.COURSE_DATA = parsed;
         return window.COURSE_DATA;
       }
@@ -205,6 +206,7 @@ function loadCourseDataFromStorage() {
   } catch(e) {
     console.warn('Error reading custom course data from storage', e);
   }
+  // Only load defaults on first-ever visit (no saved data exists yet)
   window.COURSE_DATA = JSON.parse(JSON.stringify(DEFAULT_COURSE_MODULES));
   saveCourseDataToStorage();
   return window.COURSE_DATA;
