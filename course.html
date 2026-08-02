@@ -3,31 +3,14 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
-  <title>Video Course Hub & LMS | Learner2Driver Preston Academy</title>
-  <meta name="description" content="Learner2Driver Video Course Hub & Student LMS. Watch structured DVSA curriculum modules, track your lesson completion progress, and master Preston test routes.">
+  <title>Video Course Hub & L2D | Learner2Driver Preston Academy</title>
+  <meta name="description" content="Learner2Driver Video Course Hub & Student L2D. Watch structured DVSA curriculum modules, track your lesson completion progress, and master Preston test routes.">
 
   <link rel="stylesheet" href="styles/main.css?v=12">
   <link rel="stylesheet" href="styles/components.css?v=13">
   <link rel="stylesheet" href="styles/course.css?v=14">
 </head>
 <body>
-<!-- 🚧 UNDER CONSTRUCTION OVERLAY — Remove this entire block to go live -->
-<div id="underConstructionOverlay" style="position:fixed;top:0;left:0;width:100vw;height:100vh;z-index:999999;background:linear-gradient(135deg,#0F172A 0%,#1E293B 50%,#0F172A 100%);display:flex;align-items:center;justify-content:center;flex-direction:column;font-family:'Inter','Segoe UI',sans-serif;text-align:center;padding:2rem;overflow:hidden;">
-  <div style="position:absolute;top:0;left:0;width:100%;height:100%;background:radial-gradient(circle at 30% 20%,rgba(245,124,0,0.08) 0%,transparent 50%),radial-gradient(circle at 70% 80%,rgba(46,125,50,0.08) 0%,transparent 50%);"></div>
-  <div style="position:relative;z-index:2;max-width:540px;">
-    <div style="font-size:4rem;margin-bottom:1rem;animation:pulse 2s ease-in-out infinite;">🚧</div>
-    <h1 style="color:#F8FAFC;font-size:clamp(1.8rem,5vw,2.8rem);font-weight:800;margin:0 0 0.5rem;letter-spacing:-0.02em;"><span style="color:#D32F2F;">L</span>earner<span style="color:#F57C00;">2</span><span style="color:#2E7D32;">D</span>river</h1>
-    <p style="color:#94A3B8;font-size:clamp(1rem,3vw,1.25rem);font-weight:500;margin:0 0 1.5rem;line-height:1.5;">We're building something amazing.<br>Our new website is launching very soon!</p>
-    <div style="display:inline-block;background:rgba(245,124,0,0.15);border:1px solid rgba(245,124,0,0.3);border-radius:12px;padding:1rem 1.75rem;margin-bottom:2rem;"><span style="color:#F57C00;font-weight:700;font-size:0.95rem;text-transform:uppercase;letter-spacing:0.05em;">Coming Soon</span></div>
-    <div style="border-top:1px solid rgba(148,163,184,0.15);padding-top:1.5rem;">
-      <p style="color:#64748B;font-size:0.9rem;margin:0 0 0.75rem;">In the meantime, get in touch:</p>
-      <a href="tel:07427330827" style="display:inline-block;background:linear-gradient(135deg,#2E7D32,#1B5E20);color:#FFF;padding:0.75rem 1.75rem;border-radius:10px;text-decoration:none;font-weight:700;font-size:1rem;margin-right:0.5rem;">📞 074-2733-0827</a>
-      <a href="https://wa.me/447427330827" target="_blank" style="display:inline-block;background:#25D366;color:#FFF;padding:0.75rem 1.75rem;border-radius:10px;text-decoration:none;font-weight:700;font-size:1rem;">💬 WhatsApp</a>
-    </div>
-  </div>
-  <style>@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.1)}}</style>
-</div>
-<!-- END UNDER CONSTRUCTION OVERLAY -->
 
   <!-- Background Warm Subtle Mesh -->
   <div class="bg-mesh"></div>
@@ -36,12 +19,9 @@
   <div id="studentPortalGate" class="student-portal-gate" style="display: none;">
     <div class="student-portal-card">
       <form id="studentPortalLoginForm" onsubmit="submitStudentPortalLogin(event)">
-        <div style="margin-bottom: 1.25rem;">
-          <span class="badge badge-primary mb-1">Enrolled Students Only</span>
-          <h2 style="margin: 0;">Student LMS Login Portal</h2>
-          <p style="font-size: 0.92rem; color: var(--text-light); margin-top: 0.4rem;">
-            Enter your student username and password to access your transmission-tailored curriculum.
-          </p>
+        <div class="card-header text-center pb-2">
+          <h2 style="margin: 0;">Student L2D Login Portal</h2>
+          <p style="margin: 0.5rem 0 0; color: var(--text-muted); font-size: 0.9rem;">Access your personalized driving curriculum</p>
         </div>
 
         <div style="text-align: left; margin-bottom: 1.25rem;">
@@ -58,8 +38,8 @@
           <div id="portalStudentLoginError" style="color: var(--color-red, #EF4444); font-size: 0.85rem; min-height: 1.2rem; margin-bottom: 0.5rem;"></div>
         </div>
 
-        <button type="submit" class="btn btn-primary w-full">
-          Log In to My LMS Dashboard 🚀
+        <button type="submit" class="btn btn-primary" style="width: 100%; padding: 0.9rem; font-size: 1.05rem;" id="studentLoginBtn">
+          Log In to My L2D Dashboard 🚀
         </button>
       </form>
     </div>
@@ -90,11 +70,11 @@
           <div id="adminLoginError" style="color: var(--color-red, #EF4444); font-size: 0.85rem; min-height: 1.2rem; margin-bottom: 0.5rem;"></div>
         </div>
 
-        <div style="display: flex; gap: 0.75rem;">
-          <button type="button" class="btn btn-secondary w-full" onclick="closeAdminLoginModal()">
+        <div style="display: flex; flex-wrap: wrap-reverse; gap: 0.75rem;">
+          <button type="button" class="btn btn-secondary w-full" onclick="closeAdminLoginModal()" style="flex: 1; min-width: 100px;">
             Cancel
           </button>
-          <button type="submit" class="btn btn-primary w-full">
+          <button type="submit" class="btn btn-primary w-full" style="flex: 2; min-width: 180px;">
             Unlock Admin Mode
           </button>
         </div>
@@ -284,7 +264,7 @@
     <div class="container nav-container">
       <a href="index.html" class="brand-logo" aria-label="Learner2Driver Home">
         <span class="brand-text"><span class="brand-l">L</span>earner<span class="brand-2">2</span><span class="brand-d">D</span>river</span>
-        <span class="brand-badge">Student LMS</span>
+        <span class="brand-badge">Student L2D</span>
       </a>
 
       <nav aria-label="Course navigation">
@@ -307,8 +287,10 @@
   <!-- COURSE HERO -->
   <section class="course-hero">
     <div class="container">
-      <span class="badge badge-primary mb-1">Preston DVSA Video Curriculum</span>
-      <h1 class="mb-1">Student Video <span class="text-gradient-primary">Course Hub & LMS</span></h1>
+      <div class="hero-content text-center reveal-on-scroll">
+        <span class="brand-badge">Student L2D</span>
+        <h1 class="mb-1">Student Video <span class="text-gradient-primary">Course Hub & L2D</span></h1>
+      </div>
       <p style="max-width: 680px; margin: 0 auto;">
         Watch instructional videos from Farhan and Binish, check off completed lessons, and prepare for your practical driving test in Preston.
       </p>
@@ -419,7 +401,7 @@
             <div style="background: var(--bg-body); border-left: 4px solid var(--color-green); padding: 1.25rem; border-radius: 0 var(--radius-sm) var(--radius-sm) 0; margin-bottom: 2rem;">
               <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.4rem;">
                 <span class="badge badge-primary" style="padding: 2px 8px; font-size: 0.72rem;">Pro Tip 💡</span>
-                <strong style="font-size: 0.9rem; color: var(--text-main);">Farhan & Binish's Advice:</strong>
+                <strong style="font-size: 0.9rem; color: var(--text-main);"><span data-editable-key="course_advice_title">Farhan & Binish's Advice:</span></strong>
               </div>
               <p id="activeLessonTip" style="margin: 0; color: var(--text-main); font-size: 0.95rem; font-weight: 500;">
                 Always check your blind spot before moving off!
@@ -450,8 +432,8 @@
           <a href="index.html" class="brand-logo mb-2" style="color:#FFF;">
             <span class="brand-text"><span class="brand-l">L</span>earner<span class="brand-2">2</span><span class="brand-d">D</span>river</span>
           </a>
-          <p style="font-size:0.9rem; color:#94A3B8;">
-            Preston's premier DVSA-approved driving academy. Structured Video Curriculum & LMS.
+          <p style="color: var(--text-muted); font-size: 0.92rem; line-height: 1.6; max-width: 320px;">
+            Preston's premier DVSA-approved driving academy. Structured Video Curriculum & L2D.
           </p>
         </div>
         <div>
@@ -609,6 +591,7 @@
 
   <!-- Supabase Database CDN Javascript -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/env-config.js"></script>
   <script src="js/config.js"></script>
   <script src="js/supabase-client.js"></script>
 

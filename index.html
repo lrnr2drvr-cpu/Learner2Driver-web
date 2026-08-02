@@ -39,26 +39,9 @@
   <!-- CSS Design System -->
   <link rel="stylesheet" href="styles/main.css?v=12">
   <link rel="stylesheet" href="styles/components.css?v=12">
-  <link rel="stylesheet" href="styles/widgets.css?v=6">
+  <link rel="stylesheet" href="styles/widgets.css?v=7">
 </head>
 <body>
-<!-- 🚧 UNDER CONSTRUCTION OVERLAY — Remove this entire block to go live -->
-<div id="underConstructionOverlay" style="position:fixed;top:0;left:0;width:100vw;height:100vh;z-index:999999;background:linear-gradient(135deg,#0F172A 0%,#1E293B 50%,#0F172A 100%);display:flex;align-items:center;justify-content:center;flex-direction:column;font-family:'Inter','Segoe UI',sans-serif;text-align:center;padding:2rem;overflow:hidden;">
-  <div style="position:absolute;top:0;left:0;width:100%;height:100%;background:radial-gradient(circle at 30% 20%,rgba(245,124,0,0.08) 0%,transparent 50%),radial-gradient(circle at 70% 80%,rgba(46,125,50,0.08) 0%,transparent 50%);"></div>
-  <div style="position:relative;z-index:2;max-width:540px;">
-    <div style="font-size:4rem;margin-bottom:1rem;animation:pulse 2s ease-in-out infinite;">🚧</div>
-    <h1 style="color:#F8FAFC;font-size:clamp(1.8rem,5vw,2.8rem);font-weight:800;margin:0 0 0.5rem;letter-spacing:-0.02em;"><span style="color:#D32F2F;">L</span>earner<span style="color:#F57C00;">2</span><span style="color:#2E7D32;">D</span>river</h1>
-    <p style="color:#94A3B8;font-size:clamp(1rem,3vw,1.25rem);font-weight:500;margin:0 0 1.5rem;line-height:1.5;">We're building something amazing.<br>Our new website is launching very soon!</p>
-    <div style="display:inline-block;background:rgba(245,124,0,0.15);border:1px solid rgba(245,124,0,0.3);border-radius:12px;padding:1rem 1.75rem;margin-bottom:2rem;"><span style="color:#F57C00;font-weight:700;font-size:0.95rem;text-transform:uppercase;letter-spacing:0.05em;">Coming Soon</span></div>
-    <div style="border-top:1px solid rgba(148,163,184,0.15);padding-top:1.5rem;">
-      <p style="color:#64748B;font-size:0.9rem;margin:0 0 0.75rem;">In the meantime, get in touch:</p>
-      <a href="tel:07427330827" style="display:inline-block;background:linear-gradient(135deg,#2E7D32,#1B5E20);color:#FFF;padding:0.75rem 1.75rem;border-radius:10px;text-decoration:none;font-weight:700;font-size:1rem;margin-right:0.5rem;">📞 074-2733-0827</a>
-      <a href="https://wa.me/447427330827" target="_blank" style="display:inline-block;background:#25D366;color:#FFF;padding:0.75rem 1.75rem;border-radius:10px;text-decoration:none;font-weight:700;font-size:1rem;">💬 WhatsApp</a>
-    </div>
-  </div>
-  <style>@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.1)}}</style>
-</div>
-<!-- END UNDER CONSTRUCTION OVERLAY -->
 
   <!-- Background Warm Subtle Mesh -->
   <div class="bg-mesh"></div>
@@ -94,8 +77,8 @@
   <section id="hero" class="hero-banner" data-background-key="hero_bg">
     <div class="container" style="max-width: 920px; margin: 0 auto;">
       <div id="siteHeroBadge" class="badge badge-primary mb-2" data-editable-key="hero_badge">Preston DVSA-Approved Driving Academy</div>
-      <h1 id="siteHeroHeading" class="mb-2" data-editable-key="hero_heading">
-        Welcome to <span class="text-gradient-accent" style="font-weight:800;">L</span>earner<span class="brand-2">2</span><span class="text-gradient-primary" style="font-weight:800;">D</span>river Preston
+      <h1 id="siteHeroHeading" class="mb-2" data-editable-key="hero_heading_v2">
+        Welcome to <span class="brand-l">L</span>earner<span class="brand-2">2</span><span class="text-gradient-primary" style="font-weight:800;">D</span>river Preston
       </h1>
       <p id="siteHeroText" class="mb-4" style="font-size: 1.2rem; color: var(--text-main); max-width: 760px; margin-left: auto; margin-right: auto; line-height: 1.7;" data-editable-key="hero_text">
         Professional Manual & Automatic tuition with Preston's top-rated instructors, <strong>Farhan Hussaini</strong> & <strong>Binish Moazzam</strong>. Learn in our dual-controlled <strong>2019 Toyota Yaris</strong> or <strong>2024 Hyundai Kona EV Ultimate</strong>.
@@ -294,17 +277,17 @@
 
       <!-- Interactive Danger Spot Selector Buttons -->
       <div class="danger-spot-nav reveal-on-scroll" style="justify-content: center;">
-        <button id="spotBtn1" class="danger-spot-btn active" onclick="showRouteTip(1)">
-          1. DVSA Chain Caul Way Roundabout
+        <button id="spotBtn1" class="danger-spot-btn active" onclick="if(event.target.hasAttribute('contenteditable')) return; showRouteTip(1)">
+          <span data-editable-key="routes_spotbtn1">1. DVSA Chain Caul Way Roundabout</span>
         </button>
-        <button id="spotBtn2" class="danger-spot-btn" onclick="showRouteTip(2)">
-          2. Docks Swing Bridge
+        <button id="spotBtn2" class="danger-spot-btn" onclick="if(event.target.hasAttribute('contenteditable')) return; showRouteTip(2)">
+          <span data-editable-key="routes_spotbtn2">2. Docks Swing Bridge</span>
         </button>
-        <button id="spotBtn3" class="danger-spot-btn" onclick="showRouteTip(3)">
-          3. Riversway Multi-Lane Corridor
+        <button id="spotBtn3" class="danger-spot-btn" onclick="if(event.target.hasAttribute('contenteditable')) return; showRouteTip(3)">
+          <span data-editable-key="routes_spotbtn3">3. Riversway Multi-Lane Corridor</span>
         </button>
-        <button id="spotBtn4" class="danger-spot-btn" onclick="showRouteTip(4)">
-          4. Penwortham Hill Start
+        <button id="spotBtn4" class="danger-spot-btn" onclick="if(event.target.hasAttribute('contenteditable')) return; showRouteTip(4)">
+          <span data-editable-key="routes_spotbtn4">4. Penwortham Hill Start</span>
         </button>
       </div>
 
@@ -656,11 +639,11 @@
           <div id="adminLoginError" style="color: var(--color-red, #EF4444); font-size: 0.84rem; min-height: 1.2rem; margin-top: 0.4rem; font-weight: 600;"></div>
         </div>
 
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;">
-          <button type="button" class="btn btn-secondary" onclick="closeAdminLoginModal()">
+        <div style="display: flex; flex-wrap: wrap-reverse; gap: 0.75rem;">
+          <button type="button" class="btn btn-secondary" onclick="closeAdminLoginModal()" style="flex: 1; min-width: 100px;">
             Cancel
           </button>
-          <button type="submit" class="btn btn-primary">
+          <button type="submit" class="btn btn-primary" style="flex: 2; min-width: 200px;">
             Unlock Admin Mode 🛡️
           </button>
         </div>
@@ -676,6 +659,7 @@
 
   <!-- Supabase Database CDN Javascript -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/env-config.js"></script>
   <script src="js/config.js"></script>
   <script src="js/supabase-client.js"></script>
 

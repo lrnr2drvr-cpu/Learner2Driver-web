@@ -315,7 +315,12 @@ window.applyCustomSiteContent = function() {
     }
 
     const heroBadge = content.heroBadge || customText.hero_badge;
-    const heroHeading = content.heroHeading || customText.hero_heading;
+    let heroHeading = content.heroHeading || customText.hero_heading_v2 || customText.hero_heading;
+    if (heroHeading) {
+      heroHeading = heroHeading.replace(/<span style="color:#D32F2F[^>]*>L<\/span>/gi, '<span class="brand-l">L</span>');
+      heroHeading = heroHeading.replace(/earner2Driver/gi, 'earner<span class="brand-2">2</span><span class="text-gradient-primary" style="font-weight:800;">D</span>river');
+      heroHeading = heroHeading.replace(/earner2<span[^>]*>D<\/span>river/gi, 'earner<span class="brand-2">2</span><span class="text-gradient-primary" style="font-weight:800;">D</span>river');
+    }
     const heroText = content.heroText || customText.hero_text;
     const contactPhone = content.contactPhone || customText.footer_contact_phone;
     const contactLocation = content.contactLocation || customText.footer_contact_location;
@@ -428,7 +433,7 @@ window.initAdminTopBar = function() {
         ${savedEditMode ? 'Edit Mode: ON' : 'Edit Mode: OFF'}
       </button>
       <button id="toggleLMSBtn" class="toggle-edit-mode-btn ${isLMSComingSoon ? '' : 'off'}" style="background: ${isLMSComingSoon ? 'var(--color-amber, #F57C00)' : 'rgba(255,255,255,0.15)'}; margin-left: 0.4rem;" onclick="toggleLMSComingSoon()">
-        ${isLMSComingSoon ? '🚧 LMS: Coming Soon' : '🌐 LMS: Live'}
+        ${isLMSComingSoon ? '🚧 L2D: Coming Soon' : '🌐 L2D: Live'}
       </button>
       <a href="course.html#adminHubContainer" class="admin-hub-top-link">Admin Hub</a>
     </div>
@@ -452,7 +457,7 @@ window.toggleLMSComingSoon = function() {
   }
 
   if (typeof window.showToast === 'function') {
-    window.showToast(next ? 'Course LMS is now in COMING SOON mode 🚧' : 'Course LMS is now LIVE 🌐');
+    window.showToast(next ? 'Course L2D is now in COMING SOON mode 🚧' : 'Course L2D is now LIVE 🌐');
   }
 
   window.initAdminTopBar();
@@ -623,7 +628,7 @@ window.setupEditableEventListeners = function(forceEnable) {
       }
 
       // Sync Phase 1 site content fields
-      if (key === 'hero_badge' || key === 'hero_heading' || key === 'hero_text' || key === 'footer_contact_location') {
+      if (key === 'hero_badge' || key === 'hero_heading_v2' || key === 'hero_text' || key === 'footer_contact_location') {
         syncPhase1SiteContent(key, val);
       }
 
@@ -720,7 +725,7 @@ function syncPhase1SiteContent(key, val) {
   } catch(e) {}
 
   if (key === 'hero_badge') content.heroBadge = val;
-  if (key === 'hero_heading') content.heroHeading = val;
+  if (key === 'hero_heading_v2') content.heroHeading = val;
   if (key === 'hero_text') content.heroText = val;
   if (key === 'footer_contact_location') {
     const cleanLoc = val.replace(/^📍\s*/, '');
@@ -747,7 +752,8 @@ window.hydrateSiteTextFromStorage = function() {
       if (val.includes('instagram.com/lrnr2drvr')) {
         val = val.replace(/style="color:\s*var\(--color-green\);?"/gi, 'class="gradient-text-insta" style="font-weight:800;"');
       }
-      if (key === 'hero_heading') {
+      if (key === 'hero_heading' || key === 'hero_heading_v2') {
+        val = val.replace(/<span[^>]*#D32F2F[^>]*>L<\/span>/gi, '<span class="brand-l">L</span>');
         val = val.replace(/earner2Driver/gi, 'earner<span class="brand-2">2</span><span class="text-gradient-primary" style="font-weight:800;">D</span>river');
         val = val.replace(/earner<span[^>]*>2<\/span>/gi, 'earner<span class="brand-2">2</span>');
         val = val.replace(/earner2/gi, 'earner<span class="brand-2">2</span>');

@@ -446,7 +446,7 @@ window.submitStudentPortalLogin = async function(event) {
   checkStudentLoginGate();
   renderLMSHeaderBar();
   renderCurriculumSidebar();
-  showToast(`Welcome back, ${res.studentName}! LMS Dashboard Unlocked`);
+  showToast(`Welcome back, ${res.studentName}! L2D Dashboard Unlocked`);
 };
 
 /**
@@ -578,7 +578,7 @@ window.logoutStudent = function() {
     if (typeof window.initAdminTopBar === 'function') {
       window.initAdminTopBar();
     }
-    showToast('Logged out of LMS.');
+    showToast('Logged out of L2D.');
   }
 };
 
@@ -1508,7 +1508,7 @@ function renderAdminSiteSettings() {
 
   const siteContent = siteContentStr ? JSON.parse(siteContentStr) : {
     heroBadge: 'Preston DVSA-Approved Driving Academy',
-    heroHeading: 'Welcome to <span style="color:#D32F2F; font-weight:800;">L</span>earner2<span style="color:#2E7D32; font-weight:800;">D</span>river Preston',
+    heroHeading: 'Welcome to <span class="brand-l">L</span>earner2<span class="brand-d">D</span>river Preston',
     heroText: 'Professional Manual & Automatic tuition with Preston\'s top-rated instructors, <strong>Farhan Hussaini</strong> & <strong>Binish Moazzam</strong>. Learn in our dual-controlled <strong>2019 Toyota Yaris</strong> or <strong>2024 Hyundai Kona EV Ultimate</strong>.',
     contactPhone: '074-2733-0827',
     contactLocation: 'Preston, Lancashire & Surrounding Areas (PR1-PR5)'

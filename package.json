@@ -5,7 +5,7 @@
   "main": "index.html",
   "scripts": {
     "start": "npx serve .",
-    "build": "echo 'Static web build complete.'"
+    "build": "node scripts/generate-env.js && echo 'Static web build complete.'"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.0.0"

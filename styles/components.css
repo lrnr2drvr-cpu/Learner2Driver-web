@@ -425,6 +425,17 @@
   font-weight: 700;
 }
 
+body.admin-edit-mode div.pass-photo-caption[contenteditable="true"] {
+  position: absolute !important;
+  z-index: 50;
+  pointer-events: auto;
+  color: #FFF !important;
+  -webkit-text-fill-color: #FFF !important;
+  user-select: text !important;
+  -webkit-user-select: text !important;
+  -webkit-user-modify: read-write !important;
+}
+
 /* 7. STATS & BADGES */
 .stat-card {
   text-align: center;
@@ -658,14 +669,35 @@ body.admin-mode-active .top-header {
   color: #34D399;
   padding: 0.35rem 0.85rem;
   border-radius: var(--radius-sm);
-  font-family: var(--font-heading);
   font-weight: 700;
-  font-size: 0.82rem;
   cursor: pointer;
-  transition: var(--transition-fast);
+  transition: all 0.2s ease;
+  white-space: nowrap;
+  font-family: var(--font-heading);
+  font-size: 0.82rem;
   display: inline-flex;
   align-items: center;
   gap: 0.4rem;
+}
+
+@media (max-width: 768px) {
+  .floating-admin-bar {
+    padding: 0 0.5rem;
+    overflow-x: auto;
+    justify-content: flex-start;
+    gap: 0.5rem;
+    -webkit-overflow-scrolling: touch;
+  }
+  .admin-bar-left, .admin-bar-center, .admin-bar-right {
+    flex-shrink: 0;
+  }
+  .admin-status-badge {
+    white-space: nowrap !important;
+    border-radius: var(--radius-sm) !important;
+  }
+  .admin-logout-btn, .admin-hub-top-link {
+    white-space: nowrap;
+  }
 }
 
 .toggle-edit-mode-btn.off {

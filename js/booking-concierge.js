@@ -6,8 +6,8 @@
  */
 
 const bookingState = {
-  instructor: 'Farhan Hussaini',
-  vehicle: 'Manual (2019 Toyota Yaris) - £37/hr',
+  instructor: 'Farhan',
+  vehicle: 'Manual',
   rate: 37,
   package: '10-Hour Block Discount (Save 8%)',
   hours: 10,
@@ -16,9 +16,20 @@ const bookingState = {
   step: 1
 };
 
+function getCustomVal(key, defaultVal) {
+  try {
+    const map = JSON.parse(localStorage.getItem('l2d_custom_site_text') || '{}');
+    return map[key] || defaultVal;
+  } catch(e) { return defaultVal; }
+}
+
 function updateTotalPrice() {
-  const base = bookingState.rate * bookingState.hours;
-  bookingState.totalPrice = Math.round(base - (base * (bookingState.discount || 0)));
+  if ((bookingState.hours === 10 || bookingState.hours === 20) && bookingState.isFlatPrice) {
+    bookingState.totalPrice = bookingState.flatPrice;
+  } else {
+    const base = bookingState.rate * bookingState.hours;
+    bookingState.totalPrice = Math.round(base - (base * (bookingState.discount || 0)));
+  }
 }
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -28,7 +39,6 @@ document.addEventListener('DOMContentLoaded', () => {
 function initBookingConcierge() {
   const container = document.getElementById('bookingConciergeBox');
   if (!container) return;
-
   renderConciergeStep(1);
 }
 
@@ -36,6 +46,11 @@ function renderConciergeStep(stepNum) {
   bookingState.step = stepNum;
   const container = document.getElementById('bookingConciergeBox');
   if (!container) return;
+
+  const rateManual = parseInt(getCustomVal('book_rate_manual', '38')) || 38;
+  const rateAuto = parseInt(getCustomVal('book_rate_auto', '38')) || 38;
+  const price10 = parseInt(getCustomVal('book_price_10', '350')) || 350;
+  const price20 = parseInt(getCustomVal('book_price_20', '680')) || 680;
 
   let html = `
     <!-- Step Bar -->
@@ -53,14 +68,14 @@ function renderConciergeStep(stepNum) {
       <p class="mb-3" data-editable-key="book_step1_sub">Select between our experienced male and female DVSA-approved driving instructors in Preston.</p>
 
       <div class="concierge-options-grid">
-        <div class="concierge-option-card ${bookingState.instructor === 'Farhan Hussaini' ? 'selected' : ''}" onclick="selectInstructor('Farhan Hussaini')">
+        <div class="concierge-option-card ${bookingState.instructor === 'Farhan' ? 'selected' : ''}" onclick="selectInstructor(event, 'Farhan')">
           <span class="badge badge-primary mb-1" data-editable-key="book_opt_farhan_badge">Lead Instructor (Male)</span>
-          <h3 style="margin: 0; font-size: 1.25rem;" data-editable-key="book_opt_farhan_name">Farhan Hussaini</h3>
+          <h3 style="margin: 0; font-size: 1.25rem;" data-editable-key="book_opt_farhan_name">Farhan</h3>
           <p style="margin: 0.5rem 0 0; font-size: 0.9rem;" data-editable-key="book_opt_farhan_desc">Specialist in Preston DVSA test routes, nervous learners, and mock practical test assessments.</p>
         </div>
-        <div class="concierge-option-card ${bookingState.instructor === 'Binish Moazzam' ? 'selected' : ''}" onclick="selectInstructor('Binish Moazzam')">
+        <div class="concierge-option-card ${bookingState.instructor === 'Binish' ? 'selected' : ''}" onclick="selectInstructor(event, 'Binish')">
           <span class="badge badge-warning mb-1" data-editable-key="book_opt_binish_badge">Female Instructor</span>
-          <h3 style="margin: 0; font-size: 1.25rem;" data-editable-key="book_opt_binish_name">Binish Moazzam</h3>
+          <h3 style="margin: 0; font-size: 1.25rem;" data-editable-key="book_opt_binish_name">Binish</h3>
           <p style="margin: 0.5rem 0 0; font-size: 0.9rem;" data-editable-key="book_opt_binish_desc">Patient, encouraging female instructor specialising in confidence building and smooth car control.</p>
         </div>
       </div>
@@ -71,15 +86,17 @@ function renderConciergeStep(stepNum) {
       <p class="mb-3">Selected Instructor: <strong style="color: var(--color-green);">${bookingState.instructor}</strong>. Now pick your transmission.</p>
 
       <div class="concierge-options-grid">
-        <div class="concierge-option-card ${bookingState.rate === 37 ? 'selected' : ''}" onclick="selectVehicle('Manual (2019 Toyota Yaris) - £37/hr', 37)">
-          <span class="badge badge-accent mb-1" data-editable-key="book_opt_yaris_badge">Manual Transmission • £37/hr</span>
+        <div class="concierge-option-card ${bookingState.rate === rateManual ? 'selected' : ''}" onclick="selectVehicle(event, 'Manual (2019 Toyota Yaris)', ${rateManual})">
+          <span class="badge badge-accent mb-1" data-editable-key="book_opt_yaris_badge">Manual Transmission</span>
           <h3 style="margin: 0; font-size: 1.25rem;" data-editable-key="book_opt_yaris_name">2019 Toyota Yaris Manual</h3>
           <p style="margin: 0.5rem 0 0; font-size: 0.9rem;" data-editable-key="book_opt_yaris_desc">6-Speed manual gearbox with intuitive biting point, light clutch, and exceptional hatchback visibility.</p>
+          <p style="margin: 0.5rem 0 0; font-weight: 700; color: var(--color-green);">£<span data-editable-key="book_rate_manual">${rateManual}</span>/hr</p>
         </div>
-        <div class="concierge-option-card ${bookingState.rate === 39 ? 'selected' : ''}" onclick="selectVehicle('Auto (2024 Kona EV Ultimate) - £39/hr', 39)">
-          <span class="badge badge-primary mb-1" data-editable-key="book_opt_kona_badge">100% Electric Automatic • £39/hr</span>
+        <div class="concierge-option-card ${bookingState.rate === rateAuto ? 'selected' : ''}" onclick="selectVehicle(event, 'Auto (2024 Kona EV Ultimate)', ${rateAuto})">
+          <span class="badge badge-primary mb-1" data-editable-key="book_opt_kona_badge">100% Electric Automatic</span>
           <h3 style="margin: 0; font-size: 1.25rem;" data-editable-key="book_opt_kona_name">2024 Hyundai Kona EV Ultimate</h3>
           <p style="margin: 0.5rem 0 0; font-size: 0.9rem;" data-editable-key="book_opt_kona_desc">Zero stalls, silent electric acceleration, dual panoramic displays, and surround view cameras.</p>
+          <p style="margin: 0.5rem 0 0; font-weight: 700; color: var(--color-green);">£<span data-editable-key="book_rate_auto">${rateAuto}</span>/hr</p>
         </div>
       </div>
       <div class="text-left mt-2">
@@ -92,22 +109,22 @@ function renderConciergeStep(stepNum) {
       <p class="mb-3">Instructor: <strong>${bookingState.instructor}</strong> | Vehicle: <strong>${bookingState.vehicle}</strong></p>
 
       <div class="concierge-options-grid">
-        <div class="concierge-option-card ${bookingState.hours === 1 ? 'selected' : ''}" onclick="selectPackage('Pay As You Go (1 Hour)', 1, 0)">
+        <div class="concierge-option-card ${bookingState.hours === 1 ? 'selected' : ''}" onclick="selectPackage(event, 'Pay As You Go (1 Hour)', 1, 0, false, null)">
           <span class="badge badge-secondary mb-1" data-editable-key="book_pkg1_badge">Standard Rate</span>
           <h3 style="margin: 0; font-size: 1.15rem;" data-editable-key="book_pkg1_name">Pay As You Go (1 Hr)</h3>
           <p style="margin: 0.4rem 0 0; font-size: 0.88rem; font-weight: 700; color: var(--color-green);">£${bookingState.rate}</p>
         </div>
-        <div class="concierge-option-card ${bookingState.hours === 10 ? 'selected' : ''}" onclick="selectPackage('10-Hour Block Discount (Save 8%)', 10, 0.08)">
-          <span class="badge badge-primary mb-1" data-editable-key="book_pkg2_badge">Most Popular ⭐ Save 8%</span>
+        <div class="concierge-option-card ${bookingState.hours === 10 ? 'selected' : ''}" onclick="selectPackage(event, getCustomVal('book_pkg2_name', '10-Hour Block Course'), 10, 0, true, ${price10})">
+          <span class="badge badge-primary mb-1" data-editable-key="book_pkg2_badge">Most Popular ⭐ Block Package</span>
           <h3 style="margin: 0; font-size: 1.15rem;" data-editable-key="book_pkg2_name">10-Hour Block Course</h3>
-          <p style="margin: 0.4rem 0 0; font-size: 0.88rem; font-weight: 700; color: var(--color-green);">£${Math.round(bookingState.rate * 10 * 0.92)} (was £${bookingState.rate * 10})</p>
+          <p style="margin: 0.4rem 0 0; font-size: 0.88rem; font-weight: 700; color: var(--color-green);">£<span data-editable-key="book_price_10">${price10}</span> <span data-editable-key="book_pkg2_was">(was £${bookingState.rate * 10})</span></p>
         </div>
-        <div class="concierge-option-card ${bookingState.hours === 20 ? 'selected' : ''}" onclick="selectPackage('20-Hour Intensive Block (Save 12%)', 20, 0.12)">
-          <span class="badge badge-warning mb-1" data-editable-key="book_pkg3_badge">Best Value • Save 12%</span>
+        <div class="concierge-option-card ${bookingState.hours === 20 ? 'selected' : ''}" onclick="selectPackage(event, getCustomVal('book_pkg3_name', '20-Hour Intensive Pass'), 20, 0, true, ${price20})">
+          <span class="badge badge-warning mb-1" data-editable-key="book_pkg3_badge_v2">Best Value • Block Package</span>
           <h3 style="margin: 0; font-size: 1.15rem;" data-editable-key="book_pkg3_name">20-Hour Intensive Pass</h3>
-          <p style="margin: 0.4rem 0 0; font-size: 0.88rem; font-weight: 700; color: var(--color-green);">£${Math.round(bookingState.rate * 20 * 0.88)} (was £${bookingState.rate * 20})</p>
+          <p style="margin: 0.4rem 0 0; font-size: 0.88rem; font-weight: 700; color: var(--color-green);">£<span data-editable-key="book_price_20">${price20}</span> <span data-editable-key="book_pkg3_was">(was £${bookingState.rate * 20})</span></p>
         </div>
-        <div class="concierge-option-card ${bookingState.hours === 2 ? 'selected' : ''}" onclick="selectPackage('Mock Practical Test Assessment (2 Hours)', 2, 0)">
+        <div class="concierge-option-card ${bookingState.hours === 2 ? 'selected' : ''}" onclick="selectPackage(event, 'Mock Practical Test Assessment (2 Hours)', 2, 0, false, null)">
           <span class="badge badge-accent mb-1" data-editable-key="book_pkg4_badge">DVSA Assessment</span>
           <h3 style="margin: 0; font-size: 1.15rem;" data-editable-key="book_pkg4_name">2-Hour Mock Driving Test</h3>
           <p style="margin: 0.4rem 0 0; font-size: 0.88rem; font-weight: 700; color: var(--color-green);">£${bookingState.rate * 2}</p>
@@ -165,22 +182,27 @@ function renderConciergeStep(stepNum) {
   }
 }
 
-window.selectInstructor = function(name) {
+window.selectInstructor = function(event, name) {
+  if (event && event.target && event.target.hasAttribute('contenteditable')) return;
   bookingState.instructor = name;
   renderConciergeStep(2);
 };
 
-window.selectVehicle = function(vehicleName, rate) {
+window.selectVehicle = function(event, vehicleName, rate) {
+  if (event && event.target && event.target.hasAttribute('contenteditable')) return;
   bookingState.vehicle = vehicleName;
   bookingState.rate = rate;
   updateTotalPrice();
   renderConciergeStep(3);
 };
 
-window.selectPackage = function(pkgName, hours, discount) {
+window.selectPackage = function(event, pkgName, hours, discount, isFlatPrice = false, flatPrice = null) {
+  if (event && event.target && event.target.hasAttribute('contenteditable')) return;
   bookingState.package = pkgName;
   bookingState.hours = hours;
   bookingState.discount = discount;
+  bookingState.isFlatPrice = isFlatPrice;
+  bookingState.flatPrice = flatPrice;
   updateTotalPrice();
   renderConciergeStep(4);
 };

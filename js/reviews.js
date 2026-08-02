@@ -7,8 +7,10 @@
 
 const HARDCODED_GOOGLE_API_KEY = (window.L2D_CONFIG && typeof window.L2D_CONFIG.getGoogleApiKey === 'function') 
   ? window.L2D_CONFIG.getGoogleApiKey() 
-  : (localStorage.getItem('l2d_google_places_api_key') || 'YOUR_GOOGLE_PLACES_API_KEY');
-const HARDCODED_GOOGLE_PLACE_ID = 'ChIJ_RNj_7Vze0gRHMPMQcHfW-I';
+  : (window.L2D_ENV && window.L2D_ENV.GOOGLE_PLACES_API_KEY ? window.L2D_ENV.GOOGLE_PLACES_API_KEY : '');
+const HARDCODED_GOOGLE_PLACE_ID = (window.L2D_CONFIG && typeof window.L2D_CONFIG.getGooglePlaceId === 'function') 
+  ? window.L2D_CONFIG.getGooglePlaceId() 
+  : (window.L2D_ENV && window.L2D_ENV.GOOGLE_PLACE_ID ? window.L2D_ENV.GOOGLE_PLACE_ID : 'ChIJ_RNj_7Vze0gRHMPMQcHfW-I');
 
 const DEFAULT_REVIEWS = [
   {
@@ -207,13 +209,13 @@ function showAllReviews() {
   renderReviews(currentReviewFilter);
 }
 
+
+
 async function fetchGoogleBusinessReviews() {
   try {
-    const apiKey = localStorage.getItem('l2d_google_places_api_key') || 
-      ((window.L2D_CONFIG && typeof window.L2D_CONFIG.getGoogleApiKey === 'function') ? window.L2D_CONFIG.getGoogleApiKey() : HARDCODED_GOOGLE_API_KEY);
-    const placeId = localStorage.getItem('l2d_google_place_id') || 
-      ((window.L2D_CONFIG && typeof window.L2D_CONFIG.getGooglePlaceId === 'function') ? window.L2D_CONFIG.getGooglePlaceId() : HARDCODED_GOOGLE_PLACE_ID);
-    if (!apiKey || !placeId) return;
+    const apiKey = localStorage.getItem('l2d_google_places_api_key') || HARDCODED_GOOGLE_API_KEY;
+    const placeId = localStorage.getItem('l2d_google_place_id') || HARDCODED_GOOGLE_PLACE_ID;
+    if (!apiKey || !placeId || apiKey === 'YOUR_GOOGLE_PLACES_API_KEY') return;
 
     // Call Places API (New) endpoint with CORS proxy fallback
     const rawTarget = `https://places.googleapis.com/v1/places/${encodeURIComponent(placeId.trim())}?fields=reviews,rating,userRatingCount&key=${encodeURIComponent(apiKey.trim())}`;
@@ -282,7 +284,10 @@ function loadReviewsFromStorage() {
     if (data) {
       const parsed = JSON.parse(data);
       if (Array.isArray(parsed) && parsed.length > 0) {
-        return parsed;
+        const valid = parsed.filter(r => r && r.author && r.author !== 'undefined');
+        if (valid.length > 0) {
+          return valid;
+        }
       }
     }
   } catch(e) {}
@@ -341,14 +346,14 @@ function renderReviewFilterPills() {
   });
 
   const categories = [
-    { id: 'all', label: '🌟 All 81+ Google Reviews', count: totalCount },
-    { id: '1st', label: '🏆 1st Time Passes', count: firstTimeCount },
-    { id: 'manual', label: '🕹️ Manual Yaris', count: manualCount },
-    { id: 'auto', label: '⚡ Automatic Kona EV', count: autoCount }
+    { id: 'all', label: '<span data-editable-key="rev_cat_all">🌟 All 81+ Google Reviews</span>', count: totalCount },
+    { id: '1st', label: '<span data-editable-key="rev_cat_1st">🏆 1st Time Passes</span>', count: firstTimeCount },
+    { id: 'manual', label: '<span data-editable-key="rev_cat_manual">🕹️ Manual Yaris</span>', count: manualCount },
+    { id: 'auto', label: '<span data-editable-key="rev_cat_auto">⚡ Automatic Kona EV</span>', count: autoCount }
   ];
 
   wrapper.innerHTML = categories.map(cat => `
-    <button class="review-filter-pill ${currentReviewFilter === cat.id ? 'active' : ''}" data-filter="${cat.id}" onclick="filterReviews('${cat.id}', this)">
+    <button class="review-filter-pill ${currentReviewFilter === cat.id ? 'active' : ''}" data-filter="${cat.id}" onclick="if(event && event.target && event.target.hasAttribute('contenteditable')) return; filterReviews('${cat.id}', this)">
       ${cat.label} <span class="pill-count">${cat.count}</span>
     </button>
   `).join('');
