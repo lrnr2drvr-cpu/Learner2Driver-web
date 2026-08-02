@@ -1,0 +1,358 @@
+/* ==========================================================================
+   LEARNER2DRIVER - WIDGETS CSS
+   Leaflet OpenStreetMap Circular Marker Icons, Custom Glowing Range Sliders
+   ========================================================================== */
+
+/* 1. CUSTOM GLOWING CSS RANGE SLIDERS FOR READINESS QUIZ */
+.slider-group {
+  margin-bottom: 1.75rem;
+}
+
+.slider-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.65rem;
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: var(--text-main);
+}
+
+.range-slider {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 8px;
+  background: var(--border-color);
+  border-radius: 4px;
+  outline: none;
+  transition: background 0.3s ease;
+  cursor: pointer;
+}
+
+.range-slider:hover {
+  background: #CBD5E1;
+}
+
+.range-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: var(--color-green);
+  border: 3px solid #FFFFFF;
+  box-shadow: 0 0 12px rgba(46, 125, 50, 0.6);
+  cursor: pointer;
+  transition: transform 0.15s ease, background 0.2s ease;
+}
+
+.range-slider::-webkit-slider-thumb:hover {
+  transform: scale(1.15);
+  background: var(--color-green-light);
+  box-shadow: 0 0 18px rgba(46, 125, 50, 0.8);
+}
+
+.range-slider::-moz-range-thumb {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: var(--color-green);
+  border: 3px solid #FFFFFF;
+  box-shadow: 0 0 12px rgba(46, 125, 50, 0.6);
+  cursor: pointer;
+  transition: transform 0.15s ease;
+}
+
+.range-slider::-moz-range-thumb:hover {
+  transform: scale(1.15);
+}
+
+.select-box {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border-radius: var(--radius-sm);
+  border: 2px solid var(--border-color);
+  background: var(--bg-surface);
+  color: var(--text-main);
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  outline: none;
+  transition: var(--transition-fast);
+}
+
+.select-box:focus {
+  border-color: var(--color-green);
+  box-shadow: var(--shadow-glow);
+}
+
+/* 2. LEAFLET.JS OPENSTREETMAP EMBED & GEOLOCATED CIRCULAR MARKERS */
+.preston-map-container {
+  position: relative;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  border: 2px solid var(--border-color);
+  background: var(--bg-surface);
+  box-shadow: var(--shadow-sm);
+}
+
+#prestonLeafletMap {
+  width: 100%;
+  height: 480px;
+  background: #0F172A;
+  z-index: 1;
+}
+
+/* Custom Circular Leaflet Marker Pin (.leaflet-custom-circle-pin) */
+.custom-leaflet-icon-wrapper,
+.leaflet-marker-icon {
+  background: transparent !important;
+  border: none !important;
+  display: block !important;
+  max-width: none !important;
+}
+
+.leaflet-custom-circle-pin {
+  box-sizing: border-box !important;
+  width: 44px !important;
+  height: 44px !important;
+  max-width: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border-radius: 50%;
+  background: var(--color-red);
+  border: 3px solid #FFFFFF;
+  color: #FFFFFF;
+  font-family: var(--font-heading);
+  font-weight: 800;
+  font-size: 0.95rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 14px rgba(211, 47, 47, 0.6);
+  cursor: pointer;
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), background 0.3s ease, box-shadow 0.3s ease;
+}
+
+.leaflet-custom-circle-pin:hover,
+.leaflet-custom-circle-pin.active {
+  transform: scale(1.18);
+  background: var(--color-green);
+  box-shadow: 0 6px 22px rgba(46, 125, 50, 0.85);
+}
+
+.leaflet-custom-circle-pin:active {
+  transform: scale(0.92) !important;
+  transition: transform 0.1s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+.danger-spot-nav {
+  display: flex;
+  gap: 0.65rem;
+  flex-wrap: wrap;
+  margin-bottom: 1.5rem;
+}
+
+.danger-spot-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-height: 44px;
+  padding: 0.65rem 1.15rem;
+  border-radius: var(--radius-full);
+  background: var(--bg-surface);
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s ease, background 0.25s ease;
+}
+
+.danger-spot-btn:active {
+  transform: scale(0.95) !important;
+}
+  color: var(--text-main);
+  border: 1px solid var(--border-color);
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 0.88rem;
+  cursor: pointer;
+  transition: var(--transition-fast);
+}
+
+.danger-spot-btn:hover,
+.danger-spot-btn.active {
+  background: var(--color-red);
+  color: #FFFFFF;
+  border-color: var(--color-red);
+  box-shadow: var(--shadow-accent);
+}
+
+/* 3. SHOWROOM DIGITAL FLEET HOTSPOTS */
+.showroom-car-view {
+  position: relative;
+  max-width: 760px;
+  margin: 0 auto 1.5rem;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  background: radial-gradient(circle at center, rgba(46, 125, 50, 0.08) 0%, transparent 70%);
+}
+
+.showroom-car-view img {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: var(--radius-lg);
+}
+
+.car-hotspot {
+  position: absolute;
+  width: 44px;
+  height: 44px;
+  margin-left: -22px;
+  margin-top: -22px;
+  border-radius: 50%;
+  background: var(--color-red);
+  color: #FFFFFF;
+  font-weight: 800;
+  font-size: 0.85rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 0 0 4px rgba(211, 47, 47, 0.35);
+  animation: hotspotPulse 2s infinite;
+  z-index: 10;
+}
+
+@keyframes hotspotPulse {
+  0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(211, 47, 47, 0.6); }
+  70% { transform: scale(1.08); box-shadow: 0 0 0 12px rgba(211, 47, 47, 0); }
+  100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(211, 47, 47, 0); }
+}
+
+/* 4. INSTAGRAM CIRCLES & LIVE-LOOK FEED */
+.insta-stories-scroll {
+  display: flex;
+  gap: 1.25rem;
+  overflow-x: auto;
+  padding: 0.5rem 0 1.25rem;
+  scrollbar-width: none;
+}
+
+.insta-stories-scroll::-webkit-scrollbar {
+  display: none;
+}
+
+.insta-story-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4rem;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.insta-story-ring {
+  width: 76px;
+  height: 76px;
+  border-radius: 50%;
+  padding: 3px;
+  background: linear-gradient(45deg, var(--color-amber), var(--color-red), var(--color-green));
+  transition: transform 0.25s ease;
+}
+
+.insta-story-item:hover .insta-story-ring {
+  transform: scale(1.08);
+}
+
+.insta-story-inner {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  overflow: hidden;
+  background: var(--bg-surface);
+  border: 2px solid var(--bg-surface);
+}
+
+.insta-story-inner img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.insta-story-title {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--text-main);
+  max-width: 80px;
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* 5. INSTAGRAM EMBED WRAPPER MOBILE OVERFLOW PROTECTION */
+.insta-embed-wrapper {
+  width: 100%;
+  overflow: hidden;
+}
+
+.insta-embed-wrapper blockquote.instagram-media {
+  min-width: 0 !important;
+  max-width: 100% !important;
+  width: 100% !important;
+}
+
+/* ==========================================================================
+   INTERACTIVE DRAG-AND-DROP HOTSPOT POSITIONING STYLES
+   ========================================================================== */
+.car-hotspot.draggable {
+  cursor: grab !important;
+  box-shadow: 0 0 0 3px #F57C00, 0 0 12px rgba(245, 124, 0, 0.6) !important;
+  animation: none !important;
+}
+
+.car-hotspot.draggable:hover {
+  transform: scale(1.15) !important;
+}
+
+.car-hotspot.dragging {
+  cursor: grabbing !important;
+  z-index: 100 !important;
+  background: #059669 !important;
+  box-shadow: 0 0 0 4px rgba(5, 150, 105, 0.6) !important;
+  transform: scale(1.2) !important;
+}
+
+.hotspot-drag-tooltip {
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  margin-bottom: 8px;
+  background: #0F172A;
+  color: #FFFFFF;
+  font-family: var(--font-heading);
+  font-size: 0.75rem;
+  font-weight: 800;
+  padding: 4px 8px;
+  border-radius: 4px;
+  white-space: nowrap;
+  pointer-events: none;
+  z-index: 101;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.4);
+  border: 1px solid #334155;
+}
+
+/* LEAFLET LOCATION PICKER MODAL CONTAINER FIT */
+#modalPickerLeafletMap {
+  width: 100% !important;
+  min-height: 360px !important;
+  height: 360px !important;
+  flex-shrink: 0 !important;
+  display: block !important;
+  position: relative !important;
+  z-index: 10 !important;
+  border-radius: var(--radius-md) !important;
+  border: 2px solid var(--color-green, #059669) !important;
+}
+

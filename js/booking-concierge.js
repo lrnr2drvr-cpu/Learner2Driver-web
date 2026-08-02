@@ -1,0 +1,194 @@
+/**
+ * ==========================================================================
+ * LEARNER2DRIVER - MULTI-STEP BOOKING CONCIERGE SCRIPT (booking-concierge.js)
+ * Step 1: Instructor (Farhan vs Binish) -> Step 2: Car -> Step 3: Package -> Step 4: Cal.com
+ * ==========================================================================
+ */
+
+const bookingState = {
+  instructor: 'Farhan Hussaini',
+  vehicle: 'Manual (2019 Toyota Yaris) - £37/hr',
+  rate: 37,
+  package: '10-Hour Block Discount (Save 8%)',
+  hours: 10,
+  discount: 0.08,
+  totalPrice: 340,
+  step: 1
+};
+
+function updateTotalPrice() {
+  const base = bookingState.rate * bookingState.hours;
+  bookingState.totalPrice = Math.round(base - (base * (bookingState.discount || 0)));
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  initBookingConcierge();
+});
+
+function initBookingConcierge() {
+  const container = document.getElementById('bookingConciergeBox');
+  if (!container) return;
+
+  renderConciergeStep(1);
+}
+
+function renderConciergeStep(stepNum) {
+  bookingState.step = stepNum;
+  const container = document.getElementById('bookingConciergeBox');
+  if (!container) return;
+
+  let html = `
+    <!-- Step Bar -->
+    <div class="concierge-step-bar">
+      <div class="concierge-step ${stepNum >= 1 ? 'active' : ''}" onclick="renderConciergeStep(1)">1. Instructor</div>
+      <div class="concierge-step ${stepNum >= 2 ? 'active' : ''}" onclick="renderConciergeStep(2)">2. Vehicle</div>
+      <div class="concierge-step ${stepNum >= 3 ? 'active' : ''}" onclick="renderConciergeStep(3)">3. Package</div>
+      <div class="concierge-step ${stepNum >= 4 ? 'active' : ''}" onclick="renderConciergeStep(4)">4. Select Slot</div>
+    </div>
+  `;
+
+  if (stepNum === 1) {
+    html += `
+      <h3 class="mb-1" data-editable-key="book_step1_title">Step 1: Choose Your Driving Instructor</h3>
+      <p class="mb-3" data-editable-key="book_step1_sub">Select between our experienced male and female DVSA-approved driving instructors in Preston.</p>
+
+      <div class="concierge-options-grid">
+        <div class="concierge-option-card ${bookingState.instructor === 'Farhan Hussaini' ? 'selected' : ''}" onclick="selectInstructor('Farhan Hussaini')">
+          <span class="badge badge-primary mb-1" data-editable-key="book_opt_farhan_badge">Lead Instructor (Male)</span>
+          <h3 style="margin: 0; font-size: 1.25rem;" data-editable-key="book_opt_farhan_name">Farhan Hussaini</h3>
+          <p style="margin: 0.5rem 0 0; font-size: 0.9rem;" data-editable-key="book_opt_farhan_desc">Specialist in Preston DVSA test routes, nervous learners, and mock practical test assessments.</p>
+        </div>
+        <div class="concierge-option-card ${bookingState.instructor === 'Binish Moazzam' ? 'selected' : ''}" onclick="selectInstructor('Binish Moazzam')">
+          <span class="badge badge-warning mb-1" data-editable-key="book_opt_binish_badge">Female Instructor</span>
+          <h3 style="margin: 0; font-size: 1.25rem;" data-editable-key="book_opt_binish_name">Binish Moazzam</h3>
+          <p style="margin: 0.5rem 0 0; font-size: 0.9rem;" data-editable-key="book_opt_binish_desc">Patient, encouraging female instructor specialising in confidence building and smooth car control.</p>
+        </div>
+      </div>
+    `;
+  } else if (stepNum === 2) {
+    html += `
+      <h3 class="mb-1" data-editable-key="book_step2_title">Step 2: Choose Your Training Vehicle</h3>
+      <p class="mb-3">Selected Instructor: <strong style="color: var(--color-green);">${bookingState.instructor}</strong>. Now pick your transmission.</p>
+
+      <div class="concierge-options-grid">
+        <div class="concierge-option-card ${bookingState.rate === 37 ? 'selected' : ''}" onclick="selectVehicle('Manual (2019 Toyota Yaris) - £37/hr', 37)">
+          <span class="badge badge-accent mb-1" data-editable-key="book_opt_yaris_badge">Manual Transmission • £37/hr</span>
+          <h3 style="margin: 0; font-size: 1.25rem;" data-editable-key="book_opt_yaris_name">2019 Toyota Yaris Manual</h3>
+          <p style="margin: 0.5rem 0 0; font-size: 0.9rem;" data-editable-key="book_opt_yaris_desc">6-Speed manual gearbox with intuitive biting point, light clutch, and exceptional hatchback visibility.</p>
+        </div>
+        <div class="concierge-option-card ${bookingState.rate === 39 ? 'selected' : ''}" onclick="selectVehicle('Auto (2024 Kona EV Ultimate) - £39/hr', 39)">
+          <span class="badge badge-primary mb-1" data-editable-key="book_opt_kona_badge">100% Electric Automatic • £39/hr</span>
+          <h3 style="margin: 0; font-size: 1.25rem;" data-editable-key="book_opt_kona_name">2024 Hyundai Kona EV Ultimate</h3>
+          <p style="margin: 0.5rem 0 0; font-size: 0.9rem;" data-editable-key="book_opt_kona_desc">Zero stalls, silent electric acceleration, dual panoramic displays, and surround view cameras.</p>
+        </div>
+      </div>
+      <div class="text-left mt-2">
+        <button class="btn btn-secondary btn-sm" onclick="renderConciergeStep(1)">← Back to Instructors</button>
+      </div>
+    `;
+  } else if (stepNum === 3) {
+    html += `
+      <h3 class="mb-1" data-editable-key="book_step3_title">Step 3: Select Lesson Package & Discounts</h3>
+      <p class="mb-3">Instructor: <strong>${bookingState.instructor}</strong> | Vehicle: <strong>${bookingState.vehicle}</strong></p>
+
+      <div class="concierge-options-grid">
+        <div class="concierge-option-card ${bookingState.hours === 1 ? 'selected' : ''}" onclick="selectPackage('Pay As You Go (1 Hour)', 1, 0)">
+          <span class="badge badge-secondary mb-1" data-editable-key="book_pkg1_badge">Standard Rate</span>
+          <h3 style="margin: 0; font-size: 1.15rem;" data-editable-key="book_pkg1_name">Pay As You Go (1 Hr)</h3>
+          <p style="margin: 0.4rem 0 0; font-size: 0.88rem; font-weight: 700; color: var(--color-green);">£${bookingState.rate}</p>
+        </div>
+        <div class="concierge-option-card ${bookingState.hours === 10 ? 'selected' : ''}" onclick="selectPackage('10-Hour Block Discount (Save 8%)', 10, 0.08)">
+          <span class="badge badge-primary mb-1" data-editable-key="book_pkg2_badge">Most Popular ⭐ Save 8%</span>
+          <h3 style="margin: 0; font-size: 1.15rem;" data-editable-key="book_pkg2_name">10-Hour Block Course</h3>
+          <p style="margin: 0.4rem 0 0; font-size: 0.88rem; font-weight: 700; color: var(--color-green);">£${Math.round(bookingState.rate * 10 * 0.92)} (was £${bookingState.rate * 10})</p>
+        </div>
+        <div class="concierge-option-card ${bookingState.hours === 20 ? 'selected' : ''}" onclick="selectPackage('20-Hour Intensive Block (Save 12%)', 20, 0.12)">
+          <span class="badge badge-warning mb-1" data-editable-key="book_pkg3_badge">Best Value • Save 12%</span>
+          <h3 style="margin: 0; font-size: 1.15rem;" data-editable-key="book_pkg3_name">20-Hour Intensive Pass</h3>
+          <p style="margin: 0.4rem 0 0; font-size: 0.88rem; font-weight: 700; color: var(--color-green);">£${Math.round(bookingState.rate * 20 * 0.88)} (was £${bookingState.rate * 20})</p>
+        </div>
+        <div class="concierge-option-card ${bookingState.hours === 2 ? 'selected' : ''}" onclick="selectPackage('Mock Practical Test Assessment (2 Hours)', 2, 0)">
+          <span class="badge badge-accent mb-1" data-editable-key="book_pkg4_badge">DVSA Assessment</span>
+          <h3 style="margin: 0; font-size: 1.15rem;" data-editable-key="book_pkg4_name">2-Hour Mock Driving Test</h3>
+          <p style="margin: 0.4rem 0 0; font-size: 0.88rem; font-weight: 700; color: var(--color-green);">£${bookingState.rate * 2}</p>
+        </div>
+      </div>
+      <div class="text-left mt-2">
+        <button class="btn btn-secondary btn-sm" onclick="renderConciergeStep(2)">← Back to Vehicle</button>
+      </div>
+    `;
+  } else if (stepNum === 4) {
+    updateTotalPrice();
+    html += `
+      <div style="background: var(--bg-body); border: 1px solid var(--color-green); border-radius: var(--radius-lg); padding: 1.75rem; margin-bottom: 2rem; text-align: left;">
+        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; margin-bottom: 1rem;">
+          <div>
+            <span class="badge badge-primary mb-1" data-editable-key="book_step4_badge">Summary Approved</span>
+            <h3 style="margin: 0;" data-editable-key="book_step4_title">Your Tailored Lesson Package</h3>
+          </div>
+          <div style="font-size: 2rem; font-weight: 800; color: var(--color-green);">
+            £${bookingState.totalPrice}
+          </div>
+        </div>
+        <div class="grid-3" style="border-top: 1px solid var(--border-color); padding-top: 1rem; font-size: 0.92rem;">
+          <div><strong>Instructor:</strong> ${bookingState.instructor}</div>
+          <div><strong>Vehicle:</strong> ${bookingState.vehicle}</div>
+          <div><strong>Package:</strong> ${bookingState.package}</div>
+        </div>
+      </div>
+
+      <div class="text-center mb-3">
+        <button class="btn btn-primary" onclick="showCalIframe()">
+          Select Date & Time on Calendar 📅
+        </button>
+        <a href="tel:07427330827" class="btn btn-secondary ml-1">
+          Call / WhatsApp 074-2733-0827 📞
+        </a>
+      </div>
+
+      <!-- Optional Cal.com Reveal Box -->
+      <div id="calIframeRevealBox" style="display: none; margin-top: 1.5rem;">
+        <iframe src="https://cal.com/learner2driver" style="border: none; width: 100%; height: 680px; border-radius: var(--radius-lg);" title="Learner2Driver Cal.com Calendar"></iframe>
+      </div>
+
+      <div class="text-left mt-2">
+        <button class="btn btn-secondary btn-sm" onclick="renderConciergeStep(3)">← Back to Packages</button>
+      </div>
+    `;
+  }
+
+  container.innerHTML = html;
+
+  const isEditMode = window.L2D_EDIT_MODE || (localStorage.getItem('l2d_admin_editing_mode') === 'true') || (localStorage.getItem('l2d_is_admin') === 'true');
+  if (typeof window.setupInlineTextEditing === 'function') {
+    window.setupInlineTextEditing(isEditMode);
+  }
+}
+
+window.selectInstructor = function(name) {
+  bookingState.instructor = name;
+  renderConciergeStep(2);
+};
+
+window.selectVehicle = function(vehicleName, rate) {
+  bookingState.vehicle = vehicleName;
+  bookingState.rate = rate;
+  updateTotalPrice();
+  renderConciergeStep(3);
+};
+
+window.selectPackage = function(pkgName, hours, discount) {
+  bookingState.package = pkgName;
+  bookingState.hours = hours;
+  bookingState.discount = discount;
+  updateTotalPrice();
+  renderConciergeStep(4);
+};
+
+window.showCalIframe = function() {
+  const box = document.getElementById('calIframeRevealBox');
+  if (box) {
+    box.style.display = 'block';
+    box.scrollIntoView({ behavior: 'smooth' });
+  }
+};

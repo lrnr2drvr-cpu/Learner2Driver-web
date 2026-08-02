@@ -1,0 +1,749 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+  <title>Learner2Driver | Preston Driving School - Manual & Automatic Lessons with Farhan & Binish</title>
+  <meta name="description" content="DVSA-Approved Manual (2019 Toyota Yaris) & Automatic (2024 Kona EV Ultimate) driving lessons in Preston with Farhan Hussaini & Binish Moazzam. Video Course Hub, Preston Test Route Maps, & 90% Pass Rate!">
+
+  <!-- Schema.org DrivingSchool JSON-LD -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "DrivingSchool",
+    "name": "Learner2Driver Preston",
+    "url": "https://learner2driver.net",
+    "telephone": "+447427330827",
+    "address": {
+      "@type": "PostalAddress",
+      "addressLocality": "Preston",
+      "addressRegion": "Lancashire",
+      "addressCountry": "GB"
+    },
+    "geo": {
+      "@type": "GeoCoordinates",
+      "latitude": 53.7632,
+      "longitude": -2.7481
+    },
+    "aggregateRating": {
+      "@type": "AggregateRating",
+      "ratingValue": "4.9",
+      "reviewCount": "112"
+    }
+  }
+  </script>
+
+  <!-- Leaflet.js OpenStreetMap CDN -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
+
+  <!-- CSS Design System -->
+  <link rel="stylesheet" href="styles/main.css?v=12">
+  <link rel="stylesheet" href="styles/components.css?v=12">
+  <link rel="stylesheet" href="styles/widgets.css?v=6">
+</head>
+<body>
+
+  <!-- Background Warm Subtle Mesh -->
+  <div class="bg-mesh"></div>
+
+  <!-- Top Sticky Header Bar - Uncluttered & Spaced -->
+  <header class="top-header">
+    <div class="container nav-container">
+      <!-- BRAND NAME: ONLY L red #D32F2F, Amber 2 #F57C00, and ONLY D green #2E7D32 -->
+      <a href="index.html" class="brand-logo" aria-label="Learner2Driver Home">
+        <span class="brand-text"><span class="brand-l">L</span>earner<span class="brand-2">2</span><span class="brand-d">D</span>river</span>
+      </a>
+
+      <!-- 6 Cleanly Spaced Desktop Navigation Links -->
+      <nav aria-label="Main navigation">
+        <ul class="nav-links-desktop">
+          <li><a href="#hero" class="active">Home</a></li>
+          <li><a href="#instructors">Instructors</a></li>
+          <li><a href="#fleet">Fleet</a></li>
+          <li><a href="course.html" style="color:var(--color-green); font-weight:700;">Video Hub</a></li>
+          <li><a href="#routes">Preston Map</a></li>
+          <li><a href="#book">Book Now</a></li>
+        </ul>
+      </nav>
+
+      <div class="nav-actions">
+        <button id="themeToggleBtn" class="theme-toggle-btn" aria-label="Toggle Theme Mode" title="Switch to Slate Graphite Dark Mode"></button>
+        <a href="#book" class="btn btn-primary btn-sm cta-pulse-glow">Book Online</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- HERO SECTION WITH LOW-ALPHA TRANSPARENT BACKGROUND IMAGE (NO SIDE PICTURE!) -->
+  <section id="hero" class="hero-banner" data-background-key="hero_bg">
+    <div class="container" style="max-width: 920px; margin: 0 auto;">
+      <div id="siteHeroBadge" class="badge badge-primary mb-2" data-editable-key="hero_badge">Preston DVSA-Approved Driving Academy</div>
+      <h1 id="siteHeroHeading" class="mb-2" data-editable-key="hero_heading">
+        Welcome to <span class="text-gradient-accent" style="font-weight:800;">L</span>earner<span class="brand-2">2</span><span class="text-gradient-primary" style="font-weight:800;">D</span>river Preston
+      </h1>
+      <p id="siteHeroText" class="mb-4" style="font-size: 1.2rem; color: var(--text-main); max-width: 760px; margin-left: auto; margin-right: auto; line-height: 1.7;" data-editable-key="hero_text">
+        Professional Manual & Automatic tuition with Preston's top-rated instructors, <strong>Farhan Hussaini</strong> & <strong>Binish Moazzam</strong>. Learn in our dual-controlled <strong>2019 Toyota Yaris</strong> or <strong>2024 Hyundai Kona EV Ultimate</strong>.
+      </p>
+
+      <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; margin-bottom: 2rem;">
+        <a href="#book" class="btn btn-primary cta-pulse-glow">
+          Book Lesson Package →
+        </a>
+        <a href="course.html" class="btn btn-secondary">
+          Video Course Hub
+        </a>
+      </div>
+
+      <!-- Academy Trust Badges -->
+      <div class="reveal-on-scroll" style="display: flex; justify-content: center; gap: 1.5rem; flex-wrap: wrap; border-top: 1px solid var(--border-color); padding-top: 2rem;">
+        <div>
+          <div class="stat-counter text-gradient-primary" data-target="90" data-suffix="%+" style="font-family:var(--font-heading); font-size:1.75rem; font-weight:800;" data-editable-key="stat_pass_rate_val">90%+</div>
+          <div style="font-size:0.88rem; color:var(--text-light); font-weight:600;" data-editable-key="stat_pass_rate_title">1st-Time Pass Rate</div>
+        </div>
+        <div>
+          <div class="stat-counter text-gradient-primary" data-target="100" data-suffix="+" style="font-family:var(--font-heading); font-size:1.75rem; font-weight:800;" data-editable-key="stat_passes_val">100+</div>
+          <div style="font-size:0.88rem; color:var(--text-light); font-weight:600;" data-editable-key="stat_passes_title">Preston Passes</div>
+        </div>
+        <div>
+          <div class="stat-counter text-gradient-primary" data-target="5" data-suffix="★ Rating" style="font-family:var(--font-heading); font-size:1.75rem; font-weight:800;" data-editable-key="stat_rating_val">5★ Rating</div>
+          <div style="font-size:0.88rem; color:var(--text-light); font-weight:600;" data-editable-key="stat_rating_title">Google Rating</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CUTE ANIMATED ROAD DIVIDER STRIPE 1 -->
+  <div class="road-divider" aria-hidden="true"></div>
+
+  <!-- MEET YOUR INSTRUCTORS SECTION -->
+  <section id="instructors" style="background: var(--bg-surface);">
+    <div class="container">
+      <div class="text-center mb-4 reveal-on-scroll">
+        <span class="badge badge-primary mb-1" data-editable-key="instructors_section_badge">DVSA Approved Instructors</span>
+        <h2 class="text-gradient-primary" data-editable-key="instructors_section_title">Meet Your Driving Instructors</h2>
+        <p style="max-width: 600px; margin: 0 auto;" data-editable-key="instructors_section_sub">Choose between male and female tuition tailored to your learning pace, confidence, and test route goals.</p>
+      </div>
+
+      <div class="grid-2">
+        <!-- Farhan Hussaini Card -->
+        <div class="instructor-card card-shimmer reveal-on-scroll reveal-delay-1">
+          <div>
+            <div class="instructor-header" style="margin-bottom: 1rem;">
+              <span class="badge badge-primary mb-2" data-editable-key="inst_farhan_badge">Lead Instructor (Male)</span>
+              <h3 style="margin: 0; font-size: 1.6rem;" data-editable-key="inst_farhan_name">Farhan Hussaini</h3>
+              <div style="font-size: 0.9rem; color: var(--text-light); font-weight: 600;" data-editable-key="inst_farhan_title">DVSA Grade A Approved Driving Instructor</div>
+            </div>
+            <p style="font-size: 0.98rem; color: var(--text-main); margin-bottom: 1.25rem; line-height: 1.7;" data-editable-key="inst_farhan_bio">
+              With years of experience coaching Preston learners, Farhan specialises in test route navigation around Chain Caul Way, nervous driver confidence, and high-first-time-pass techniques.
+            </p>
+            <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+              <span class="badge badge-secondary" data-editable-key="inst_farhan_tag1">Manual Yaris</span>
+              <span class="badge badge-secondary" data-editable-key="inst_farhan_tag2">Automatic Kona EV</span>
+              <span class="badge badge-secondary" data-editable-key="inst_farhan_tag3">Mock Test Assessments</span>
+              <span class="badge badge-secondary" data-editable-key="inst_farhan_tag4">Preston Test Routes Expert</span>
+            </div>
+          </div>
+          <div style="margin-top: 1.75rem; border-top: 1px solid var(--border-color); padding-top: 1.25rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+            <strong style="color: var(--color-green); font-size: 1.05rem;" data-editable-key="inst_farhan_rating">4.9 Rating (80+ Verified Reviews)</strong>
+            <a href="#book" class="btn btn-primary btn-sm" onclick="selectInstructor('Farhan Hussaini')" data-editable-key="inst_farhan_btn">Book with Farhan →</a>
+          </div>
+        </div>
+
+        <!-- Binish Moazzam Card -->
+        <div class="instructor-card card-shimmer reveal-on-scroll reveal-delay-2">
+          <div>
+            <div class="instructor-header" style="margin-bottom: 1rem;">
+              <span class="badge badge-warning mb-2" data-editable-key="inst_binish_badge">Female Instructor</span>
+              <h3 style="margin: 0; font-size: 1.6rem;" data-editable-key="inst_binish_name">Binish Moazzam</h3>
+              <div style="font-size: 0.9rem; color: var(--text-light); font-weight: 600;" data-editable-key="inst_binish_title">DVSA Approved Female Instructor</div>
+            </div>
+            <p style="font-size: 0.98rem; color: var(--text-main); margin-bottom: 1.25rem; line-height: 1.7;" data-editable-key="inst_binish_bio">
+              Binish offers calm, patient, and empowering tuition for learners who prefer a female instructor. Known for building exceptional road confidence and stress-free maneuvers.
+            </p>
+            <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+              <span class="badge badge-secondary" data-editable-key="inst_binish_tag1">Female Tuition</span>
+              <span class="badge badge-secondary" data-editable-key="inst_binish_tag2">Manual Yaris</span>
+              <span class="badge badge-secondary" data-editable-key="inst_binish_tag3">Automatic Kona EV</span>
+              <span class="badge badge-secondary" data-editable-key="inst_binish_tag4">Nervous Learner Friendly</span>
+            </div>
+          </div>
+          <div style="margin-top: 1.75rem; border-top: 1px solid var(--border-color); padding-top: 1.25rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+            <strong style="color: var(--color-green); font-size: 1.05rem;" data-editable-key="inst_binish_rating">5.0 Rating (32+ Verified Reviews)</strong>
+            <a href="#book" class="btn btn-primary btn-sm" onclick="selectInstructor('Binish Moazzam')" data-editable-key="inst_binish_btn">Book with Binish →</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CUTE ANIMATED ROAD DIVIDER STRIPE 2 -->
+  <div class="road-divider" aria-hidden="true"></div>
+
+  <!-- TRAINING FLEET SHOWROOM SECTION -->
+  <section id="fleet">
+    <div class="container">
+      <div class="text-center mb-4 reveal-on-scroll">
+        <span class="badge badge-clean-accent mb-1" data-editable-key="fleet_section_badge">Dual Controlled Vehicles</span>
+        <h2 class="gradient-text-warm" data-editable-key="fleet_section_title">Our Training Fleet</h2>
+        <p style="max-width: 600px; margin: 0 auto;" data-editable-key="fleet_section_sub">Click a vehicle to inspect interactive feature hotspots and hourly package rates.</p>
+
+        <!-- Switcher Buttons -->
+        <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 0.5rem; background: var(--bg-surface); border: 1px solid var(--border-color); border-radius: var(--radius-full); padding: 0.35rem; margin-top: 1.5rem;">
+          <button id="showYarisBtn" class="btn btn-primary btn-sm" data-editable-key="fleet_yaris_switch_btn">
+            Manual: 2019 Toyota Yaris (£37/hr)
+          </button>
+          <button id="showKonaBtn" class="btn btn-secondary btn-sm" data-editable-key="fleet_kona_switch_btn">
+            Automatic: 2024 Kona EV Ultimate (£39/hr)
+          </button>
+        </div>
+      </div>
+
+      <!-- Interactive Showroom Display Container -->
+      <div id="showroomDisplayBox" class="glass-card card-shimmer reveal-on-scroll" style="padding: 2.5rem; text-align: center; max-width: 960px; margin: 0 auto;">
+        <!-- Injected via js/showroom.js -->
+      </div>
+    </div>
+  </section>
+
+  <!-- WIDGET 1: TEST READINESS QUIZ WITH CUSTOM GLOWING SLIDERS -->
+  <section id="quiz" style="background: var(--bg-surface); border-top: 1px solid var(--border-color); border-bottom: 1px solid var(--border-color);">
+    <div class="container">
+      <div class="text-center mb-4 reveal-on-scroll">
+        <span class="badge badge-primary mb-1" data-editable-key="quiz_section_badge">Interactive Pass Probability</span>
+        <h2 class="text-gradient-primary" data-editable-key="quiz_section_title">Test Readiness Quiz</h2>
+        <p style="max-width: 620px; margin: 0 auto;" data-editable-key="quiz_section_sub">Adjust the custom sliders to evaluate your exam readiness. Score 85%+ for a celebration toast!</p>
+      </div>
+
+      <div class="glass-card card-shimmer reveal-on-scroll" style="max-width: 860px; margin: 0 auto; padding: 2.5rem;">
+        <div class="grid-2">
+          <div>
+            <div class="slider-group">
+              <div class="slider-header">
+                <span data-editable-key="quiz_slider1_title">Total Practice Hours</span>
+                <span id="valHours" class="badge badge-primary">35 hrs</span>
+              </div>
+              <input type="range" id="sliderHours" min="0" max="60" value="35" class="range-slider" aria-label="Total Practice Hours">
+            </div>
+
+            <div class="slider-group">
+              <div class="slider-header">
+                <span data-editable-key="quiz_slider2_title">Theory Test Status</span>
+                <span id="valTheory" class="badge badge-primary">Passed</span>
+              </div>
+              <select id="selectTheory" class="select-box" aria-label="Theory Test Status">
+                <option value="15">Passed (+15%)</option>
+                <option value="5">Booked (+5%)</option>
+                <option value="0">Not Started (+0%)</option>
+              </select>
+            </div>
+
+            <div class="slider-group">
+              <div class="slider-header">
+                <span data-editable-key="quiz_slider3_title">Maneuvers Confidence (1-5)</span>
+                <span id="valManeuvers" class="badge badge-primary">4 / 5</span>
+              </div>
+              <input type="range" id="sliderManeuvers" min="1" max="5" value="4" class="range-slider" aria-label="Maneuvers Confidence (1 to 5)">
+            </div>
+
+            <div class="slider-group">
+              <div class="slider-header">
+                <span data-editable-key="quiz_slider4_title">Roundabouts & Junctions (1-5)</span>
+                <span id="valRoundabouts" class="badge badge-primary">4 / 5</span>
+              </div>
+              <input type="range" id="sliderRoundabouts" min="1" max="5" value="4" class="range-slider" aria-label="Roundabouts & Junctions Confidence (1 to 5)">
+            </div>
+          </div>
+
+          <div style="display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; border-left: 1px solid var(--border-color); padding-left: 1.5rem;">
+            <span class="badge badge-primary mb-1" data-editable-key="quiz_result_badge">Your Pass Probability</span>
+            <div id="quizScoreDisplay" class="text-gradient-primary" style="font-family: var(--font-heading); font-size: 3.8rem; font-weight: 800;">88%</div>
+            <p id="quizScoreMessage" style="color: var(--text-main); font-weight: 600; margin: 1rem 0;" data-editable-key="quiz_result_message">
+              Outstanding! You are ready for a mock driving test with Farhan or Binish!
+            </p>
+            <a href="#book" class="btn btn-primary w-full cta-pulse-glow">Book Mock Assessment →</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- WIDGET 2: LEAFLET.JS OPENSTREETMAP EMBED WITH GEOLOCATED CIRCULAR MARKERS -->
+  <section id="routes">
+    <div class="container">
+      <div class="text-center mb-4 reveal-on-scroll">
+        <span class="badge badge-primary mb-1" data-editable-key="routes_section_badge">DVSA Preston Hub (PR2 2ZN)</span>
+        <h2 class="text-gradient-primary" data-editable-key="routes_section_title">Actual Preston Test Route & Danger Spot Explorer</h2>
+        <p style="max-width: 650px; margin: 0 auto;" data-editable-key="routes_section_sub">Click a circular marker on the map or select a Preston danger spot button below to inspect Farhan's insider advice on roundabouts and hill starts.</p>
+      </div>
+
+      <!-- Interactive Danger Spot Selector Buttons -->
+      <div class="danger-spot-nav reveal-on-scroll" style="justify-content: center;">
+        <button id="spotBtn1" class="danger-spot-btn active" onclick="showRouteTip(1)">
+          1. DVSA Chain Caul Way Roundabout
+        </button>
+        <button id="spotBtn2" class="danger-spot-btn" onclick="showRouteTip(2)">
+          2. Docks Swing Bridge
+        </button>
+        <button id="spotBtn3" class="danger-spot-btn" onclick="showRouteTip(3)">
+          3. Riversway Multi-Lane Corridor
+        </button>
+        <button id="spotBtn4" class="danger-spot-btn" onclick="showRouteTip(4)">
+          4. Penwortham Hill Start
+        </button>
+      </div>
+
+      <div class="grid-2 reveal-on-scroll" style="align-items: start;">
+        <!-- LEAFLET.JS OPENSTREETMAP CONTAINER CENTERED ON PRESTON PR2 2ZN -->
+        <div class="preston-map-container card-shimmer">
+          <div id="prestonLeafletMap" style="width: 100%; height: 480px;"></div>
+          <div style="background: #0F172A; color: #FFF; padding: 0.65rem 1rem; font-size: 0.8rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem;">
+            <span data-editable-key="routes_map_caption">Preston DVSA Test Centre • Chain Caul Way, Preston PR2 2ZN</span>
+            <a href="https://www.openstreetmap.org/?mlat=53.7632&mlon=-2.7481#map=15/53.7632/-2.7481" target="_blank" rel="noopener noreferrer" style="color: #43A047; font-weight: 700;">View Full UK Map ↗</a>
+          </div>
+        </div>
+
+        <!-- Tip Display Card -->
+        <div id="routeTipBox" class="glass-card card-shimmer" style="padding: 2.25rem;">
+          <!-- Injected via js/widgets.js -->
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CUTE ANIMATED ROAD DIVIDER STRIPE 3 -->
+  <div class="road-divider" aria-hidden="true"></div>
+
+  <!-- INSTAGRAM INTEGRATION (REAL HTTP fetch() API POLLING!) -->
+  <section id="insta" style="background: var(--bg-surface);">
+    <div class="container">
+      <div class="text-center mb-3 reveal-on-scroll">
+        <span class="badge badge-primary mb-1" data-editable-key="insta_section_badge">Live from Instagram API</span>
+        <h2 data-editable-key="insta_section_title">Follow Our Journey <a href="https://www.instagram.com/lrnr2drvr/" target="_blank" rel="noopener noreferrer" class="gradient-text-insta" style="font-weight: 800;">@lrnr2drvr</a></h2>
+        <p style="max-width: 600px; margin: 0 auto;" data-editable-key="insta_section_sub">Watch real driving lesson clips, test passes, and instructor tips!</p>
+      </div>
+
+      <!-- Real Instagram Centered Feed Grid -->
+      <div id="instaFeedGrid" class="insta-grid mt-2 reveal-on-scroll"></div>
+    </div>
+  </section>
+
+  <!-- MULTI-STEP BOOKING CONCIERGE -->
+  <section id="book">
+    <div class="container">
+      <div class="text-center mb-4 reveal-on-scroll">
+        <span class="badge badge-primary mb-1" data-editable-key="book_section_badge">Interactive Lesson Wizard</span>
+        <h2 class="text-gradient-primary" data-editable-key="book_section_title">Book Your Lesson Concierge</h2>
+        <p style="max-width: 600px; margin: 0 auto;" data-editable-key="book_section_sub">Choose your instructor, vehicle transmission, and package hours to launch your tailored booking slot.</p>
+      </div>
+
+      <!-- Multi-step Concierge Injected via js/booking-concierge.js -->
+      <div id="bookingConciergeBox" class="concierge-card card-shimmer reveal-on-scroll" style="max-width: 900px; margin: 0 auto;"></div>
+    </div>
+  </section>
+
+  <!-- CUTE ANIMATED ROAD DIVIDER STRIPE 4 -->
+  <div class="road-divider" aria-hidden="true"></div>
+
+  <!-- HALL OF FAME: RECENT 1ST-TIME PASSES PHOTO GALLERY -->
+  <section id="gallery" style="background: var(--bg-surface);">
+    <div class="container">
+      <div class="text-center mb-4 reveal-on-scroll">
+        <span class="badge badge-primary mb-1" data-editable-key="gallery_section_badge">Hall of Fame</span>
+        <h2 class="text-gradient-primary" data-editable-key="gallery_section_title">Recent 1st-Time Pass Celebrations</h2>
+        <p style="max-width: 600px; margin: 0 auto;" data-editable-key="gallery_section_sub">Nothing makes us prouder than smiling students holding their DVSA pass certificates!</p>
+      </div>
+
+      <div class="pass-gallery-grid reveal-on-scroll">
+        <div class="pass-photo-card card-shimmer image-crop-target-wrapper">
+          <img src="https://images.unsplash.com/photo-1549399542-7e3f8b79c341?w=400&auto=format&fit=crop" alt="Ayesha Patel Pass Certificate" data-image-key="gallery_photo_1">
+          <div class="pass-photo-caption" data-editable-key="gallery_caption_1">Ayesha Patel • 1st Time Pass with Farhan!</div>
+        </div>
+        <div class="pass-photo-card card-shimmer image-crop-target-wrapper">
+          <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&auto=format&fit=crop" alt="Dimitri Papachristos Pass" data-image-key="gallery_photo_2">
+          <div class="pass-photo-caption" data-editable-key="gallery_caption_2">Dimitri P. • ZERO FAULTS in Preston!</div>
+        </div>
+        <div class="pass-photo-card card-shimmer image-crop-target-wrapper">
+          <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&auto=format&fit=crop" alt="Laeeqah Patel Pass Certificate" data-image-key="gallery_photo_3">
+          <div class="pass-photo-caption" data-editable-key="gallery_caption_3">Laeeqah Patel • Passed with Binish!</div>
+        </div>
+        <div class="pass-photo-card card-shimmer image-crop-target-wrapper">
+          <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400&auto=format&fit=crop" alt="Liam O'Connor Pass" data-image-key="gallery_photo_4">
+          <div class="pass-photo-caption" data-editable-key="gallery_caption_4">Liam O'Connor • Kona EV Automatic Pass!</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- GOOGLE REVIEWS SECTION -->
+  <section id="reviews">
+    <div class="container">
+      <div class="text-center mb-4 reveal-on-scroll">
+        <div style="display: flex; justify-content: center; align-items: center; gap: 0.75rem; flex-wrap: wrap;">
+          <span class="badge badge-primary mb-1" data-editable-key="reviews_section_badge">Verified Testimonials</span>
+          <button id="adminAddReviewBtn" class="btn btn-primary btn-sm mb-1" onclick="openReviewModal()" style="display: none;">+ Add Student Review</button>
+        </div>
+        <h2 class="gradient-text-warm" data-editable-key="reviews_section_title">What Our Preston Students Say</h2>
+        <p style="max-width: 600px; margin: 0 auto;" data-editable-key="reviews_section_sub">Read genuine feedback from learners who mastered the roads with Farhan and Binish.</p>
+
+        <!-- Dynamic Filter Pills Container -->
+        <div id="reviewFilters" class="review-filters-wrapper"></div>
+      </div>
+
+      <div id="reviewsGridBox" class="grid-3 reveal-on-scroll">
+        <!-- Injected via js/reviews.js -->
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER & ACADEMY CONTACT -->
+  <footer id="contact" aria-label="Site footer" style="background: #0F172A; color: #94A3B8; padding: 4.5rem 0 2.5rem; border-top: 1px solid #334155;">
+    <div class="container">
+      <div class="grid-3 mb-4">
+        <div>
+          <a href="index.html" class="brand-logo mb-2" style="color:#FFF;">
+            <span class="brand-text"><span class="brand-l">L</span>earner<span class="brand-2">2</span><span class="brand-d">D</span>river</span>
+          </a>
+          <p style="font-size:0.92rem; color:#94A3B8; line-height: 1.7;" data-editable-key="footer_about_text">
+            Preston's premier DVSA-approved driving academy offering Manual (2019 Yaris) & Automatic (2024 Kona EV Ultimate) lessons with Farhan Hussaini & Binish Moazzam.
+          </p>
+        </div>
+        <div>
+          <h4 style="color:#FFF; margin-bottom:1rem;">Academy Links</h4>
+          <ul style="list-style:none; line-height:2.2;">
+            <li><a href="#instructors" style="color:#94A3B8;">Meet Instructors (Farhan & Binish)</a></li>
+            <li><a href="#fleet" style="color:#94A3B8;">Vehicle Showroom (Yaris & Kona EV)</a></li>
+            <li><a href="course.html" style="color:var(--color-green); font-weight: 700;">Video Course Hub (Student Login Portal)</a></li>
+            <li><a href="#book" style="color:#94A3B8;">Multi-Step Booking Concierge</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 style="color:#FFF; margin-bottom:1rem;">Contact & Hours</h4>
+          <p id="siteContactLocation" style="font-size:0.9rem; margin-bottom:0.5rem;" data-editable-key="footer_contact_location">Preston, Lancashire & Surrounding Areas (PR1-PR5)</p>
+          <p style="font-size:0.9rem; margin-bottom:0.5rem;"><a href="tel:07427330827" style="color:#FFF;">074-2733-0827</a></p>
+          <p style="font-size:0.85rem;">Mon - Sun: 7:30 AM - 8:30 PM</p>
+        </div>
+      </div>
+      <div style="border-top:1px solid #334155; padding-top:1.5rem; text-align:center; font-size:0.85rem;">
+        © 2026 Learner<span class="brand-2">2</span>Driver Academy Preston. All Rights Reserved. • <a href="#" onclick="openAdminLoginModal(); return false;" style="color:var(--color-green); font-weight:700;">Instructor Login (Admin)</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- MOBILE BOTTOM NAVIGATION BAR -->
+  <nav class="mobile-bottom-nav" aria-label="Mobile Navigation">
+    <a href="#hero" class="mobile-nav-item active">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path></svg>
+      Home
+    </a>
+    <a href="#instructors" class="mobile-nav-item">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle></svg>
+      Instructors
+    </a>
+    <a href="course.html" class="mobile-nav-item featured-book" title="Watch Video Lessons">
+      <div class="featured-book-circle">
+        <svg viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+      </div>
+      <span class="video-nav-label">Videos</span>
+    </a>
+    <a href="#reviews" class="mobile-nav-item">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+      Reviews
+    </a>
+    <a href="#book" class="mobile-nav-item">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+      Book
+    </a>
+  </nav>
+
+  <!-- FLOATING WHATSAPP ACTION BUTTON -->
+  <a href="https://wa.me/447427330827?text=Hi%20Farhan%20%26%20Binish,%20I'd%20like%20to%20inquire%20about%20driving%20lessons%20in%20Preston!" target="_blank" rel="noopener noreferrer" class="floating-call-pill whatsapp-floating-btn" aria-label="WhatsApp Instructor Farhan or Binish">
+    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12.031 0C5.394 0 0 5.392 0 12.029c0 2.12.553 4.187 1.603 6.009L0 24l6.136-1.61A11.96 11.96 0 0 0 12.031 24c6.637 0 12.03-5.392 12.03-12.029S18.668 0 12.031 0zm6.98 17.065c-.292.82-1.442 1.503-2.37 1.702-.638.136-1.472.244-4.27-.915-3.581-1.48-5.882-5.117-6.06-5.356-.178-.239-1.455-1.936-1.455-3.692 0-1.756.918-2.617 1.246-2.975.328-.358.714-.448.953-.448.239 0 .478.003.687.014.221.011.517-.084.81.62.298.715 1.015 2.477 1.104 2.657.09.179.15.388.03.627-.12.239-.179.388-.358.597-.179.209-.377.467-.538.627-.179.179-.366.373-.157.731.209.358.929 1.533 1.996 2.484 1.374 1.224 2.532 1.604 2.89 1.783.358.179.567.149.776-.09.209-.239.895-1.044 1.134-1.403.239-.358.478-.298.806-.179.328.119 2.089 1.015 2.447 1.194.358.179.597.269.687.418.09.149.09.865-.202 1.685z"/></svg>
+    <span>WhatsApp</span>
+  </a>
+
+  <!-- TOAST CONTAINER -->
+  <div id="toastContainer" class="toast-container"></div>
+
+  <!-- LEAFLET MAP LOCATION PICKER MODAL -->
+  <div id="mapPickerModalBackdrop" class="modal-backdrop">
+    <div class="modal-window" style="max-width: 640px; padding: 2rem;">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+        <div>
+          <span class="badge badge-primary mb-1">Leaflet Location Picker</span>
+          <h3 id="mapPickerModalTitle" style="margin: 0;">Set Danger Spot Coordinates</h3>
+        </div>
+        <button class="btn btn-secondary btn-sm" onclick="closeMapPickerModal()" style="min-width: 44px; min-height: 44px; padding: 0.5rem;">✕</button>
+      </div>
+      <p style="font-size: 0.9rem; color: var(--text-light); margin-bottom: 1rem;">
+        Click anywhere on the Leaflet map or drag the pin marker to pick precise latitude and longitude coordinates for this Preston danger spot.
+      </p>
+      <div style="display: flex; gap: 0.75rem; margin-bottom: 1rem; flex-wrap: wrap;">
+        <span id="mapPickerLatDisplay" class="badge badge-secondary coords-pill">Lat: --</span>
+        <span id="mapPickerLngDisplay" class="badge badge-secondary coords-pill">Lng: --</span>
+      </div>
+      <div id="modalPickerLeafletMap"></div>
+      <div style="display: flex; gap: 0.75rem; justify-content: flex-end; margin-top: 1.25rem;">
+        <button class="btn btn-secondary" onclick="closeMapPickerModal()">Cancel</button>
+        <button class="btn btn-primary" onclick="confirmMapPickerSave()">Save Location Coordinates 💾</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- STUDENT REVIEWS CRUD MODAL -->
+  <div id="reviewModalBackdrop" class="modal-backdrop">
+    <div class="modal-window" style="max-width: 580px; padding: 2rem;">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem;">
+        <div>
+          <span class="badge badge-primary mb-1">Student Review Management</span>
+          <h3 id="reviewModalTitle" style="margin: 0;">Add New Student Review</h3>
+        </div>
+        <button class="btn btn-secondary btn-sm" onclick="closeReviewModal()" style="min-width: 44px; min-height: 44px; padding: 0.5rem;">✕</button>
+      </div>
+
+      <div style="text-align: left; margin-bottom: 1.5rem;">
+        <input type="hidden" id="reviewModalId" value="">
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;">
+          <div>
+            <label for="reviewStudentName" style="font-weight: 700; font-size: 0.88rem; display: block; margin-bottom: 0.4rem;">
+              Student Full Name:
+            </label>
+            <input type="text" id="reviewStudentName" class="portal-input" placeholder="e.g. Ayesha Patel" required>
+          </div>
+          <div>
+            <label for="reviewCarTag" style="font-weight: 700; font-size: 0.88rem; display: block; margin-bottom: 0.4rem;">
+              Vehicle / Course Tag:
+            </label>
+            <input type="text" id="reviewCarTag" class="portal-input" placeholder="e.g. Manual Yaris or Auto Kona EV" required>
+          </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;">
+          <div>
+            <label for="reviewInstructor" style="font-weight: 700; font-size: 0.88rem; display: block; margin-bottom: 0.4rem;">
+              Instructor:
+            </label>
+            <select id="reviewInstructor" class="portal-input">
+              <option value="Farhan Hussaini">Farhan Hussaini</option>
+              <option value="Binish Moazzam">Binish Moazzam</option>
+              <option value="Farhan & Binish">Farhan & Binish</option>
+            </select>
+          </div>
+          <div>
+            <label for="reviewRating" style="font-weight: 700; font-size: 0.88rem; display: block; margin-bottom: 0.4rem;">
+              Rating:
+            </label>
+            <select id="reviewRating" class="portal-input">
+              <option value="5">5 ★★★★★ (Excellent)</option>
+              <option value="4">4 ★★★★☆ (Very Good)</option>
+              <option value="3">3 ★★★☆☆ (Good)</option>
+              <option value="2">2 ★★☆☆☆ (Fair)</option>
+              <option value="1">1 ★☆☆☆☆ (Poor)</option>
+            </select>
+          </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;">
+          <div>
+            <label for="reviewDate" style="font-weight: 700; font-size: 0.88rem; display: block; margin-bottom: 0.4rem;">
+              Pass Date / Timeframe:
+            </label>
+            <input type="text" id="reviewDate" class="portal-input" placeholder="e.g. 2 weeks ago or August 2026">
+          </div>
+          <div>
+            <label for="reviewAvatarUrl" style="font-weight: 700; font-size: 0.88rem; display: block; margin-bottom: 0.4rem;">
+              Avatar Photo URL (Optional):
+            </label>
+            <input type="text" id="reviewAvatarUrl" class="portal-input" placeholder="e.g. https://images.unsplash.com/...">
+          </div>
+        </div>
+
+        <label for="reviewText" style="font-weight: 700; font-size: 0.88rem; display: block; margin-bottom: 0.4rem;">
+          Detailed Testimonial Text:
+        </label>
+        <textarea id="reviewText" class="portal-input" style="height: 100px; resize: vertical; margin-bottom: 0;" placeholder="Enter student's review text..." required></textarea>
+      </div>
+
+      <div style="display: flex; gap: 0.75rem; justify-content: flex-end;">
+        <button class="btn btn-secondary" onclick="closeReviewModal()">Cancel</button>
+        <button class="btn btn-primary" onclick="saveReviewFromModal()">Save Student Review 💬</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- LEAFLET LOCATION PICKER MODAL FOR PRESTON DANGER SPOTS -->
+  <div id="mapPickerModalBackdrop" class="student-portal-gate" style="display: none;">
+    <div class="student-portal-card" style="max-width: 650px; width: 95%;">
+      <div style="margin-bottom: 1rem; display: flex; justify-content: space-between; align-items: center;">
+        <div>
+          <span class="badge badge-primary mb-1">Preston Danger Spot Coords</span>
+          <h3 id="mapPickerModalTitle" style="margin: 0; font-size: 1.3rem;">Set Spot Location</h3>
+        </div>
+        <button class="btn btn-secondary btn-sm" onclick="closeMapPickerModal()">✕ Close</button>
+      </div>
+
+      <p style="font-size: 0.85rem; color: var(--text-light); margin-bottom: 0.85rem;">
+        Click anywhere on the map or drag the marker pin to update the exact latitude and longitude for this Preston test route tip.
+      </p>
+
+      <div id="modalPickerLeafletMap" style="width: 100% !important; min-height: 360px !important; height: 360px !important; flex-shrink: 0 !important; display: block !important; border-radius: var(--radius-md); border: 2px solid var(--color-green); margin-bottom: 0.85rem; position: relative; z-index: 10;"></div>
+
+      <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.75rem; background: var(--bg-body); padding: 0.75rem 1rem; border-radius: var(--radius-sm); border: 1px solid var(--border-color); margin-bottom: 1.25rem;">
+        <span id="mapPickerLatDisplay" style="font-size: 0.85rem; font-weight: 700; color: var(--color-green);">Lat: 53.763200</span>
+        <span id="mapPickerLngDisplay" style="font-size: 0.85rem; font-weight: 700; color: var(--color-green);">Lng: -2.748100</span>
+      </div>
+
+      <div style="display: flex; gap: 0.75rem; justify-content: flex-end;">
+        <button class="btn btn-secondary" onclick="closeMapPickerModal()">Cancel</button>
+        <button class="btn btn-primary" onclick="confirmMapPickerSave()">Save Location Coordinates 📍</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- THEMED GLASSMORPHIC ADMIN AUTHENTICATION MODAL OVERLAY -->
+  <div id="adminLoginModalBackdrop" class="student-portal-gate" style="display: none; position: fixed !important; top: 0 !important; left: 0 !important; width: 100vw !important; height: 100vh !important; z-index: 10000 !important; background: rgba(15, 23, 42, 0.65); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); align-items: center; justify-content: center; padding: 1.5rem;">
+    <div class="student-portal-card" style="background: var(--bg-surface); border: 2px solid var(--color-green); box-shadow: var(--shadow-xl); max-width: 460px; width: 92%; padding: 2.25rem; border-radius: var(--radius-lg); color: var(--text-main); text-align: center;">
+      <form id="adminLoginForm" onsubmit="submitAdminLoginModal(event); return false;">
+        <div style="text-align: center; margin-bottom: 1.75rem;">
+          <div style="width: 56px; height: 56px; margin: 0 auto 1rem; border-radius: 50%; background: rgba(5, 150, 105, 0.12); border: 2px solid var(--color-green); display: flex; align-items: center; justify-content: center; font-size: 1.6rem; box-shadow: var(--shadow-glow);">
+            🛡️
+          </div>
+          <span class="badge badge-primary mb-1">
+            INSTRUCTOR COMMAND HUB
+          </span>
+          <h2 style="margin: 0.4rem 0 0.3rem; font-size: 1.65rem; color: var(--text-main); font-weight: 800;">Instructor Admin Portal</h2>
+          <p style="font-size: 0.88rem; color: var(--text-light); margin: 0; line-height: 1.5;">
+            Enter your instructor credentials to unlock site text editing, student progress management, and course settings.
+          </p>
+        </div>
+
+        <div style="text-align: left; margin-bottom: 1.5rem;">
+          <div style="margin-bottom: 1.15rem;">
+            <label for="adminLoginUsername" style="font-weight: 700; font-size: 0.84rem; display: block; margin-bottom: 0.4rem; color: var(--text-main); text-transform: uppercase; letter-spacing: 0.5px;">
+              Admin Username
+            </label>
+            <div style="position: relative;">
+              <input type="text" id="adminLoginUsername" class="portal-input" placeholder="e.g. admin" style="padding-left: 2.6rem; margin-bottom: 0;" required>
+              <span style="position: absolute; left: 0.85rem; top: 50%; transform: translateY(-50%); font-size: 1rem; color: var(--text-light);">👤</span>
+            </div>
+          </div>
+
+          <div style="margin-bottom: 0.75rem;">
+            <label for="adminLoginPassword" style="font-weight: 700; font-size: 0.84rem; display: block; margin-bottom: 0.4rem; color: var(--text-main); text-transform: uppercase; letter-spacing: 0.5px;">
+              Admin Password
+            </label>
+            <div style="position: relative;">
+              <input type="password" id="adminLoginPassword" class="portal-input" placeholder="••••••••" style="padding-left: 2.6rem; margin-bottom: 0;" required>
+              <span style="position: absolute; left: 0.85rem; top: 50%; transform: translateY(-50%); font-size: 1rem; color: var(--text-light);">🔒</span>
+            </div>
+          </div>
+          <div id="adminLoginError" style="color: var(--color-red, #EF4444); font-size: 0.84rem; min-height: 1.2rem; margin-top: 0.4rem; font-weight: 600;"></div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;">
+          <button type="button" class="btn btn-secondary" onclick="closeAdminLoginModal()">
+            Cancel
+          </button>
+          <button type="submit" class="btn btn-primary">
+            Unlock Admin Mode 🛡️
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Leaflet CDN Javascript -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+
+  <!-- Official Instagram Embed Script -->
+  <script id="instagram-embed-script" async src="https://www.instagram.com/embed.js"></script>
+
+  <!-- Supabase Database CDN Javascript -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/config.js"></script>
+  <script src="js/supabase-client.js"></script>
+
+  <!-- Application Scripts -->
+  <script src="js/cloud-sync.js"></script>
+  <script src="js/app.js?v=11"></script>
+  <script src="js/showroom.js"></script>
+  <script src="js/image-cropper.js"></script>
+  <script src="js/widgets.js?v=6"></script>
+  <script src="js/reviews.js"></script>
+  <script src="js/insta-highlights.js"></script>
+  <script src="js/booking-concierge.js"></script>
+
+  <!-- Scroll Reveal Animations & Dynamic Enhancements -->
+  <script>
+  (function() {
+    'use strict';
+
+    // --- Scroll-Reveal IntersectionObserver ---
+    function initScrollReveal() {
+      const sections = document.querySelectorAll(
+        'section:not(#hero):not(#routes), .review-card, .stat-card, .fleet-card, .instructor-card, .booking-step'
+      );
+
+      sections.forEach(function(el, i) {
+        if (!el.classList.contains('reveal') && !el.classList.contains('reveal-scale')) {
+          el.classList.add('reveal');
+          // Stagger cards within the same section
+          const delayClass = 'reveal-delay-' + ((i % 5) + 1);
+          if (el.classList.contains('card') || el.classList.contains('review-card') ||
+              el.classList.contains('stat-card') || el.classList.contains('fleet-card') ||
+              el.classList.contains('instructor-card')) {
+            el.classList.add(delayClass);
+          }
+        }
+      });
+
+      var observer = new IntersectionObserver(function(entries) {
+        entries.forEach(function(entry) {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('revealed');
+            observer.unobserve(entry.target);
+          }
+        });
+      }, {
+        threshold: 0.08,
+        rootMargin: '0px 0px -40px 0px'
+      });
+
+      document.querySelectorAll('.reveal, .reveal-left, .reveal-right, .reveal-scale').forEach(function(el) {
+        observer.observe(el);
+      });
+    }
+
+    // --- Add hover-lift to interactive cards ---
+    function initHoverEffects() {
+      document.querySelectorAll('.card, .review-card, .fleet-card, .instructor-card').forEach(function(el) {
+        el.classList.add('hover-lift');
+      });
+
+      document.querySelectorAll('.badge-primary, .badge-clean-primary').forEach(function(el) {
+        el.classList.add('hover-pop');
+      });
+    }
+
+    // --- Apply gradient text to section headings ---
+    function initGradientText() {
+      document.querySelectorAll('.text-gradient-primary').forEach(function(el) {
+        el.classList.add('gradient-text-green');
+      });
+    }
+
+    // Init all enhancements after DOM ready
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', function() {
+        initScrollReveal();
+        initHoverEffects();
+        initGradientText();
+      });
+    } else {
+      initScrollReveal();
+      initHoverEffects();
+      initGradientText();
+    }
+  })();
+  </script>
+</body>
+</html>
