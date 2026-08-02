@@ -1739,6 +1739,21 @@ function renderAdminSiteSettings() {
         </div>
       </div>
 
+      <!-- SECTION 3C: HUBSPOT CRM INTEGRATION -->
+      <div class="admin-editor-section">
+        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:0.5rem; margin-bottom:0.5rem;">
+          <h3 style="margin:0; font-size:1.25rem;">🧡 HubSpot CRM Platform Integration</h3>
+          <button class="btn btn-secondary btn-sm" onclick="saveHubSpotPortalIdSetting()">Sync HubSpot to Database ☁️</button>
+        </div>
+        <p style="font-size:0.88rem; color:var(--text-light); margin-bottom:0.75rem;">
+          Enter your 8-digit <strong>HubSpot Hub / Portal ID</strong> to automatically activate HubSpot Live Chat, Lead Capture Forms, and Sales Analytics across all browsers & devices. Syncs to Supabase live!
+        </p>
+        <div style="max-width: 480px; margin-bottom:1rem;">
+          <label style="font-size:0.82rem; font-weight:700; display:block; margin-bottom:0.3rem;">HubSpot Hub / Portal ID</label>
+          <input type="text" id="editHubspotPortalId" class="portal-input" placeholder="e.g. 12345678" value="${localStorage.getItem('l2d_hubspot_portal_id') || ''}">
+        </div>
+      </div>
+
       <!-- SECTION 4: CAR HOTSPOT COORDINATE ADJUSTER -->
       <div class="admin-editor-section">
         <h3 style="margin-bottom:0.5rem; font-size:1.25rem;">Showroom Fleet Hotspot Point Adjuster (X%/Y% Coordinates)</h3>
@@ -2106,7 +2121,24 @@ window.renderAdminReviewsTable = renderAdminReviewsTable;
 /**
  * Save Site Settings & Hotspot Adjuster
  */
+window.saveHubSpotPortalIdSetting = function() {
+  const hsId = document.getElementById('editHubspotPortalId')?.value.trim() || '';
+  if (hsId) {
+    localStorage.setItem('l2d_hubspot_portal_id', hsId);
+    if (typeof window.syncSiteTextToSupabase === 'function') {
+      window.syncSiteTextToSupabase('hubspot_portal_id', hsId);
+    }
+    if (typeof window.initHubSpotCrm === 'function') {
+      window.initHubSpotCrm();
+    }
+    if (typeof window.showToast === 'function') {
+      window.showToast('Saved HubSpot Portal ID & Synced to Cloud Database ☁️');
+    }
+  }
+};
+
 window.saveAdminContentEditorSettings = async function() {
+  saveHubSpotPortalIdSetting();
   const newUser = document.getElementById('editAdminUsername')?.value.trim();
   const newPass = document.getElementById('editAdminPassword')?.value;
   if (newUser) {

@@ -814,6 +814,12 @@
         let localMap = {};
         try { localMap = JSON.parse(localStorage.getItem('l2d_custom_site_text') || '{}'); } catch(e){}
         const merged = Object.assign({}, localMap, cloudText);
+        if (cloudText['hubspot_portal_id']) {
+          localStorage.setItem('l2d_hubspot_portal_id', cloudText['hubspot_portal_id']);
+          if (typeof window.initHubSpotCrm === 'function') {
+            window.initHubSpotCrm();
+          }
+        }
         if (cloudText['course_coming_soon']) {
           localStorage.setItem('l2d_course_coming_soon', cloudText['course_coming_soon']);
           if (typeof window.checkAndApplyLMSComingSoonMode === 'function') {
