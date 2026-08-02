@@ -6,13 +6,15 @@
  */
 
 const bookingState = {
-  instructor: 'Farhan',
-  vehicle: 'Manual',
-  rate: 37,
-  package: '10-Hour Block Discount (Save 8%)',
+  instructor: 'Farhan Hussaini',
+  vehicle: 'Manual (Toyota Yaris)',
+  rate: 38,
+  package: '10-Hour Block Course',
   hours: 10,
-  discount: 0.08,
-  totalPrice: 340,
+  discount: 0,
+  isFlatPrice: true,
+  flatPrice: 350,
+  totalPrice: 350,
   step: 1
 };
 
