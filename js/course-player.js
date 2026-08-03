@@ -2239,11 +2239,13 @@ window.saveAdminContentEditorSettings = async function() {
     const googlePlaceId = document.getElementById('editGooglePlaceId')?.value.trim() || '';
     if (googleApiKey) {
       localStorage.setItem('l2d_google_places_api_key', googleApiKey);
+      if (typeof window.syncSiteTextToSupabase === 'function') window.syncSiteTextToSupabase('l2d_google_places_api_key', googleApiKey);
     } else {
       localStorage.removeItem('l2d_google_places_api_key');
     }
     if (googlePlaceId) {
       localStorage.setItem('l2d_google_place_id', googlePlaceId);
+      if (typeof window.syncSiteTextToSupabase === 'function') window.syncSiteTextToSupabase('l2d_google_place_id', googlePlaceId);
     } else {
       localStorage.removeItem('l2d_google_place_id');
     }

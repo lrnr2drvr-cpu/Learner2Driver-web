@@ -814,11 +814,17 @@
         let localMap = {};
         try { localMap = JSON.parse(localStorage.getItem('l2d_custom_site_text') || '{}'); } catch(e){}
         const merged = Object.assign({}, localMap, cloudText);
+        localStorage.setItem('l2d_custom_site_text', JSON.stringify(merged));
+        
         if (cloudText['hubspot_portal_id']) {
           localStorage.setItem('l2d_hubspot_portal_id', cloudText['hubspot_portal_id']);
-          if (typeof window.initHubSpotCrm === 'function') {
-            window.initHubSpotCrm();
-          }
+          if (typeof window.initHubSpotCrm === 'function') window.initHubSpotCrm();
+        }
+        if (cloudText['l2d_google_places_api_key']) {
+          localStorage.setItem('l2d_google_places_api_key', cloudText['l2d_google_places_api_key']);
+        }
+        if (cloudText['l2d_google_place_id']) {
+          localStorage.setItem('l2d_google_place_id', cloudText['l2d_google_place_id']);
         }
         if (cloudText['course_coming_soon']) {
           localStorage.setItem('l2d_course_coming_soon', cloudText['course_coming_soon']);
