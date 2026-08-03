@@ -796,7 +796,7 @@
   /**
    * DOM Load Event Listener: Auto-pull & Realtime Subscriptions
    */
-  document.addEventListener('DOMContentLoaded', async () => {
+  async function supabaseClientSyncOnLoad() {
     initSupabase();
     const autoSyncEnabled = localStorage.getItem('l2d_supabase_auto_sync') !== 'false';
     const client = window.getSupabaseClient();
@@ -871,6 +871,12 @@
         if (typeof window.renderReviewsGrid === 'function') window.renderReviewsGrid();
       }
     }
-  });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', supabaseClientSyncOnLoad);
+  } else {
+    supabaseClientSyncOnLoad();
+  }
 
 })();
