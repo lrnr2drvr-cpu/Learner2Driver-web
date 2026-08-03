@@ -1,0 +1,34 @@
+# ==========================================================================
+# LEARNER2DRIVER - HOSTINGER / APACHE / LITESPEED CONFIGURATION (.htaccess)
+# ==========================================================================
+
+# 1. Force index.html as the primary entry point (prevents serving residual index.php / AI builder files)
+DirectoryIndex index.html
+
+# 2. Disable Hostinger LiteSpeed Server Caching for HTML to ensure instant updates
+<IfModule mod_headers.c>
+    <FilesMatch "\.(html|htm)$">
+        Header set Cache-Control "no-cache, no-store, must-revalidate, max-age=0"
+        Header set Pragma "no-cache"
+        Header set Expires "0"
+    </FilesMatch>
+</IfModule>
+
+<IfModule LiteSpeed>
+    CacheDisable public /
+    CacheDisable private /
+</IfModule>
+
+# 3. Ensure correct MIME Types
+<IfModule mod_mime.c>
+    AddType text/html .html .htm
+    AddType text/css .css
+    AddType application/javascript .js
+    AddType application/json .json
+    AddType image/svg+xml .svg
+</IfModule>
+
+# 4. Enable Gzip Compression for Performance
+<IfModule mod_deflate.c>
+    AddOutputFilterByType DEFLATE text/html text/plain text/css application/javascript application/json image/svg+xml
+</IfModule>
