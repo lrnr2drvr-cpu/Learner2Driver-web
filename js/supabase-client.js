@@ -407,44 +407,43 @@
     if (!client) return { ok: false, error: 'Supabase client not initialized' };
 
     try {
-      // Always dual-sync to site_settings table as universal fallback
-      let fleetObjToSync = {};
+      let fullFleetObj = {};
+      try {
+        const raw = localStorage.getItem('l2d_fleet_hotspots') || localStorage.getItem('l2d_custom_hotspots');
+        if (raw) fullFleetObj = JSON.parse(raw);
+      } catch(e) {}
+
       if (typeof vehicleIdOrFleetObj === 'object' && vehicleIdOrFleetObj !== null) {
-        fleetObjToSync = vehicleIdOrFleetObj;
-      } else {
-        const vKey = String(vehicleIdOrFleetObj);
-        fleetObjToSync[vKey] = { hotspots: hotspotsArray || [] };
+        fullFleetObj = Object.assign({}, fullFleetObj, vehicleIdOrFleetObj);
+      } else if (typeof vehicleIdOrFleetObj === 'string') {
+        const vKey = vehicleIdOrFleetObj;
+        const hsList = Array.isArray(hotspotsArray) ? hotspotsArray : (hotspotsArray && Array.isArray(hotspotsArray.hotspots) ? hotspotsArray.hotspots : []);
+        if (!fullFleetObj[vKey]) fullFleetObj[vKey] = {};
+        fullFleetObj[vKey].hotspots = hsList;
       }
 
+      // 1. Dual-sync to site_settings table as universal fallback
       await client.from('site_settings').upsert({
         key: 'fleet_hotspots_json',
-        value: JSON.stringify(fleetObjToSync),
+        value: JSON.stringify(fullFleetObj),
         updated_at: new Date().toISOString()
       }, { onConflict: 'key' });
 
-      // Attempt upsert to fleet_hotspots table if present
-      if (typeof vehicleIdOrFleetObj === 'object' && vehicleIdOrFleetObj !== null) {
-        const fleet = vehicleIdOrFleetObj;
-        for (const vKey of Object.keys(fleet)) {
-          if (fleet[vKey] && Array.isArray(fleet[vKey].hotspots)) {
-            await client.from('fleet_hotspots').upsert({
-              vehicle_id: vKey,
-              hotspots: fleet[vKey].hotspots,
-              updated_at: new Date().toISOString()
-            }, { onConflict: 'vehicle_id' });
-          }
-        }
-      } else {
+      // 2. Upsert to fleet_hotspots table for each vehicle
+      for (const vKey of Object.keys(fullFleetObj)) {
+        const carData = fullFleetObj[vKey];
+        const hsArray = Array.isArray(carData) ? carData : (carData && Array.isArray(carData.hotspots) ? carData.hotspots : []);
         await client.from('fleet_hotspots').upsert({
-          vehicle_id: String(vehicleIdOrFleetObj),
-          hotspots: hotspotsArray || [],
+          vehicle_id: vKey,
+          hotspots: hsArray,
           updated_at: new Date().toISOString()
         }, { onConflict: 'vehicle_id' });
       }
 
       return { ok: true, error: null };
     } catch(e) {
-      return { ok: true, error: null };
+      console.warn('syncHotspotsToSupabase error:', e);
+      return { ok: false, error: e.message };
     }
   };
 
@@ -459,7 +458,8 @@
         const map = {};
         data.forEach(item => {
           if (item.vehicle_id) {
-            map[item.vehicle_id] = item.hotspots || [];
+            const hsList = Array.isArray(item.hotspots) ? item.hotspots : [];
+            map[item.vehicle_id] = { hotspots: hsList };
           }
         });
         return map;
@@ -469,7 +469,19 @@
       const { data: textData } = await client.from('site_settings').select('*').eq('key', 'fleet_hotspots_json');
       if (textData && textData.length > 0 && textData[0].value) {
         try {
-          return JSON.parse(textData[0].value);
+          const parsed = JSON.parse(textData[0].value);
+          const map = {};
+          if (parsed && typeof parsed === 'object') {
+            Object.keys(parsed).forEach(vKey => {
+              const val = parsed[vKey];
+              if (Array.isArray(val)) {
+                map[vKey] = { hotspots: val };
+              } else if (val && typeof val === 'object') {
+                map[vKey] = Object.assign({}, val, { hotspots: Array.isArray(val.hotspots) ? val.hotspots : [] });
+              }
+            });
+          }
+          return map;
         } catch(e) {}
       }
 
@@ -783,6 +795,18 @@
           if (cloudRoutes) {
             localStorage.setItem('l2d_custom_routes', JSON.stringify(cloudRoutes));
             if (typeof window.initPrestonMap === 'function') window.initPrestonMap();
+          }
+        })
+        .subscribe();
+
+      client
+        .channel('l2d_fleet_hotspots_channel')
+        .on('postgres_changes', { event: '*', schema: 'public', table: 'fleet_hotspots' }, async () => {
+          const cloudHotspots = await window.fetchHotspotsFromSupabase();
+          if (cloudHotspots) {
+            localStorage.setItem('l2d_fleet_hotspots', JSON.stringify(cloudHotspots));
+            localStorage.setItem('l2d_custom_hotspots', JSON.stringify(cloudHotspots));
+            if (typeof window.refreshShowroomDisplay === 'function') window.refreshShowroomDisplay();
           }
         })
         .subscribe();

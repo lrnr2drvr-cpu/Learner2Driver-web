@@ -92,7 +92,7 @@ function getFleetData() {
             if (customCar.badge) merged[vehicleKey].badge = customCar.badge;
 
             // Merge hotspots array safely
-            const customHsList = Array.isArray(customCar.hotspots) ? customCar.hotspots : [];
+            const customHsList = Array.isArray(customCar.hotspots) ? customCar.hotspots : (Array.isArray(customCar) ? customCar : []);
             const mergedHotspots = defaultCar.hotspots.map(defHs => {
               const matchedHs = customHsList.find(h => h.id === defHs.id);
               if (matchedHs) {

@@ -2228,6 +2228,10 @@ window.saveAdminContentEditorSettings = async function() {
     localStorage.setItem('l2d_custom_hotspots', JSON.stringify(customFleet));
     localStorage.setItem('l2d_fleet_hotspots', JSON.stringify(customFleet));
 
+    if (typeof window.syncHotspotsToSupabase === 'function') {
+      window.syncHotspotsToSupabase(customFleet);
+    }
+
     const instaEndpoint = document.getElementById('editInstaEndpoint')?.value.trim() || '';
     if (instaEndpoint) {
       localStorage.setItem('l2d_insta_api_endpoint', instaEndpoint);
