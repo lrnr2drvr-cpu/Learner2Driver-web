@@ -353,19 +353,34 @@
     if (!client) return { ok: false, error: 'Supabase client not initialized' };
 
     try {
+      const sId = parseInt(spotId, 10);
       const payload = {
-        spot_id: parseInt(spotId, 10),
+        spot_id: sId,
         title: routeObj.title || '',
         location: routeObj.location || '',
         tip: routeObj.tip || '',
-        lat: routeObj.lat || 53.7632,
-        lng: routeObj.lng || -2.7481,
+        lat: typeof routeObj.lat === 'number' ? routeObj.lat : 53.7632,
+        lng: typeof routeObj.lng === 'number' ? routeObj.lng : -2.7481,
         updated_at: new Date().toISOString()
       };
 
       const { error } = await client
         .from('preston_routes')
         .upsert(payload, { onConflict: 'spot_id' });
+
+      // Dual-sync full routes object to site_settings table as universal fallback
+      let fullRoutes = {};
+      try {
+        const raw = localStorage.getItem('l2d_custom_routes');
+        if (raw) fullRoutes = JSON.parse(raw);
+      } catch(e) {}
+      fullRoutes[sId] = payload;
+
+      await client.from('site_settings').upsert({
+        key: 'preston_routes_json',
+        value: JSON.stringify(fullRoutes),
+        updated_at: new Date().toISOString()
+      }, { onConflict: 'key' });
 
       return { ok: !error, error: error ? error.message : null };
     } catch(e) {
@@ -378,22 +393,39 @@
     if (!client) return null;
 
     try {
-      const { data, error } = await client.from('preston_routes').select('*');
-      if (error || !data) return null;
-
       const map = {};
-      data.forEach(item => {
-        if (item.spot_id) {
-          map[item.spot_id] = {
-            title: item.title,
-            location: item.location,
-            tip: item.tip,
-            lat: item.lat,
-            lng: item.lng
-          };
-        }
-      });
-      return map;
+      // 1. Fetch from preston_routes table
+      const { data, error } = await client.from('preston_routes').select('*');
+      if (!error && data && data.length > 0) {
+        data.forEach(item => {
+          if (item.spot_id) {
+            map[item.spot_id] = {
+              title: item.title,
+              location: item.location,
+              tip: item.tip,
+              lat: item.lat,
+              lng: item.lng
+            };
+          }
+        });
+      }
+
+      // 2. Fallback / merge from site_settings key preston_routes_json
+      const { data: textData } = await client.from('site_settings').select('*').eq('key', 'preston_routes_json');
+      if (textData && textData.length > 0 && textData[0].value) {
+        try {
+          const parsed = JSON.parse(textData[0].value);
+          if (parsed && typeof parsed === 'object') {
+            Object.keys(parsed).forEach(sId => {
+              if (!map[sId]) {
+                map[sId] = parsed[sId];
+              }
+            });
+          }
+        } catch(e) {}
+      }
+
+      return Object.keys(map).length > 0 ? map : null;
     } catch(e) {
       return null;
     }
@@ -631,11 +663,8 @@
     try {
       let rawRoutes = localStorage.getItem('l2d_custom_routes');
       let routesObj = rawRoutes ? JSON.parse(rawRoutes) : {};
-      if (!routesObj || Object.keys(routesObj).length === 0) {
-        routesObj = {
-          1: { title: '1. DVSA Chain Caul Way Roundabout', location: 'PRESTON DVSA HUB ROUNDABOUT', tip: 'Position early in the left lane when taking the 2nd exit toward Strand Road.', lat: 53.7685, lng: -2.7521 },
-          2: { title: '2. Docks Swing Bridge & Navigation Way', location: 'PRESTON DOCKS MARINA', tip: 'Watch for narrow lane pinch points and give way to oncoming traffic on the bridge.', lat: 53.7570, lng: -2.7350 }
-        };
+      if (typeof window.getPrestonRouteTips === 'function') {
+        routesObj = Object.assign({}, window.getPrestonRouteTips(), routesObj);
       }
 
       for (const spotId of Object.keys(routesObj)) {
@@ -866,10 +895,22 @@
         if (typeof window.renderAdminProgressTable === 'function') window.renderAdminProgressTable();
       }
 
-      // Pull preston test routes
+      // Pull preston test routes (merging local & cloud route data)
       const cloudRoutes = await window.fetchRoutesFromSupabase();
       if (cloudRoutes && Object.keys(cloudRoutes).length > 0) {
-        localStorage.setItem('l2d_custom_routes', JSON.stringify(cloudRoutes));
+        let localRoutes = {};
+        try {
+          const raw = localStorage.getItem('l2d_custom_routes');
+          if (raw) localRoutes = JSON.parse(raw);
+        } catch(e) {}
+
+        let baseRoutes = {};
+        if (typeof window.getPrestonRouteTips === 'function') {
+          baseRoutes = window.getPrestonRouteTips();
+        }
+
+        const mergedRoutes = Object.assign({}, baseRoutes, localRoutes, cloudRoutes);
+        localStorage.setItem('l2d_custom_routes', JSON.stringify(mergedRoutes));
         if (typeof window.initPrestonMap === 'function') window.initPrestonMap();
       }
 

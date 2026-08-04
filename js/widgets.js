@@ -41,7 +41,24 @@ function getPrestonRouteTips() {
     const stored = localStorage.getItem('l2d_custom_routes');
     if (stored) {
       const parsed = JSON.parse(stored);
-      return { ...DEFAULT_PRESTON_ROUTE_TIPS, ...parsed };
+      if (parsed && typeof parsed === 'object') {
+        const merged = { ...DEFAULT_PRESTON_ROUTE_TIPS };
+        [1, 2, 3, 4].forEach(spotId => {
+          const item = parsed[spotId] || parsed[String(spotId)];
+          if (item && typeof item === 'object') {
+            merged[spotId] = {
+              ...DEFAULT_PRESTON_ROUTE_TIPS[spotId],
+              ...item,
+              title: item.title || DEFAULT_PRESTON_ROUTE_TIPS[spotId].title,
+              location: item.location || DEFAULT_PRESTON_ROUTE_TIPS[spotId].location,
+              tip: item.tip || DEFAULT_PRESTON_ROUTE_TIPS[spotId].tip,
+              lat: typeof item.lat === 'number' ? item.lat : DEFAULT_PRESTON_ROUTE_TIPS[spotId].lat,
+              lng: typeof item.lng === 'number' ? item.lng : DEFAULT_PRESTON_ROUTE_TIPS[spotId].lng
+            };
+          }
+        });
+        return merged;
+      }
     }
   } catch(e) {}
   return { ...DEFAULT_PRESTON_ROUTE_TIPS };
