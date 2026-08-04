@@ -121,7 +121,14 @@ function initReadinessQuiz() {
     const scoreDisplay = document.getElementById('quizScoreDisplay');
     const scoreMsg = document.getElementById('quizScoreMessage');
 
-    if (scoreDisplay) scoreDisplay.textContent = `${total}%`;
+    if (scoreDisplay) {
+      scoreDisplay.textContent = `${total}%`;
+      if (total >= 85) {
+        scoreDisplay.style.color = 'var(--color-green)';
+      } else {
+        scoreDisplay.style.color = '';
+      }
+    }
 
     if (scoreMsg) {
       let customText = null;
@@ -129,25 +136,36 @@ function initReadinessQuiz() {
         const rawMap = localStorage.getItem('l2d_custom_site_text');
         if (rawMap) {
           const map = JSON.parse(rawMap);
-          if (total >= 85 && map['quiz_msg_high']) customText = map['quiz_msg_high'];
-          else if (total >= 60 && map['quiz_msg_mid']) customText = map['quiz_msg_mid'];
-          else if (total < 60 && map['quiz_msg_low']) customText = map['quiz_msg_low'];
-          else if (map['quiz_result_message']) customText = map['quiz_result_message'];
+          if (total >= 85 && (map['quiz_msg_high'] || map['quiz_result_message'])) {
+            customText = map['quiz_msg_high'] || map['quiz_result_message'];
+          } else if (total >= 60 && map['quiz_msg_mid']) {
+            customText = map['quiz_msg_mid'];
+          } else if (total < 60 && map['quiz_msg_low']) {
+            customText = map['quiz_msg_low'];
+          }
         }
       } catch(e) {}
 
-      if (customText) {
-        scoreMsg.innerHTML = customText;
-      } else {
-        if (total >= 85) {
+      if (total >= 85) {
+        scoreMsg.style.color = 'var(--color-green)';
+        if (customText) {
+          scoreMsg.innerHTML = customText.replace(/\d+%/g, `${total}%`);
+        } else {
           scoreMsg.innerHTML = `✨ <strong style="color:var(--color-green);">Outstanding (${total}%)!</strong> You are ready for a mock test with Farhan or Binish!`;
-          scoreMsg.style.color = 'var(--color-green)';
-        } else if (total >= 60) {
+        }
+      } else if (total >= 60) {
+        scoreMsg.style.color = 'var(--text-main)';
+        if (customText) {
+          scoreMsg.innerHTML = customText.replace(/\d+%/g, `${total}%`);
+        } else {
           scoreMsg.innerHTML = `🚗 <strong>Good Progress (${total}%)!</strong> A few more hours with our instructors will get you test-ready.`;
-          scoreMsg.style.color = 'var(--text-main)';
+        }
+      } else {
+        scoreMsg.style.color = 'var(--text-main)';
+        if (customText) {
+          scoreMsg.innerHTML = customText.replace(/\d+%/g, `${total}%`);
         } else {
           scoreMsg.innerHTML = `💡 <strong>Just Getting Started (${total}%)!</strong> Book our 10-Hour Block course to build rapid road confidence.`;
-          scoreMsg.style.color = 'var(--text-main)';
         }
       }
     }
