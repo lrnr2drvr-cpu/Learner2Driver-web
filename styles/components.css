@@ -397,17 +397,17 @@
 .hero-discount-pill {
   display: inline-flex;
   align-items: center;
-  gap: 0.6rem;
-  background: linear-gradient(135deg, rgba(15, 23, 42, 0.88), rgba(46, 125, 50, 0.25));
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(46, 125, 50, 0.45);
-  color: #F8FAFC;
+  gap: 0.65rem;
+  background: linear-gradient(135deg, rgba(46, 125, 50, 0.14), rgba(74, 222, 128, 0.10));
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1.5px solid rgba(46, 125, 50, 0.4);
+  color: #166534;
   font-weight: 700;
-  font-size: 0.88rem;
-  padding: 0.45rem 1.2rem;
+  font-size: 0.95rem;
+  padding: 0.55rem 1.35rem;
   border-radius: 999px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 4px 18px rgba(46, 125, 50, 0.12);
   transition: all 0.25s ease-in-out;
   flex-wrap: wrap;
   justify-content: center;
@@ -415,33 +415,55 @@
 
 .hero-discount-pill:hover {
   transform: translateY(-2px);
-  border-color: rgba(34, 197, 94, 0.7);
-  box-shadow: 0 8px 24px rgba(34, 197, 94, 0.25);
-  background: linear-gradient(135deg, rgba(15, 23, 42, 0.92), rgba(46, 125, 50, 0.35));
+  border-color: #2E7D32;
+  box-shadow: 0 8px 25px rgba(46, 125, 50, 0.22);
+  background: linear-gradient(135deg, rgba(46, 125, 50, 0.2), rgba(74, 222, 128, 0.15));
 }
 
 .hero-discount-tag {
-  color: #F8FAFC;
-  font-weight: 700;
+  color: #166534;
+  font-weight: 800;
   letter-spacing: 0.02em;
 }
 
 .hero-discount-price {
-  color: #4ADE80;
+  color: #15803D;
   font-weight: 800;
-  font-size: 1rem;
+  font-size: 1.05rem;
 }
 
 .hero-discount-save {
-  background: rgba(34, 197, 94, 0.18);
-  border: 1px solid rgba(34, 197, 94, 0.35);
-  color: #4ADE80;
-  font-weight: 700;
-  font-size: 0.76rem;
-  padding: 0.2rem 0.6rem;
+  background: #2E7D32;
+  color: #FFFFFF;
+  font-weight: 800;
+  font-size: 0.78rem;
+  padding: 0.22rem 0.65rem;
   border-radius: 999px;
   text-transform: uppercase;
   letter-spacing: 0.04em;
+  box-shadow: 0 2px 8px rgba(46, 125, 50, 0.3);
+}
+
+/* Dark mode theme override for hero discount pill */
+[data-theme="dark"] .hero-discount-pill {
+  background: linear-gradient(135deg, rgba(15, 23, 42, 0.88), rgba(46, 125, 50, 0.25));
+  border-color: rgba(46, 125, 50, 0.45);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+}
+
+[data-theme="dark"] .hero-discount-tag {
+  color: #F8FAFC;
+}
+
+[data-theme="dark"] .hero-discount-price {
+  color: #4ADE80;
+}
+
+[data-theme="dark"] .hero-discount-save {
+  background: rgba(34, 197, 94, 0.2);
+  border: 1px solid rgba(34, 197, 94, 0.4);
+  color: #4ADE80;
+  box-shadow: none;
 }
 
 /* 6. HALL OF FAME: RECENT 1ST-TIME PASSES PHOTO GALLERY */
