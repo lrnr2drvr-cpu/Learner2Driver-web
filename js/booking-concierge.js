@@ -114,17 +114,33 @@ function renderConciergeStep(stepNum) {
         <div class="concierge-option-card ${bookingState.hours === 1 ? 'selected' : ''}" onclick="selectPackage(event, 'Pay As You Go (1 Hour)', 1, 0, false, null)">
           <span class="badge badge-secondary mb-1" data-editable-key="book_pkg1_badge">Standard Rate</span>
           <h3 style="margin: 0; font-size: 1.15rem;" data-editable-key="book_pkg1_name">Pay As You Go (1 Hr)</h3>
-          <p style="margin: 0.4rem 0 0; font-size: 0.88rem; font-weight: 700; color: var(--color-green);">£${bookingState.rate}</p>
+          <p style="margin: 0.4rem 0 0; font-size: 0.88rem; font-weight: 700; color: var(--color-green);">£${bookingState.rate}/hr</p>
         </div>
-        <div class="concierge-option-card ${bookingState.hours === 10 ? 'selected' : ''}" onclick="selectPackage(event, getCustomVal('book_pkg2_name', '10-Hour Block Course'), 10, 0, true, ${price10})">
-          <span class="badge badge-primary mb-1" data-editable-key="book_pkg2_badge">Most Popular ⭐ Block Package</span>
+        <div class="concierge-option-card highlight-savings ${bookingState.hours === 10 ? 'selected' : ''}" onclick="selectPackage(event, getCustomVal('book_pkg2_name', '10-Hour Block Course'), 10, 0, true, ${price10})">
+          <div class="savings-tag-pill" data-editable-key="book_pkg2_discount_pill">⚡ Save ~10% OFF</div>
+          <div style="display: flex; gap: 0.4rem; align-items: center; flex-wrap: wrap; margin-bottom: 0.35rem;">
+            <span class="badge badge-primary mb-1" data-editable-key="book_pkg2_badge">Most Popular ⭐ Block Package</span>
+            <span class="discount-highlight-badge mb-1" data-editable-key="book_pkg2_save_highlight">SAVE 10% (£30 OFF)</span>
+          </div>
           <h3 style="margin: 0; font-size: 1.15rem;" data-editable-key="book_pkg2_name">10-Hour Block Course</h3>
-          <p style="margin: 0.4rem 0 0; font-size: 0.88rem; font-weight: 700; color: var(--color-green);">£<span data-editable-key="book_price_10_v2">${price10}</span> <span data-editable-key="book_pkg2_was">(was £${bookingState.rate * 10})</span></p>
+          <p style="margin: 0.4rem 0 0; font-size: 0.88rem; font-weight: 700; color: var(--color-green);">
+            £<span data-editable-key="book_price_10_v2">${price10}</span> 
+            <span style="color: #94A3B8; text-decoration: line-through; margin-left: 0.35rem; font-weight: 500;" data-editable-key="book_pkg2_was">(was £${bookingState.rate * 10})</span>
+            <span style="color: #FFB74D; font-size: 0.82rem; margin-left: 0.35rem; font-weight: 700;" data-editable-key="book_pkg2_save_label">(Save £30!)</span>
+          </p>
         </div>
-        <div class="concierge-option-card ${bookingState.hours === 20 ? 'selected' : ''}" onclick="selectPackage(event, getCustomVal('book_pkg3_name', '20-Hour Intensive Pass'), 20, 0, true, ${price20})">
-          <span class="badge badge-warning mb-1" data-editable-key="book_pkg3_badge_v2">Best Value • Block Package</span>
+        <div class="concierge-option-card highlight-savings ${bookingState.hours === 20 ? 'selected' : ''}" onclick="selectPackage(event, getCustomVal('book_pkg3_name', '20-Hour Intensive Pass'), 20, 0, true, ${price20})">
+          <div class="savings-tag-pill" data-editable-key="book_pkg3_discount_pill">⚡ Save ~12% OFF</div>
+          <div style="display: flex; gap: 0.4rem; align-items: center; flex-wrap: wrap; margin-bottom: 0.35rem;">
+            <span class="badge badge-warning mb-1" data-editable-key="book_pkg3_badge_v2">Best Value • Block Package</span>
+            <span class="discount-highlight-badge mb-1" data-editable-key="book_pkg3_save_highlight">SAVE 12% (£80 OFF)</span>
+          </div>
           <h3 style="margin: 0; font-size: 1.15rem;" data-editable-key="book_pkg3_name">20-Hour Intensive Pass</h3>
-          <p style="margin: 0.4rem 0 0; font-size: 0.88rem; font-weight: 700; color: var(--color-green);">£<span data-editable-key="book_price_20">${price20}</span> <span data-editable-key="book_pkg3_was">(was £${bookingState.rate * 20})</span></p>
+          <p style="margin: 0.4rem 0 0; font-size: 0.88rem; font-weight: 700; color: var(--color-green);">
+            £<span data-editable-key="book_price_20">${price20}</span> 
+            <span style="color: #94A3B8; text-decoration: line-through; margin-left: 0.35rem; font-weight: 500;" data-editable-key="book_pkg3_was">(was £${bookingState.rate * 20})</span>
+            <span style="color: #FFB74D; font-size: 0.82rem; margin-left: 0.35rem; font-weight: 700;" data-editable-key="book_pkg3_save_label">(Save £80!)</span>
+          </p>
         </div>
         <div class="concierge-option-card ${bookingState.hours === 2 ? 'selected' : ''}" onclick="selectPackage(event, 'Mock Practical Test Assessment (2 Hours)', 2, 0, false, null)">
           <span class="badge badge-accent mb-1" data-editable-key="book_pkg4_badge">DVSA Assessment</span>
