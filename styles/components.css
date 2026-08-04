@@ -394,20 +394,51 @@
   letter-spacing: 0.04em;
 }
 
-.savings-tag-pill {
-  position: absolute;
-  top: -10px;
-  right: 14px;
-  background: var(--color-green);
+.hero-discount-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  background: #0F172A;
+  border: 2px solid var(--color-brand-2);
   color: #FFFFFF;
   font-weight: 700;
-  font-size: 0.72rem;
-  padding: 0.15rem 0.55rem;
+  font-size: 0.9rem;
+  padding: 0.5rem 1.15rem;
   border-radius: 999px;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+  transition: all 0.25s ease-in-out;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.hero-discount-pill:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(245, 124, 0, 0.45);
+  border-color: #FE3503;
+}
+
+.hero-discount-tag {
+  color: #FFB74D;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+}
+
+.hero-discount-price {
+  color: #4CAF50;
+  font-weight: 800;
+  font-size: 1.05rem;
+}
+
+.hero-discount-save {
+  background: linear-gradient(135deg, #FE3503, #F57C00);
+  color: #FFFFFF;
+  font-weight: 800;
+  font-size: 0.76rem;
+  padding: 0.2rem 0.6rem;
+  border-radius: 999px;
   text-transform: uppercase;
   letter-spacing: 0.04em;
-  z-index: 2;
+  box-shadow: 0 2px 8px rgba(254, 53, 3, 0.4);
 }
 
 /* 6. HALL OF FAME: RECENT 1ST-TIME PASSES PHOTO GALLERY */
