@@ -398,14 +398,16 @@
   display: inline-flex;
   align-items: center;
   gap: 0.6rem;
-  background: linear-gradient(135deg, #2E7D32, #1E5622);
-  border: 2px solid #F57C00;
-  color: #FFFFFF;
-  font-weight: 800;
-  font-size: 0.92rem;
-  padding: 0.5rem 1.25rem;
+  background: linear-gradient(135deg, rgba(15, 23, 42, 0.88), rgba(46, 125, 50, 0.25));
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(46, 125, 50, 0.45);
+  color: #F8FAFC;
+  font-weight: 700;
+  font-size: 0.88rem;
+  padding: 0.45rem 1.2rem;
   border-radius: 999px;
-  box-shadow: 0 6px 22px rgba(46, 125, 50, 0.35);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
   transition: all 0.25s ease-in-out;
   flex-wrap: wrap;
   justify-content: center;
@@ -413,33 +415,33 @@
 
 .hero-discount-pill:hover {
   transform: translateY(-2px);
-  box-shadow: 0 8px 28px rgba(245, 124, 0, 0.45);
-  border-color: #FE3503;
-  background: linear-gradient(135deg, #1E5622, #2E7D32);
+  border-color: rgba(34, 197, 94, 0.7);
+  box-shadow: 0 8px 24px rgba(34, 197, 94, 0.25);
+  background: linear-gradient(135deg, rgba(15, 23, 42, 0.92), rgba(46, 125, 50, 0.35));
 }
 
 .hero-discount-tag {
-  color: #FFFFFF;
-  font-weight: 800;
+  color: #F8FAFC;
+  font-weight: 700;
   letter-spacing: 0.02em;
 }
 
 .hero-discount-price {
-  color: #FFD54F;
+  color: #4ADE80;
   font-weight: 800;
-  font-size: 1.05rem;
+  font-size: 1rem;
 }
 
 .hero-discount-save {
-  background: linear-gradient(135deg, #FE3503, #F57C00);
-  color: #FFFFFF;
-  font-weight: 800;
-  font-size: 0.78rem;
-  padding: 0.25rem 0.65rem;
+  background: rgba(34, 197, 94, 0.18);
+  border: 1px solid rgba(34, 197, 94, 0.35);
+  color: #4ADE80;
+  font-weight: 700;
+  font-size: 0.76rem;
+  padding: 0.2rem 0.6rem;
   border-radius: 999px;
   text-transform: uppercase;
   letter-spacing: 0.04em;
-  box-shadow: 0 2px 8px rgba(254, 53, 3, 0.45);
 }
 
 /* 6. HALL OF FAME: RECENT 1ST-TIME PASSES PHOTO GALLERY */
