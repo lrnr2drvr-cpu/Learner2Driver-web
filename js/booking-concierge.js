@@ -232,3 +232,19 @@ window.showCalIframe = function() {
     box.scrollIntoView({ behavior: 'smooth' });
   }
 };
+
+window.jumpToConciergePackage = function(hours) {
+  bookingState.hours = hours;
+  if (hours === 10) {
+    bookingState.package = getCustomVal('book_pkg2_name', '10-Hour Block Course');
+    bookingState.isFlatPrice = true;
+    const rate10 = getCustomVal('book_price_10_v2', '350');
+    bookingState.flatPrice = parseInt(rate10, 10) || 350;
+  }
+  updateTotalPrice();
+  renderConciergeStep(1);
+  const conciergeBox = document.getElementById('bookingConciergeBox');
+  if (conciergeBox) {
+    conciergeBox.scrollIntoView({ behavior: 'smooth' });
+  }
+};
