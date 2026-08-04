@@ -117,9 +117,8 @@ function renderConciergeStep(stepNum) {
           <p style="margin: 0.4rem 0 0; font-size: 0.95rem; font-weight: 700; color: var(--color-green);">£${bookingState.rate}/hr</p>
         </div>
         <div class="concierge-option-card highlight-savings ${bookingState.hours === 10 ? 'selected' : ''}" onclick="selectPackage(event, getCustomVal('book_pkg2_name', '10-Hour Block Course'), 10, 0, true, ${price10})">
-          <div class="savings-tag-pill" data-editable-key="book_pkg2_discount_pill">Save ~10% OFF</div>
-          <span class="badge badge-primary mb-1" data-editable-key="book_pkg2_badge">Most Popular ⭐ Block Package</span>
-          <h3 style="margin: 0; font-size: 1.15rem; color: var(--text-main);" data-editable-key="book_pkg2_name">10-Hour Block Course</h3>
+          <span class="badge badge-primary mb-1" data-editable-key="book_pkg2_badge">Most Popular ⭐ Block Package • Save £30 (~10% OFF)</span>
+          <h3 style="margin: 0.25rem 0 0; font-size: 1.15rem; color: var(--text-main);" data-editable-key="book_pkg2_name">10-Hour Block Course</h3>
           <p style="margin: 0.4rem 0 0; font-size: 0.95rem; font-weight: 700; color: var(--color-green);">
             £<span data-editable-key="book_price_10_v2">${price10}</span> 
             <span style="color: var(--text-light); text-decoration: line-through; margin-left: 0.35rem; font-weight: 500; font-size: 0.85rem;" data-editable-key="book_pkg2_was">(was £${bookingState.rate * 10})</span>
@@ -127,9 +126,8 @@ function renderConciergeStep(stepNum) {
           </p>
         </div>
         <div class="concierge-option-card highlight-savings ${bookingState.hours === 20 ? 'selected' : ''}" onclick="selectPackage(event, getCustomVal('book_pkg3_name', '20-Hour Intensive Pass'), 20, 0, true, ${price20})">
-          <div class="savings-tag-pill" data-editable-key="book_pkg3_discount_pill">Save ~12% OFF</div>
-          <span class="badge badge-warning mb-1" data-editable-key="book_pkg3_badge_v2">Best Value • Block Package</span>
-          <h3 style="margin: 0; font-size: 1.15rem; color: var(--text-main);" data-editable-key="book_pkg3_name">20-Hour Intensive Pass</h3>
+          <span class="badge badge-warning mb-1" data-editable-key="book_pkg3_badge_v2">Best Value • Block Package • Save £80 (~12% OFF)</span>
+          <h3 style="margin: 0.25rem 0 0; font-size: 1.15rem; color: var(--text-main);" data-editable-key="book_pkg3_name">20-Hour Intensive Pass</h3>
           <p style="margin: 0.4rem 0 0; font-size: 0.95rem; font-weight: 700; color: var(--color-green);">
             £<span data-editable-key="book_price_20">${price20}</span> 
             <span style="color: var(--text-light); text-decoration: line-through; margin-left: 0.35rem; font-weight: 500; font-size: 0.85rem;" data-editable-key="book_pkg3_was">(was £${bookingState.rate * 20})</span>
