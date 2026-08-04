@@ -369,55 +369,42 @@
   transform: translateY(-2px);
 }
 
-.concierge-option-card.selected {
+.concierge-option-card.highlight-savings {
   border-color: var(--color-green);
-  background: rgba(46, 125, 50, 0.08);
+  background: var(--bg-card);
 }
 
-.concierge-option-card.highlight-savings {
-  border-color: rgba(245, 124, 0, 0.55);
-  background: linear-gradient(145deg, rgba(30, 41, 59, 0.9), rgba(245, 124, 0, 0.06));
+.concierge-option-card.highlight-savings.selected {
+  border-color: var(--color-green);
+  background: rgba(46, 125, 50, 0.08);
 }
 
 .discount-highlight-badge {
   display: inline-flex;
   align-items: center;
   gap: 0.35rem;
-  background: linear-gradient(135deg, rgba(245, 124, 0, 0.25), rgba(46, 125, 50, 0.25));
-  border: 1px solid var(--color-brand-2);
-  color: #FFB74D;
-  font-weight: 800;
+  background: rgba(46, 125, 50, 0.12);
+  border: 1px solid var(--color-green);
+  color: var(--color-green);
+  font-weight: 700;
   font-size: 0.76rem;
-  padding: 0.2rem 0.6rem;
+  padding: 0.15rem 0.55rem;
   border-radius: 999px;
   text-transform: uppercase;
   letter-spacing: 0.04em;
-  box-shadow: 0 0 10px rgba(245, 124, 0, 0.25);
-  animation: discountPulse 2.5s infinite alternate ease-in-out;
-}
-
-@keyframes discountPulse {
-  0% {
-    box-shadow: 0 0 6px rgba(245, 124, 0, 0.2);
-    transform: scale(1);
-  }
-  100% {
-    box-shadow: 0 0 14px rgba(46, 125, 50, 0.4);
-    transform: scale(1.03);
-  }
 }
 
 .savings-tag-pill {
   position: absolute;
-  top: -12px;
+  top: -10px;
   right: 14px;
-  background: linear-gradient(135deg, #FE3503, #F57C00);
+  background: var(--color-green);
   color: #FFFFFF;
-  font-weight: 800;
+  font-weight: 700;
   font-size: 0.72rem;
-  padding: 0.2rem 0.6rem;
+  padding: 0.15rem 0.55rem;
   border-radius: 999px;
-  box-shadow: 0 3px 10px rgba(254, 53, 3, 0.45);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
   text-transform: uppercase;
   letter-spacing: 0.04em;
   z-index: 2;
