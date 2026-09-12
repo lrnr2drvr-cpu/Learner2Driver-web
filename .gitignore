@@ -1,0 +1,13 @@
+# Environment variables
+.env
+.env.local
+*.env
+
+# Network capture files
+*.har
+
+# System / IDE
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
