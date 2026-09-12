@@ -170,17 +170,17 @@ function renderConciergeStep(stepNum) {
     if (isFemaleInstructor) {
       html += `
         <div style="background: linear-gradient(135deg, rgba(46, 125, 50, 0.12), rgba(245, 124, 0, 0.1)); border: 2px solid var(--color-green); border-radius: var(--radius-lg); padding: 2rem; text-align: center; margin-bottom: 1.5rem;">
-          <span class="badge badge-warning mb-2" style="font-size: 0.85rem;" data-editable-key="binish_book_badge">Female Instructor Direct Booking</span>
-          <h3 style="margin: 0 0 0.5rem 0; font-size: 1.4rem;" data-editable-key="binish_book_heading">Book Direct with Binish</h3>
-          <p style="font-size: 0.95rem; color: var(--text-main); max-width: 540px; margin: 0 auto 1.5rem auto;" data-editable-key="binish_book_text">
-            Female instructor lessons with Binish are arranged directly via Phone or WhatsApp for customized schedule availability.
+          <span class="badge badge-warning mb-2" style="font-size: 0.85rem;" data-editable-key="female_book_badge">Female Instructor Direct Booking</span>
+          <h3 style="margin: 0 0 0.5rem 0; font-size: 1.4rem;" data-editable-key="female_book_heading">Book Direct with Female Instructor</h3>
+          <p style="font-size: 0.95rem; color: var(--text-main); max-width: 540px; margin: 0 auto 1.5rem auto;" data-editable-key="female_book_text">
+            Female instructor lessons are arranged directly via Phone or WhatsApp for customized schedule availability.
           </p>
           <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
             <a href="tel:07427330827" class="btn btn-primary cta-pulse-glow" style="padding: 0.75rem 1.5rem; font-weight: 700; font-size: 1rem;">
               📞 Call 07427 330827
             </a>
-            <a href="https://wa.me/447427330827?text=Hi%20Binish,%20I'd%20like%20to%20book%20a%20driving%20lesson%20with%20you!" target="_blank" rel="noopener noreferrer" class="btn" style="padding: 0.75rem 1.5rem; font-weight: 700; font-size: 1rem; background: #25D366; color: #FFFFFF; border: none; border-radius: var(--radius-md);">
-              💬 WhatsApp Binish Directly
+            <a href="https://wa.me/447427330827?text=Hi,%20I'd%20like%20to%20book%20a%20driving%20lesson%20with%20a%20female%20instructor!" target="_blank" rel="noopener noreferrer" class="btn" style="padding: 0.75rem 1.5rem; font-weight: 700; font-size: 1rem; background: #25D366; color: #FFFFFF; border: none; border-radius: var(--radius-md);">
+              💬 WhatsApp Female Instructor Directly
             </a>
           </div>
         </div>
