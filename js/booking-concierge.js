@@ -8,13 +8,13 @@
 const bookingState = {
   instructor: 'Farhan Hussaini',
   vehicle: 'Manual (Toyota Yaris)',
-  rate: 37,
+  rate: 38,
   package: '10-Hour Block Course',
   hours: 10,
   discount: 0,
   isFlatPrice: true,
-  flatPrice: 350,
-  totalPrice: 350,
+  flatPrice: 360,
+  totalPrice: 360,
   step: 1
 };
 
@@ -26,7 +26,7 @@ function getCustomVal(key, defaultVal) {
 }
 
 function updateTotalPrice() {
-  if ((bookingState.hours === 10 || bookingState.hours === 20) && bookingState.isFlatPrice) {
+  if (bookingState.hours === 10 && bookingState.isFlatPrice) {
     bookingState.totalPrice = bookingState.flatPrice;
   } else {
     const base = bookingState.rate * bookingState.hours;
@@ -49,10 +49,9 @@ function renderConciergeStep(stepNum) {
   const container = document.getElementById('bookingConciergeBox');
   if (!container) return;
 
-  const rateManual = parseInt(getCustomVal('book_rate_manual', '37')) || 37;
-  const rateAuto = parseInt(getCustomVal('book_rate_auto', '37')) || 37;
-  const price10 = parseInt(getCustomVal('book_price_10_v2', '350')) || 350;
-  const price20 = parseInt(getCustomVal('book_price_20', '680')) || 680;
+  const rateManual = parseInt(getCustomVal('book_rate_manual', '38')) || 38;
+  const rateAuto = parseInt(getCustomVal('book_rate_auto', '38')) || 38;
+  const price10 = parseInt(getCustomVal('book_price_10_v2', '360')) || 360;
 
   let html = `
     <!-- Step Bar -->
@@ -117,21 +116,12 @@ function renderConciergeStep(stepNum) {
           <p style="margin: 0.4rem 0 0; font-size: 0.95rem; font-weight: 700; color: var(--color-green);">£${bookingState.rate}/hr</p>
         </div>
         <div class="concierge-option-card highlight-savings ${bookingState.hours === 10 ? 'selected' : ''}" onclick="selectPackage(event, getCustomVal('book_pkg2_name', '10-Hour Block Course'), 10, 0, true, ${price10})">
-          <span class="badge badge-primary mb-1" data-editable-key="book_pkg2_badge">Most Popular ⭐ Block Package • Save £30 (~10% OFF)</span>
+          <span class="badge badge-primary mb-1" data-editable-key="book_pkg2_badge">Most Popular ⭐ Block Package • Save £20 OFF</span>
           <h3 style="margin: 0.25rem 0 0; font-size: 1.15rem; color: var(--text-main);" data-editable-key="book_pkg2_name">10-Hour Block Course</h3>
           <p style="margin: 0.4rem 0 0; font-size: 0.95rem; font-weight: 700; color: var(--color-green);">
             £<span data-editable-key="book_price_10_v2">${price10}</span> 
             <span style="color: var(--text-light); text-decoration: line-through; margin-left: 0.35rem; font-weight: 500; font-size: 0.85rem;" data-editable-key="book_pkg2_was">(was £${bookingState.rate * 10})</span>
-            <span style="color: var(--color-green); font-size: 0.82rem; margin-left: 0.35rem; font-weight: 700;" data-editable-key="book_pkg2_save_label">(Save £30)</span>
-          </p>
-        </div>
-        <div class="concierge-option-card highlight-savings ${bookingState.hours === 20 ? 'selected' : ''}" onclick="selectPackage(event, getCustomVal('book_pkg3_name', '20-Hour Intensive Pass'), 20, 0, true, ${price20})">
-          <span class="badge badge-warning mb-1" data-editable-key="book_pkg3_badge_v2">Best Value • Block Package • Save £80 (~12% OFF)</span>
-          <h3 style="margin: 0.25rem 0 0; font-size: 1.15rem; color: var(--text-main);" data-editable-key="book_pkg3_name">20-Hour Intensive Pass</h3>
-          <p style="margin: 0.4rem 0 0; font-size: 0.95rem; font-weight: 700; color: var(--color-green);">
-            £<span data-editable-key="book_price_20">${price20}</span> 
-            <span style="color: var(--text-light); text-decoration: line-through; margin-left: 0.35rem; font-weight: 500; font-size: 0.85rem;" data-editable-key="book_pkg3_was">(was £${bookingState.rate * 20})</span>
-            <span style="color: var(--color-green); font-size: 0.82rem; margin-left: 0.35rem; font-weight: 700;" data-editable-key="book_pkg3_save_label">(Save £80)</span>
+            <span style="color: var(--color-green); font-size: 0.82rem; margin-left: 0.35rem; font-weight: 700;" data-editable-key="book_pkg2_save_label">(Save £20)</span>
           </p>
         </div>
         <div class="concierge-option-card ${bookingState.hours === 2 ? 'selected' : ''}" onclick="selectPackage(event, 'Mock Practical Test Assessment (2 Hours)', 2, 0, false, null)">
@@ -232,8 +222,8 @@ window.jumpToConciergePackage = function(hours) {
   if (hours === 10) {
     bookingState.package = getCustomVal('book_pkg2_name', '10-Hour Block Course');
     bookingState.isFlatPrice = true;
-    const rate10 = getCustomVal('book_price_10_v2', '350');
-    bookingState.flatPrice = parseInt(rate10, 10) || 350;
+    const rate10 = getCustomVal('book_price_10_v2', '360');
+    bookingState.flatPrice = parseInt(rate10, 10) || 360;
   }
   updateTotalPrice();
   renderConciergeStep(1);

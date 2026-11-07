@@ -9,7 +9,7 @@ const DEFAULT_FLEET_DATA = {
   yaris: {
     id: 'yaris',
     name: '2019 Toyota Yaris (6-Speed Manual)',
-    price: '£37 / Hour',
+    price: '£38 / Hour',
     badge: 'Agile Preston Hatchback',
     img: 'https://images.unsplash.com/photo-1549399542-7e3f8b79c341?w=800&auto=format&fit=crop',
     fallbackImg: 'https://images.unsplash.com/photo-1549399542-7e3f8b79c341?w=800&auto=format&fit=crop',
@@ -28,7 +28,7 @@ const DEFAULT_FLEET_DATA = {
   kona: {
     id: 'kona',
     name: '2024 Hyundai Kona EV Ultimate (100% Automatic)',
-    price: '£39 / Hour',
+    price: '£38 / Hour',
     badge: 'Zero Stalling Electric',
     img: 'https://images.unsplash.com/photo-1549399542-7e3f8b79c341?w=800&auto=format&fit=crop',
     fallbackImg: 'https://images.unsplash.com/photo-1549399542-7e3f8b79c341?w=800&auto=format&fit=crop',
