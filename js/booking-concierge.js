@@ -60,7 +60,7 @@ function renderConciergeStep(stepNum) {
       <div class="concierge-step ${stepNum >= 1 ? 'active' : ''}" onclick="renderConciergeStep(1)">1. Instructor</div>
       <div class="concierge-step ${stepNum >= 2 ? 'active' : ''}" onclick="renderConciergeStep(2)">2. Vehicle</div>
       <div class="concierge-step ${stepNum >= 3 ? 'active' : ''}" onclick="renderConciergeStep(3)">3. Package</div>
-      <div class="concierge-step ${stepNum >= 4 ? 'active' : ''}" onclick="renderConciergeStep(4)">4. Select Slot</div>
+      <div class="concierge-step ${stepNum >= 4 ? 'active' : ''}" onclick="renderConciergeStep(4)">4. Book Lesson</div>
     </div>
   `;
 
@@ -148,6 +148,11 @@ function renderConciergeStep(stepNum) {
     updateTotalPrice();
     const isFemaleInstructor = (bookingState.instructor && (bookingState.instructor.toLowerCase().includes('binish') || bookingState.instructor.toLowerCase().includes('female')));
 
+    const callNumber = '07427330827';
+    const displayPhone = '07427 330827';
+    const instructorLabel = isFemaleInstructor ? 'Female Instructor' : bookingState.instructor;
+    const waText = encodeURIComponent(`Hi, I would like to book a driving lesson (${bookingState.package}, ${bookingState.vehicle}) with ${instructorLabel}!`);
+
     html += `
       <div style="background: var(--bg-body); border: 1px solid var(--color-green); border-radius: var(--radius-lg); padding: 1.75rem; margin-bottom: 2rem; text-align: left;">
         <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; margin-bottom: 1rem;">
@@ -160,50 +165,28 @@ function renderConciergeStep(stepNum) {
           </div>
         </div>
         <div class="grid-3" style="border-top: 1px solid var(--border-color); padding-top: 1rem; font-size: 0.92rem;">
-          <div><strong>Instructor:</strong> ${bookingState.instructor}</div>
+          <div><strong>Instructor:</strong> ${instructorLabel}</div>
           <div><strong>Vehicle:</strong> ${bookingState.vehicle}</div>
           <div><strong>Package:</strong> ${bookingState.package}</div>
         </div>
       </div>
-    `;
 
-    if (isFemaleInstructor) {
-      html += `
-        <div style="background: linear-gradient(135deg, rgba(46, 125, 50, 0.12), rgba(245, 124, 0, 0.1)); border: 2px solid var(--color-green); border-radius: var(--radius-lg); padding: 2rem; text-align: center; margin-bottom: 1.5rem;">
-          <span class="badge badge-warning mb-2" style="font-size: 0.85rem;" data-editable-key="female_book_badge">Female Instructor Direct Booking</span>
-          <h3 style="margin: 0 0 0.5rem 0; font-size: 1.4rem;" data-editable-key="female_book_heading">Book Direct with Female Instructor</h3>
-          <p style="font-size: 0.95rem; color: var(--text-main); max-width: 540px; margin: 0 auto 1.5rem auto;" data-editable-key="female_book_text">
-            Female instructor lessons are arranged directly via Phone or WhatsApp for customized schedule availability.
-          </p>
-          <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
-            <a href="tel:07427330827" class="btn btn-primary cta-pulse-glow" style="padding: 0.75rem 1.5rem; font-weight: 700; font-size: 1rem;">
-              📞 Call 07427 330827
-            </a>
-            <a href="https://wa.me/447427330827?text=Hi,%20I'd%20like%20to%20book%20a%20driving%20lesson%20with%20a%20female%20instructor!" target="_blank" rel="noopener noreferrer" class="btn" style="padding: 0.75rem 1.5rem; font-weight: 700; font-size: 1rem; background: #25D366; color: #FFFFFF; border: none; border-radius: var(--radius-md);">
-              💬 WhatsApp Female Instructor Directly
-            </a>
-          </div>
-        </div>
-      `;
-    } else {
-      html += `
-        <div class="text-center mb-3">
-          <button class="btn btn-primary" onclick="showCalIframe()">
-            Select Date & Time on Calendar 📅
-          </button>
-          <a href="tel:07427330827" class="btn btn-secondary ml-1">
-            Call / WhatsApp 07427 330827 📞
+      <div style="background: linear-gradient(135deg, rgba(46, 125, 50, 0.12), rgba(245, 124, 0, 0.08)); border: 2px solid var(--color-green); border-radius: var(--radius-lg); padding: 2rem 1.5rem; text-align: center; margin-bottom: 1.5rem;">
+        <span class="badge badge-primary mb-2" style="font-size: 0.85rem;" data-editable-key="book_direct_badge">Direct Academy Booking</span>
+        <h3 style="margin: 0 0 0.5rem 0; font-size: 1.4rem;" data-editable-key="book_direct_heading">Confirm & Schedule Your Lesson</h3>
+        <p style="font-size: 0.95rem; color: var(--text-main); max-width: 560px; margin: 0 auto 1.5rem auto;" data-editable-key="book_direct_text">
+          Call or WhatsApp us directly to confirm your package and lock in your preferred lesson date and time with ${instructorLabel}.
+        </p>
+        <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+          <a href="tel:${callNumber}" class="btn btn-primary cta-pulse-glow" style="padding: 0.75rem 1.6rem; font-weight: 700; font-size: 1rem; display: inline-flex; align-items: center; gap: 0.5rem;">
+            <span>📞</span> Call ${displayPhone}
+          </a>
+          <a href="https://wa.me/44${callNumber.replace(/^0/, '')}?text=${waText}" target="_blank" rel="noopener noreferrer" class="btn" style="padding: 0.75rem 1.6rem; font-weight: 700; font-size: 1rem; background: #25D366; color: #FFFFFF; border: none; border-radius: var(--radius-md); display: inline-flex; align-items: center; gap: 0.5rem;">
+            <span>💬</span> WhatsApp to Book
           </a>
         </div>
+      </div>
 
-        <!-- Cal.com Reveal Box for Male Instructor (Farhan) -->
-        <div id="calIframeRevealBox" style="display: none; margin-top: 1.5rem;">
-          <iframe src="https://cal.com/learner2driver" style="border: none; width: 100%; height: 680px; border-radius: var(--radius-lg);" title="Learner2Driver Cal.com Calendar"></iframe>
-        </div>
-      `;
-    }
-
-    html += `
       <div class="text-left mt-2">
         <button class="btn btn-secondary btn-sm" onclick="renderConciergeStep(3)">← Back to Packages</button>
       </div>
@@ -243,13 +226,6 @@ window.selectPackage = function(event, pkgName, hours, discount, isFlatPrice = f
   renderConciergeStep(4);
 };
 
-window.showCalIframe = function() {
-  const box = document.getElementById('calIframeRevealBox');
-  if (box) {
-    box.style.display = 'block';
-    box.scrollIntoView({ behavior: 'smooth' });
-  }
-};
 
 window.jumpToConciergePackage = function(hours) {
   bookingState.hours = hours;
