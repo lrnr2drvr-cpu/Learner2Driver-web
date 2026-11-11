@@ -6,6 +6,9 @@
 # Network capture files
 *.har
 
+# AI agent working notes
+.agents/
+
 # System / IDE
 .DS_Store
 Thumbs.db

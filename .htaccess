@@ -32,3 +32,13 @@ DirectoryIndex index.html
 <IfModule mod_deflate.c>
     AddOutputFilterByType DEFLATE text/html text/plain text/css application/javascript application/json image/svg+xml
 </IfModule>
+
+# 5. Do not serve project files that are not part of the website
+#    (docs, database scripts, build tooling). The whole repository is deployed
+#    to public_html, so anything not blocked here is downloadable.
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteRule \.(md|sql)$ - [F,L,NC]
+    RewriteRule ^(scripts|supabase)/ - [F,L,NC]
+    RewriteRule ^package(-lock)?\.json$ - [F,L,NC]
+</IfModule>

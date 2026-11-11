@@ -7,9 +7,6 @@
     "start": "npx serve .",
     "build": "node scripts/generate-env.js && echo 'Static web build complete.'"
   },
-  "dependencies": {
-    "@supabase/supabase-js": "^2.0.0"
-  },
   "keywords": [
     "learner2driver",
     "preston",
