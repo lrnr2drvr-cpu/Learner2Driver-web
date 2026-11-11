@@ -89,9 +89,94 @@
   };
 
   /**
+   * Instructor sign-in (Supabase Auth).
+   * The database only accepts edits from a signed-in instructor. The l2d_is_admin
+   * flag in localStorage only decides whether the admin controls are shown.
+   */
+  function setAdminFlag(email) {
+    try {
+      if (email) {
+        localStorage.setItem('l2d_is_admin', 'true');
+        localStorage.setItem('l2d_admin_user', email);
+      } else {
+        localStorage.removeItem('l2d_is_admin');
+        localStorage.removeItem('l2d_admin_editing_mode');
+        localStorage.removeItem('l2d_admin_user');
+      }
+    } catch(e) {}
+  }
+
+  window.l2dAdminSignIn = async function(email, password) {
+    const client = window.getSupabaseClient();
+    if (!client) return { ok: false, error: 'Could not reach the database. Check your connection and try again.' };
+
+    try {
+      const { data, error } = await client.auth.signInWithPassword({ email, password });
+      if (error || !data || !data.session) {
+        return { ok: false, error: 'Incorrect email or password.' };
+      }
+
+      // A valid account that is not on the instructor list gets signed straight back out.
+      // If the check itself is unavailable, the database rules still decide what can be saved.
+      const check = await client.rpc('is_admin');
+      if (!check.error && check.data === false) {
+        await client.auth.signOut();
+        setAdminFlag(null);
+        return { ok: false, error: 'This account is not an instructor account.' };
+      }
+
+      setAdminFlag(data.session.user.email || email);
+      return { ok: true, email: data.session.user.email || email };
+    } catch(e) {
+      return { ok: false, error: 'Sign-in failed. Check your connection and try again.' };
+    }
+  };
+
+  window.l2dAdminSignOut = async function() {
+    const client = window.getSupabaseClient();
+    try {
+      if (client) await client.auth.signOut();
+    } catch(e) {}
+    setAdminFlag(null);
+  };
+
+  window.l2dChangeAdminPassword = async function(newPassword) {
+    const client = window.getSupabaseClient();
+    if (!client) return { ok: false, error: 'Could not reach the database.' };
+    try {
+      const { error } = await client.auth.updateUser({ password: newPassword });
+      return { ok: !error, error: error ? error.message : null };
+    } catch(e) {
+      return { ok: false, error: e.message };
+    }
+  };
+
+  // Makes the admin flag match the real sign-in state. Returns true when an instructor is signed in.
+  window.l2dSyncAdminSession = async function() {
+    const client = window.getSupabaseClient();
+    let session = null;
+    try {
+      if (client) {
+        const { data } = await client.auth.getSession();
+        session = data ? data.session : null;
+      }
+    } catch(e) {}
+    setAdminFlag(session && session.user ? (session.user.email || 'instructor') : null);
+    return !!session;
+  };
+
+  // Saving is for a signed-in instructor only. The database enforces this too;
+  // checking here avoids sending requests that would just be rejected.
+  function instructorSignedIn() {
+    try { return localStorage.getItem('l2d_is_admin') === 'true'; } catch(e) { return false; }
+  }
+  const NOT_SIGNED_IN = { ok: false, error: 'Not signed in as an instructor' };
+
+  /**
    * 1. Site Custom Text Sync (site_settings)
    */
   window.syncSiteTextToSupabase = async function(editableKey, htmlContent) {
+    if (!instructorSignedIn()) return NOT_SIGNED_IN;
     const client = window.getSupabaseClient();
     if (!client) return { ok: false, error: 'Supabase client not initialized' };
 
@@ -209,6 +294,7 @@
    * 2. Student Directory & Progress Sync (student_profiles)
    */
   window.syncStudentToSupabase = async function(studentName, studentData) {
+    if (!instructorSignedIn()) return NOT_SIGNED_IN;
     console.log('🚀 syncStudentToSupabase ENTRY for:', studentName, studentData);
     const client = window.getSupabaseClient();
     if (!client) {
@@ -271,11 +357,6 @@
         error = retryRes.error;
       }
 
-      // 4. Always also sync to site_settings table (l2d_student_progress_json) as dual backup
-      if (typeof window.syncSiteTextToSupabase === 'function' && window.courseState && window.courseState.studentProgress) {
-        window.syncSiteTextToSupabase('l2d_student_progress_json', JSON.stringify(window.courseState.studentProgress));
-      }
-
       if (error) {
         console.warn('Supabase student_profiles sync final result:', error.message);
       } else {
@@ -334,6 +415,7 @@
   };
 
   window.deleteStudentFromSupabase = async function(studentName) {
+    if (!instructorSignedIn()) return NOT_SIGNED_IN;
     const client = window.getSupabaseClient();
     if (!client) return { ok: false };
 
@@ -349,6 +431,7 @@
    * 3. Preston Danger Spot Test Routes Sync (preston_routes)
    */
   window.syncRouteToSupabase = async function(spotId, routeObj) {
+    if (!instructorSignedIn()) return NOT_SIGNED_IN;
     const client = window.getSupabaseClient();
     if (!client) return { ok: false, error: 'Supabase client not initialized' };
 
@@ -435,6 +518,7 @@
    * 4. Car Showroom Fleet Hotspots Sync (fleet_hotspots)
    */
   window.syncHotspotsToSupabase = async function(vehicleIdOrFleetObj, hotspotsArray) {
+    if (!instructorSignedIn()) return NOT_SIGNED_IN;
     const client = window.getSupabaseClient();
     if (!client) return { ok: false, error: 'Supabase client not initialized' };
 
@@ -527,6 +611,7 @@
    * 5. Student Reviews Sync (student_reviews)
    */
   window.syncReviewToSupabase = async function(reviewObj) {
+    if (!instructorSignedIn()) return NOT_SIGNED_IN;
     const client = window.getSupabaseClient();
     if (!client) return { ok: false, error: 'Supabase client not initialized' };
 
@@ -577,6 +662,7 @@
   };
 
   window.deleteReviewFromSupabase = async function(reviewId) {
+    if (!instructorSignedIn()) return NOT_SIGNED_IN;
     const client = window.getSupabaseClient();
     if (!client) return { ok: false, error: 'Supabase client not initialized' };
 
@@ -596,6 +682,7 @@
    * 6. Bulk Sync ALL 100% Application Data Fields to Supabase
    */
   window.syncAllLocalDataToSupabase = async function() {
+    if (!instructorSignedIn()) return NOT_SIGNED_IN;
     const client = window.getSupabaseClient();
     if (!client) return { ok: false, errors: ['Supabase client not initialized. Check URL and Key.'] };
 
@@ -812,6 +899,9 @@
           const cloudStudents = await window.fetchStudentsFromSupabase();
           if (cloudStudents) {
             localStorage.setItem('l2d_student_progress', JSON.stringify(cloudStudents));
+            if (window.courseState && typeof window.courseState === 'object') {
+              window.courseState.studentProgress = cloudStudents;
+            }
             if (typeof window.renderAdminProgressTable === 'function') window.renderAdminProgressTable();
           }
         })
@@ -851,6 +941,16 @@
    */
   async function supabaseClientSyncOnLoad() {
     initSupabase();
+
+    // If the admin flag and the real sign-in state disagree, fix the flag and reload once
+    // so the page renders for the right audience.
+    const flagBefore = localStorage.getItem('l2d_is_admin') === 'true';
+    const signedIn = await window.l2dSyncAdminSession();
+    if (flagBefore !== signedIn) {
+      window.location.reload();
+      return;
+    }
+
     const autoSyncEnabled = localStorage.getItem('l2d_supabase_auto_sync') !== 'false';
     const client = window.getSupabaseClient();
 
@@ -888,10 +988,13 @@
         if (typeof window.hydrateSiteTextFromStorage === 'function') window.hydrateSiteTextFromStorage();
       }
 
-      // Pull student directory
-      const cloudStudents = await window.fetchStudentsFromSupabase();
+      // Pull student directory (private: only a signed-in instructor can read it)
+      const cloudStudents = signedIn ? await window.fetchStudentsFromSupabase() : null;
       if (cloudStudents && Object.keys(cloudStudents).length > 0) {
         localStorage.setItem('l2d_student_progress', JSON.stringify(cloudStudents));
+        if (window.courseState && typeof window.courseState === 'object') {
+          window.courseState.studentProgress = cloudStudents;
+        }
         if (typeof window.renderAdminProgressTable === 'function') window.renderAdminProgressTable();
       }
 

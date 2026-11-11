@@ -271,7 +271,9 @@ async function fetchGoogleBusinessReviews() {
         mergedMap[key] = r;
       });
       const merged = Object.values(mergedMap);
-      saveReviewsToStorage(merged);
+      // Visitors keep the merged list in their own browser; only the instructor's session writes it to the cloud.
+      const isAdminSession = localStorage.getItem('l2d_is_admin') === 'true';
+      saveReviewsToStorage(merged, { syncToCloud: isAdminSession });
     }
   } catch(e) {
     console.warn('Error polling Google Business Profile Reviews:', e);
@@ -294,14 +296,15 @@ function loadReviewsFromStorage() {
   return [...DEFAULT_REVIEWS];
 }
 
-function saveReviewsToStorage(reviews) {
+function saveReviewsToStorage(reviews, options) {
+  const syncToCloud = !options || options.syncToCloud !== false;
   try {
     const payload = JSON.stringify(reviews);
     localStorage.setItem('l2d_custom_reviews', payload);
-    if (typeof window.syncSiteTextToSupabase === 'function') {
+    if (syncToCloud && typeof window.syncSiteTextToSupabase === 'function') {
       window.syncSiteTextToSupabase('custom_reviews_json', payload);
     }
-    if (navigator.onLine && typeof window.syncReviewToSupabase === 'function' && Array.isArray(reviews)) {
+    if (syncToCloud && navigator.onLine && typeof window.syncReviewToSupabase === 'function' && Array.isArray(reviews)) {
       reviews.forEach(rev => window.syncReviewToSupabase(rev));
     }
     if (typeof window.renderReviews === 'function') {

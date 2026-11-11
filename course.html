@@ -18,30 +18,17 @@
   <!-- ACTUAL STUDENT LOGIN PORTAL OVERLAY -->
   <div id="studentPortalGate" class="student-portal-gate" style="display: none;">
     <div class="student-portal-card">
-      <form id="studentPortalLoginForm" onsubmit="submitStudentPortalLogin(event)">
-        <div class="card-header text-center pb-2">
-          <h2 style="margin: 0;">Student L2D Login Portal</h2>
-          <p style="margin: 0.5rem 0 0; color: var(--text-muted); font-size: 0.9rem;">Access your personalized driving curriculum</p>
-        </div>
-
-        <div style="text-align: left; margin-bottom: 1.25rem;">
-          <label for="portalStudentUsername" style="font-weight: 700; font-size: 0.88rem; display: block; margin-bottom: 0.4rem;">
-            Student Username:
-          </label>
-          <input type="text" id="portalStudentUsername" class="portal-input" placeholder="Enter student username" required>
-
-          <label for="portalStudentPassword" style="font-weight: 700; font-size: 0.88rem; display: block; margin-bottom: 0.4rem;">
-            Password:
-          </label>
-          <input type="password" id="portalStudentPassword" class="portal-input" placeholder="Enter password" style="margin-bottom: 0.5rem;" required>
-
-          <div id="portalStudentLoginError" style="color: var(--color-red, #EF4444); font-size: 0.85rem; min-height: 1.2rem; margin-bottom: 0.5rem;"></div>
-        </div>
-
-        <button type="submit" class="btn btn-primary" style="width: 100%; padding: 0.9rem; font-size: 1.05rem;" id="studentLoginBtn">
-          Log In to My L2D Dashboard 🚀
-        </button>
-      </form>
+      <!-- Student logins are paused until they are rebuilt with real accounts (see STUDENT_LOGINS_PAUSED in js/course-player.js) -->
+      <div class="card-header text-center pb-2">
+        <h2 style="margin: 0;">Student logins are paused</h2>
+        <p style="margin: 0.75rem 0 1.25rem; color: var(--text-muted); font-size: 0.95rem;">
+          We are upgrading the video course hub. Ask your instructor if you need a lesson video in the meantime.
+        </p>
+      </div>
+      <div style="display: flex; flex-wrap: wrap; gap: 0.75rem;">
+        <a href="index.html" class="btn btn-primary" style="flex: 1; min-width: 160px;">Back to main site</a>
+        <button type="button" class="btn btn-secondary" style="flex: 1; min-width: 160px;" onclick="openAdminLoginModal()">Instructor sign-in</button>
+      </div>
     </div>
   </div>
 
@@ -59,14 +46,14 @@
 
         <div style="text-align: left; margin-bottom: 1.5rem;">
           <label for="adminLoginUsername" style="font-weight: 700; font-size: 0.88rem; display: block; margin-bottom: 0.4rem;">
-            Admin Username:
+            Instructor email:
           </label>
-          <input type="text" id="adminLoginUsername" class="portal-input" placeholder="Enter admin username" required>
+          <input type="email" id="adminLoginUsername" class="portal-input" placeholder="you@example.com" autocomplete="username" required>
 
           <label for="adminLoginPassword" style="font-weight: 700; font-size: 0.88rem; display: block; margin-bottom: 0.4rem;">
-            Admin Password:
+            Password:
           </label>
-          <input type="password" id="adminLoginPassword" class="portal-input" placeholder="Enter password" style="margin-bottom: 0.5rem;" required>
+          <input type="password" id="adminLoginPassword" class="portal-input" placeholder="Enter password" autocomplete="current-password" style="margin-bottom: 0.5rem;" required>
           <div id="adminLoginError" style="color: var(--color-red, #EF4444); font-size: 0.85rem; min-height: 1.2rem; margin-bottom: 0.5rem;"></div>
         </div>
 
@@ -593,15 +580,15 @@
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="js/env-config.js"></script>
   <script src="js/config.js?v=5"></script>
-  <script src="js/supabase-client.js?v=5"></script>
+  <script src="js/supabase-client.js?v=6"></script>
 
   <!-- Application Scripts -->
   <script src="js/cloud-sync.js?v=4"></script>
-  <script src="js/app.js?v=15"></script>
-  <script src="js/course-data.js?v=2"></script>
-  <script src="js/reviews.js?v=2"></script>
+  <script src="js/app.js?v=16"></script>
+  <script src="js/course-data.js?v=3"></script>
+  <script src="js/reviews.js?v=3"></script>
   <script src="js/image-cropper.js?v=2"></script>
-  <script src="js/course-player.js?v=17"></script>
+  <script src="js/course-player.js?v=19"></script>
 
   <!-- Scroll Reveal Animations -->
   <script>

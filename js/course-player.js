@@ -19,6 +19,10 @@ let courseState = {
 
 window.courseState = courseState;
 
+// Student logins are paused until they are rebuilt with real accounts.
+// While paused, the student table is private and only the instructor can sign in.
+const STUDENT_LOGINS_PAUSED = true;
+
 function getAdminUsername() {
   try {
     return localStorage.getItem('l2d_admin_user') || 'admin';
@@ -56,22 +60,12 @@ async function verifyPassword(inputPassword, storedSaltHex, storedHashHex) {
  * Migration Helper: Upgrade plain-text passwords to SHA-256 + Salt
  */
 async function migrateCredentialsToSHA256() {
+  // The instructor password now lives in Supabase Auth; clear any copies left in this browser.
   try {
-    const adminHash = localStorage.getItem('l2d_admin_password_hash');
-    const adminSalt = localStorage.getItem('l2d_admin_password_salt');
-    if (!adminHash || !adminSalt) {
-      const legacyAdminPass = localStorage.getItem('l2d_admin_pass') || 'Huzaifa1';
-      const salt = generateSaltHex(16);
-      const hash = await hashPassword(legacyAdminPass, salt);
-      localStorage.setItem('l2d_admin_password_salt', salt);
-      localStorage.setItem('l2d_admin_password_hash', hash);
-      localStorage.removeItem('l2d_admin_pass');
-    } else {
-      localStorage.removeItem('l2d_admin_pass');
-    }
-  } catch(e) {
-    console.warn('Error migrating admin credentials to SHA-256:', e);
-  }
+    localStorage.removeItem('l2d_admin_pass');
+    localStorage.removeItem('l2d_admin_password_hash');
+    localStorage.removeItem('l2d_admin_password_salt');
+  } catch(e) {}
 
   let stateModified = false;
   if (courseState.studentProgress && typeof courseState.studentProgress === 'object') {
@@ -89,7 +83,11 @@ async function migrateCredentialsToSHA256() {
     }
   }
   if (stateModified) {
-    saveLMSStateToStorage();
+    // Keep the upgraded hashes in this browser only. Syncing here would let any
+    // first-time visitor overwrite the student accounts stored in the cloud.
+    try {
+      localStorage.setItem('l2d_student_progress', JSON.stringify(courseState.studentProgress));
+    } catch(e) {}
   }
 }
 
@@ -230,7 +228,7 @@ window.checkAndApplyLMSComingSoonMode = function() {
 
 function loadLMSStateFromStorage() {
   try {
-    const savedStudent = localStorage.getItem('l2d_current_student');
+    const savedStudent = STUDENT_LOGINS_PAUSED ? null : localStorage.getItem('l2d_current_student');
     if (savedStudent && savedStudent.trim() !== '') {
       courseState.currentStudent = savedStudent;
     } else {
@@ -296,20 +294,13 @@ function saveLMSStateToStorage() {
       localStorage.setItem('l2d_syllabus_filter', courseState.syllabusFilter);
     }
 
-    if (typeof window.syncSiteTextToSupabase === 'function') {
-      console.log('🌐 Calling syncSiteTextToSupabase for l2d_student_progress_json...');
-      window.syncSiteTextToSupabase('l2d_student_progress_json', JSON.stringify(courseState.studentProgress));
-    } else {
-      console.warn('⚠️ syncSiteTextToSupabase is NOT a function on window!');
-    }
+    // Student records are private: only a signed-in instructor saves them to the cloud.
+    if (!courseState.isAdmin) return;
 
     if (typeof window.syncStudentToSupabase === 'function') {
-      console.log('🎓 Calling syncStudentToSupabase for all student progress entries...');
       Object.keys(courseState.studentProgress || {}).forEach(name => {
         window.syncStudentToSupabase(name, courseState.studentProgress[name]);
       });
-    } else {
-      console.warn('⚠️ syncStudentToSupabase is NOT a function on window!');
     }
 
     if (typeof window.pushLocalDataToCloud === 'function') {
@@ -376,6 +367,9 @@ function checkStudentLoginGate() {
  * Student Authentication Logic
  */
 async function authenticateStudent(username, plainPassword) {
+  if (STUDENT_LOGINS_PAUSED) {
+    return { success: false, error: "Student logins are paused while we upgrade the course hub." };
+  }
   if (!username || !plainPassword || !username.trim() || !plainPassword.trim()) {
     return { success: false, error: "Please enter both username and password" };
   }
@@ -454,49 +448,18 @@ window.submitStudentPortalLogin = async function(event) {
  */
 window.openAdminLoginModal = async function() {
   const modal = document.getElementById('adminLoginModalBackdrop');
-  if (!modal) {
-    const user = prompt('Instructor Admin Username:', getAdminUsername());
-    if (user === null) return;
-    const pass = prompt('Instructor Admin Password:', '');
-    if (pass === null) return;
-
-    const storedUser = getAdminUsername();
-    const storedSalt = localStorage.getItem('l2d_admin_password_salt');
-    const storedHash = localStorage.getItem('l2d_admin_password_hash');
-
-    let isValid = false;
-    if (user.trim() === storedUser && storedSalt && storedHash) {
-      isValid = await verifyPassword(pass, storedSalt, storedHash);
-    }
-
-    if (isValid) {
-      courseState.isAdmin = true;
-      localStorage.setItem('l2d_is_admin', 'true');
-      localStorage.setItem('l2d_admin_user', user);
-      saveLMSStateToStorage();
-      checkStudentLoginGate();
-      renderLMSHeaderBar();
-      renderAdminHub();
-      if (typeof window.initAdminTopBar === 'function') {
-        window.initAdminTopBar();
-      }
-      showToast(`Admin Mode Unlocked (${user})!`);
-    } else {
-      alert(`Invalid Admin Credentials.`);
-    }
-    return;
-  }
+  if (!modal) return;
 
   const userEl = document.getElementById('adminLoginUsername');
   const passEl = document.getElementById('adminLoginPassword');
   const errEl = document.getElementById('adminLoginError');
 
-  if (userEl) userEl.value = getAdminUsername();
+  if (userEl) userEl.value = '';
   if (passEl) passEl.value = '';
   if (errEl) errEl.textContent = '';
 
   modal.style.display = 'flex';
-  if (passEl) passEl.focus();
+  if (userEl) userEl.focus();
 };
 
 window.closeAdminLoginModal = function() {
@@ -516,30 +479,21 @@ window.submitAdminLoginModal = async function(event) {
   const user = userEl ? userEl.value.trim() : '';
   const pass = passEl ? passEl.value : '';
 
-  const storedUser = getAdminUsername();
-  const storedSalt = localStorage.getItem('l2d_admin_password_salt');
-  const storedHash = localStorage.getItem('l2d_admin_password_hash');
+  // Sign-in is checked by Supabase Auth, never in the browser.
+  const res = (typeof window.l2dAdminSignIn === 'function')
+    ? await window.l2dAdminSignIn(user, pass)
+    : { ok: false, error: 'Sign-in is unavailable right now.' };
 
-  let isValid = false;
-  if (user === storedUser && storedSalt && storedHash) {
-    isValid = await verifyPassword(pass, storedSalt, storedHash);
-  } else if (user === storedUser) {
-    const legacyPass = localStorage.getItem('l2d_admin_pass') || 'Huzaifa1';
-    if (pass === legacyPass) {
-      isValid = true;
-      const newSalt = generateSaltHex(16);
-      const newHash = await hashPassword(pass, newSalt);
-      localStorage.setItem('l2d_admin_password_salt', newSalt);
-      localStorage.setItem('l2d_admin_password_hash', newHash);
-      localStorage.removeItem('l2d_admin_pass');
+  if (res.ok) {
+    // The student list is private, so it can only be loaded once the instructor is signed in.
+    if (typeof window.fetchStudentsFromSupabase === 'function') {
+      const cloudStudents = await window.fetchStudentsFromSupabase();
+      if (cloudStudents && Object.keys(cloudStudents).length > 0) {
+        courseState.studentProgress = cloudStudents;
+        try { localStorage.setItem('l2d_student_progress', JSON.stringify(cloudStudents)); } catch(e) {}
+      }
     }
-  }
-
-  if (isValid) {
     courseState.isAdmin = true;
-    localStorage.setItem('l2d_is_admin', 'true');
-    localStorage.setItem('l2d_admin_user', user);
-    saveLMSStateToStorage();
     closeAdminLoginModal();
     checkStudentLoginGate();
     renderLMSHeaderBar();
@@ -550,15 +504,19 @@ window.submitAdminLoginModal = async function(event) {
     showToast(`Admin Mode Unlocked (${user})!`);
   } else {
     if (errEl) {
-      errEl.textContent = 'Invalid Admin Credentials.';
+      errEl.textContent = res.error;
     } else {
-      alert('Invalid Admin Credentials.');
+      alert(res.error);
     }
   }
 };
 
-window.logoutStudent = function() {
+window.logoutStudent = async function() {
   const wasAdmin = courseState.isAdmin || (localStorage.getItem('l2d_is_admin') === 'true');
+  // End the real sign-in session first, so the next page load does not restore admin mode.
+  if (wasAdmin && typeof window.l2dAdminSignOut === 'function') {
+    await window.l2dAdminSignOut();
+  }
   courseState.currentStudent = null;
   courseState.isAdmin = false;
   localStorage.removeItem('l2d_is_admin');
@@ -935,7 +893,8 @@ function renderLessonTheater(lesson) {
           if (les.transmission === 'Auto' || les.transmission === 'Automatic') transText = 'Automatic (Kona EV)';
           metaEl.textContent = `⏱️ ${formattedDuration} • ${transText}`;
         }
-        if (typeof window.saveCourseDataToStorage === 'function') {
+        // Only the instructor's session saves the duration; a student pressing play must not rewrite the curriculum.
+        if (courseState.isAdmin && typeof window.saveCourseDataToStorage === 'function') {
           window.saveCourseDataToStorage();
         }
         break;
@@ -1634,18 +1593,18 @@ function renderAdminSiteSettings() {
 
       <!-- SECTION 1: INSTRUCTOR ADMIN CREDENTIALS -->
       <div class="admin-editor-section">
-        <h3 style="margin-bottom:0.5rem; font-size:1.25rem;">Instructor Admin Credentials</h3>
+        <h3 style="margin-bottom:0.5rem; font-size:1.25rem;">Instructor Sign-In</h3>
         <p style="font-size:0.88rem; color:var(--text-light); margin-bottom:0.75rem;">
-          Update the admin username and password used to unlock Admin Mode.
+          Change the password for the instructor account you are signed in with.
         </p>
         <div class="editor-grid-2">
           <div>
-            <label style="font-size:0.82rem; font-weight:700; display:block; margin-bottom:0.3rem;">Admin Username</label>
-            <input type="text" id="editAdminUsername" class="portal-input">
+            <label for="editAdminUsername" style="font-size:0.82rem; font-weight:700; display:block; margin-bottom:0.3rem;">Signed in as</label>
+            <input type="email" id="editAdminUsername" class="portal-input" readonly>
           </div>
           <div>
-            <label style="font-size:0.82rem; font-weight:700; display:block; margin-bottom:0.3rem;">Admin Password</label>
-            <input type="password" id="editAdminPassword" class="portal-input">
+            <label for="editAdminPassword" style="font-size:0.82rem; font-weight:700; display:block; margin-bottom:0.3rem;">New password</label>
+            <input type="password" id="editAdminPassword" class="portal-input" autocomplete="new-password">
           </div>
         </div>
       </div>
@@ -2139,21 +2098,14 @@ window.saveHubSpotPortalIdSetting = function() {
 
 window.saveAdminContentEditorSettings = async function() {
   saveHubSpotPortalIdSetting();
-  const newUser = document.getElementById('editAdminUsername')?.value.trim();
   const newPass = document.getElementById('editAdminPassword')?.value;
-  if (newUser) {
-    try {
-      localStorage.setItem('l2d_admin_user', newUser);
-    } catch(e) {}
-  }
   if (newPass && newPass.trim() !== '') {
-    try {
-      const salt = generateSaltHex(16);
-      const hash = await hashPassword(newPass, salt);
-      localStorage.setItem('l2d_admin_password_salt', salt);
-      localStorage.setItem('l2d_admin_password_hash', hash);
-      localStorage.removeItem('l2d_admin_pass');
-    } catch(e) {}
+    const passRes = (typeof window.l2dChangeAdminPassword === 'function')
+      ? await window.l2dChangeAdminPassword(newPass)
+      : { ok: false, error: 'Password change is unavailable right now.' };
+    if (!passRes.ok) {
+      alert('Password not changed: ' + passRes.error);
+    }
   }
 
   const heroBadge = document.getElementById('editHeroBadge')?.value.trim() || '';

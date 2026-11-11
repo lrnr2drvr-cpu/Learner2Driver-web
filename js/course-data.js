@@ -206,9 +206,9 @@ function loadCourseDataFromStorage() {
   } catch(e) {
     console.warn('Error reading custom course data from storage', e);
   }
-  // Only load defaults on first-ever visit (no saved data exists yet)
+  // No saved copy in this browser yet: show the defaults until the cloud copy arrives.
+  // Never save them here — that would overwrite the instructor's curriculum in the cloud.
   window.COURSE_DATA = JSON.parse(JSON.stringify(DEFAULT_COURSE_MODULES));
-  saveCourseDataToStorage();
   return window.COURSE_DATA;
 }
 

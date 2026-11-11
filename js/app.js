@@ -471,7 +471,9 @@ window.toggleLMSComingSoon = function() {
  * Toggle & Sync In-Memory and LocalStorage Editing Mode State
  */
 window.setEditingMode = function(enabled) {
-  if (!enabled) {
+  // Save only when edit mode is actually being switched off. Saving on every call
+  // re-uploaded whatever this browser happened to show, even if nothing was edited.
+  if (!enabled && window.L2D_EDIT_MODE) {
     window.saveAllEditableContentFromDOM();
   }
 
@@ -539,7 +541,17 @@ window.toggleEditingMode = function() {
   }
 };
 
-window.handleAdminLogout = function() {
+window.handleAdminLogout = async function() {
+  // Finish any text edit in progress while still signed in, so it is saved.
+  if (document.activeElement && typeof document.activeElement.blur === 'function') {
+    try { document.activeElement.blur(); } catch(e) {}
+  }
+
+  // End the real sign-in session first, so the next page load does not restore admin mode.
+  if (typeof window.l2dAdminSignOut === 'function') {
+    await window.l2dAdminSignOut();
+  }
+
   try {
     localStorage.removeItem('l2d_is_admin');
     localStorage.removeItem('l2d_admin_editing_mode');
@@ -828,17 +840,12 @@ window.openAdminLoginModal = function() {
   const passEl = document.getElementById('adminLoginPassword');
   const errEl = document.getElementById('adminLoginError');
 
-  let adminUser = 'admin';
-  try {
-    adminUser = localStorage.getItem('l2d_admin_user') || 'admin';
-  } catch(e) {}
-
-  if (userEl) userEl.value = adminUser;
+  if (userEl) userEl.value = '';
   if (passEl) passEl.value = '';
   if (errEl) errEl.textContent = '';
 
   modal.style.display = 'flex';
-  if (passEl) passEl.focus();
+  if (userEl) userEl.focus();
 };
 
 window.closeAdminLoginModal = function() {
@@ -858,31 +865,12 @@ window.submitAdminLoginModal = async function(event) {
   const user = userEl ? userEl.value.trim() : '';
   const pass = passEl ? passEl.value : '';
 
-  let storedUser = 'admin';
-  try {
-    storedUser = localStorage.getItem('l2d_admin_user') || 'admin';
-  } catch(e) {}
+  // Sign-in is checked by Supabase Auth, never in the browser.
+  const res = (typeof window.l2dAdminSignIn === 'function')
+    ? await window.l2dAdminSignIn(user, pass)
+    : { ok: false, error: 'Sign-in is unavailable right now.' };
 
-  const storedSalt = localStorage.getItem('l2d_admin_password_salt');
-  const storedHash = localStorage.getItem('l2d_admin_password_hash');
-
-  let isValid = false;
-  if (typeof window.verifyPassword === 'function' && storedSalt && storedHash) {
-    if (user === storedUser) {
-      isValid = await window.verifyPassword(pass, storedSalt, storedHash);
-    }
-  } else if (user === storedUser) {
-    const legacyPass = localStorage.getItem('l2d_admin_pass') || 'Huzaifa1';
-    if (pass === legacyPass) {
-      isValid = true;
-    }
-  }
-
-  if (isValid) {
-    try {
-      localStorage.setItem('l2d_is_admin', 'true');
-      localStorage.setItem('l2d_admin_user', user);
-    } catch(e) {}
+  if (res.ok) {
     closeAdminLoginModal();
     if (typeof window.initAdminTopBar === 'function') {
       window.initAdminTopBar();
@@ -895,9 +883,9 @@ window.submitAdminLoginModal = async function(event) {
     }
   } else {
     if (errEl) {
-      errEl.textContent = 'Invalid Admin Credentials.';
+      errEl.textContent = res.error;
     } else {
-      alert('Invalid Admin Credentials.');
+      alert(res.error);
     }
   }
 };
