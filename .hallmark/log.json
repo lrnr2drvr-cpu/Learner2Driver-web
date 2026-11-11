@@ -1,0 +1,27 @@
+[
+ {
+  "shape": "Catalogue",
+  "theme": "grid",
+  "axes": "light/grotesk-sans/cool",
+  "hero": "Stage",
+  "nav": "edge-aligned",
+  "footer": "index columns",
+  "imagery": "photographs",
+  "photos": [],
+  "entry": "mockup/index.html",
+  "fingerprint": "83c515",
+  "sections": [
+   "Hero",
+   "Offer",
+   "Grid",
+   "Index",
+   "Bento",
+   "Footer"
+  ],
+  "signature": "the lesson price at poster scale on a green field, changing as you choose",
+  "waived": [],
+  "prompt": "Learner2Driver homepage mockup, Preston driving school",
+  "date": "2026-11-11",
+  "mode": "build"
+ }
+]
