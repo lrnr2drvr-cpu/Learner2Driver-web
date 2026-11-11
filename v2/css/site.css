@@ -102,7 +102,23 @@ a.rating:hover { color: var(--color-mark); }
 .hero__text .lead { max-width: 28ch; }
 .hero__visual { grid-column: 6 / span 7; position: relative; }
 .photo--hero { min-height: 440px; }
-.photo--hero .chip { inset-inline: auto var(--space-md); }
+.photo--hero .chip { inset-block: var(--space-md) auto; }
+
+/* the hero's two cars: the large photograph crossfades, the small one shows the other car */
+#hero-cars img:not(.is-shown) { display: none; }
+.js #hero-cars img { display: block; opacity: 0; transition: opacity var(--dur-long) var(--ease-in-out); }
+.js #hero-cars img.is-shown { opacity: 1; }
+.switch { position: absolute; z-index: 2; inset-block-end: var(--space-md); inset-inline-end: var(--space-md); display: none; gap: var(--space-2xs); padding: var(--space-2xs); border-radius: var(--radius-pill); }
+.js .switch { display: flex; }
+.switch button { min-height: 44px; padding: 0 var(--space-md); border: 0; border-radius: var(--radius-pill); background: none; color: var(--color-ink); font: 500 var(--text-sm)/1 var(--font-body); cursor: pointer; transition: background-color var(--dur-short) var(--ease-out), color var(--dur-short) var(--ease-out); }
+.switch button:hover { background: var(--color-paper); }
+.switch button[aria-pressed="true"] { background: var(--color-ink); color: var(--color-paper); }
+.switch button:focus-visible { outline: 2px solid var(--color-focus); outline-offset: 2px; }
+.photo__swap { position: absolute; z-index: 3; inset: 0; display: none; padding: 0; border: 0; border-radius: inherit; background: none; cursor: pointer; }
+.js .photo__swap { display: block; }
+.photo__swap:focus-visible { outline: 2px solid var(--color-focus); outline-offset: 4px; }
+.photo--inset { transition: transform var(--dur-short) var(--ease-out); }
+.photo--inset:hover { transform: translateY(-4px); }
 .photo--inset { position: absolute; inset-inline-start: calc(-1 * var(--space-xl)); inset-block-end: calc(-1 * var(--space-2xl)); width: 40%; box-shadow: 0 0 0 6px var(--color-paper); }
 .photo--inset .chip { inset-block-end: var(--space-sm); inset-inline-start: var(--space-sm); }
 
@@ -122,10 +138,22 @@ a.rating:hover { color: var(--color-mark); }
 .seg input:focus-visible + label { outline: 2px solid var(--color-focus); outline-offset: 2px; }
 .seg input:disabled + label { opacity: 0.55; cursor: not-allowed; }
 
+/* a booking row that holds a field instead of choices */
+.row { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-xs); min-width: 0; }
+.row__label { width: 6.5rem; font-size: var(--text-sm); font-weight: 500; color: var(--color-muted); }
+.input { flex: 1 1 11rem; min-width: 0; min-height: 48px; padding: 0 var(--space-md); border: 0; border-radius: var(--radius-control); background: var(--color-paper-2); color: var(--color-ink); font: 500 var(--text-md)/1 var(--font-body); transition: background-color var(--dur-short) var(--ease-out); }
+.input--short { flex: 0 1 11rem; text-transform: uppercase; }
+.input--short::placeholder { text-transform: none; }
+.input::placeholder { color: var(--color-muted); opacity: 1; }
+.input:hover { background: var(--color-paper-3); }
+.input:focus-visible { outline: 2px solid var(--color-focus); outline-offset: 2px; }
+.input[type="date"] { flex: 0 1 14rem; }
+
 .offer__field { grid-column: 7 / span 6; display: grid; align-content: space-between; gap: var(--space-2xl); padding: var(--field-pad); border-radius: var(--radius-card); }
 .price { display: grid; gap: var(--space-sm); animation: swap-in var(--dur-long) var(--ease-out); }
 .price__figure { font: var(--display-weight) clamp(5.5rem, 13vw, 12rem)/0.82 var(--font-display); letter-spacing: -0.055em; }
 .price__label { font-size: var(--text-lead); font-weight: 500; }
+.price__save { justify-self: start; padding: var(--space-2xs) var(--space-md); border-radius: var(--radius-pill); background: var(--color-field-ink); color: var(--color-field); font-size: var(--text-sm); font-weight: 500; }
 .price--10 { display: none; }
 .offer:has(#h-10:checked) .price--1 { display: none; }
 .offer:has(#h-10:checked) .price--10 { display: grid; }
@@ -266,6 +294,8 @@ a.rating:hover { color: var(--color-mark); }
 }
 @media (max-width: 40rem) {
   .seg legend { float: none; width: 100%; }
+  .row__label { width: 100%; }
+  .switch button { padding: 0 var(--space-sm); }
   .grid2 { grid-template-columns: minmax(0, 1fr); }
   .cell--type { padding: var(--space-lg); min-height: 0; }
   .specs { grid-template-columns: repeat(2, minmax(0, 1fr)); }
@@ -277,5 +307,6 @@ a.rating:hover { color: var(--color-mark); }
 @media (prefers-reduced-motion: reduce) {
   .js .reveal { opacity: 1; transform: none; transition: none; }
   .price, .tip, .menu__panel, .hotspot__note { animation: none; }
-  .btn:hover, .btn:active, .spots label:hover, .cell:hover > .photo, .bento > .photo:hover, .post:hover .post__frame, .pin.is-on { transform: none; }
+  .btn:hover, .btn:active, .spots label:hover, .cell:hover > .photo, .bento > .photo:hover, .post:hover .post__frame, .photo--inset:hover, .pin.is-on { transform: none; }
+  .js #hero-cars img { transition: none; }
 }

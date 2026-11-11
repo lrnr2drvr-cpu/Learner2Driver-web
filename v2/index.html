@@ -79,14 +79,21 @@
             <span><span data-google="rating">5.0</span> on Google from <span data-google="count">103</span> reviews</span>
           </a>
         </div>
-        <div class="hero__visual reveal" style="--i: 1">
-          <figure class="photo photo--hero" data-slot="hero" data-alt="The Learner2Driver Toyota Yaris">
-            <img src="img/yaris.jpg" width="800" height="600" alt="A silver Toyota Yaris with a Learner2Driver roof board, parked beside a hedge" fetchpriority="high">
-            <figcaption class="chip glass" data-keep>Manual, Toyota Yaris</figcaption>
+        <div class="hero__visual reveal" style="--i: 1" id="hero-cars">
+          <figure class="photo photo--hero" data-slot="hero" data-alt="The Learner2Driver cars">
+            <img class="is-shown" data-car="manual" src="img/yaris.jpg" width="800" height="600" alt="A silver Toyota Yaris with a Learner2Driver roof board, parked beside a hedge" fetchpriority="high">
+            <img data-car="automatic" src="img/kona.jpg" width="800" height="600" alt="A dark grey Hyundai Kona EV with a Learner2Driver roof board">
+            <figcaption class="chip glass" data-keep>Toyota Yaris</figcaption>
+            <div class="switch glass" data-keep role="group" aria-label="Choose a car">
+              <button type="button" data-car="manual" aria-pressed="true">Manual</button>
+              <button type="button" data-car="automatic" aria-pressed="false">Automatic</button>
+            </div>
           </figure>
-          <figure class="photo photo--inset" data-slot="hero-kona" data-alt="The Learner2Driver Hyundai Kona EV">
-            <img src="img/kona.jpg" width="800" height="600" alt="A dark grey Hyundai Kona EV with a Learner2Driver roof board">
+          <figure class="photo photo--inset" data-slot="hero-other" data-alt="The other Learner2Driver car">
+            <img class="is-shown" data-car="automatic" src="img/kona.jpg" width="800" height="600" alt="">
+            <img data-car="manual" src="img/yaris.jpg" width="800" height="600" alt="">
             <figcaption class="chip glass" data-keep>Electric automatic</figcaption>
+            <button class="photo__swap" type="button" data-keep data-car="automatic" aria-label="Show the automatic car"></button>
           </figure>
         </div>
       </div>
@@ -96,7 +103,7 @@
       <div class="container offer__grid">
         <div class="offer__choices reveal">
           <h2 id="book-head" data-key="book_head">Pick your lessons.</h2>
-          <p class="lead" data-key="book_line">Three choices, then one message to us.</p>
+          <p class="lead" data-key="book_line">A few choices, then one message to us.</p>
 
           <fieldset class="seg">
             <legend>Instructor</legend>
@@ -115,11 +122,30 @@
             <input type="radio" name="hours" id="h-1" value="1" checked><label for="h-1">One hour</label>
             <input type="radio" name="hours" id="h-10" value="10"><label for="h-10">Ten-hour block</label>
           </fieldset>
+
+          <div class="row">
+            <label class="row__label" for="b-day">Day</label>
+            <input class="input" type="date" id="b-day" name="day">
+          </div>
+
+          <fieldset class="seg">
+            <legend>Time</legend>
+            <input type="radio" name="time" id="w-any" value="any" checked><label for="w-any">Any time</label>
+            <input type="radio" name="time" id="w-am" value="morning"><label for="w-am">Morning</label>
+            <input type="radio" name="time" id="w-pm" value="afternoon"><label for="w-pm">Afternoon</label>
+            <input type="radio" name="time" id="w-eve" value="evening"><label for="w-eve">Evening</label>
+          </fieldset>
+
+          <div class="row">
+            <span class="row__label">You</span>
+            <input class="input" type="text" id="b-name" name="name" autocomplete="given-name" placeholder="Your name" aria-label="Your name" maxlength="40">
+            <input class="input input--short" type="text" id="b-area" name="area" autocomplete="postal-code" placeholder="Pickup postcode" aria-label="Pickup postcode" maxlength="8">
+          </div>
         </div>
 
         <div class="offer__field field reveal" style="--i: 1">
           <p class="price price--1"><span class="price__figure num">£<span data-key="price_hour">38</span></span><span class="price__label">an hour, manual or automatic</span></p>
-          <p class="price price--10"><span class="price__figure num">£<span data-key="price_block">360</span></span><span class="price__label">for ten hours, was £<span data-key="price_block_was">380</span></span></p>
+          <p class="price price--10"><span class="price__figure num">£<span data-key="price_block">360</span></span><span class="price__label">for ten hours, was £<span data-key="price_block_was">380</span></span><span class="price__save">You save £<span id="price-save">20</span></span></p>
           <div class="offer__send">
             <p class="offer__summary" id="book-summary" aria-live="polite">One hour with the male instructor, in the manual Yaris.</p>
             <div class="actions">

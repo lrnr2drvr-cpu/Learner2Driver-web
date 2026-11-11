@@ -1,5 +1,6 @@
 import { loadContent } from './content.js';
 import { initBooking, refreshBooking } from './booking.js';
+import { initHero } from './hero.js';
 import { initRoutes } from './routes.js';
 import { initReviews } from './reviews.js';
 import { initInstagram } from './instagram.js';
@@ -9,6 +10,7 @@ import { initReveal, initNav, initHotspots, initQuiz } from './ui.js';
 initReveal();
 initNav();
 initBooking();
+initHero();
 initQuiz();
 
 // Then the live data. Each part fails on its own without affecting the rest.
