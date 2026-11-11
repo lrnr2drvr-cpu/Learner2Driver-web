@@ -81,8 +81,8 @@
         </div>
         <div class="hero__visual reveal" style="--i: 1" id="hero-cars">
           <figure class="photo photo--hero" data-slot="hero" data-alt="The Learner2Driver cars">
-            <img class="is-shown" data-car="manual" src="img/yaris.jpg" width="800" height="600" alt="A silver Toyota Yaris with a Learner2Driver roof board, parked beside a hedge" fetchpriority="high">
-            <img data-car="automatic" src="img/kona.jpg" width="800" height="600" alt="A dark grey Hyundai Kona EV with a Learner2Driver roof board">
+            <img class="is-shown" data-car="manual" data-img="yaris" src="img/yaris.jpg" width="800" height="600" alt="A silver Toyota Yaris with a Learner2Driver roof board, parked beside a hedge" fetchpriority="high">
+            <img data-car="automatic" data-img="kona" src="img/kona.jpg" width="800" height="600" alt="A dark grey Hyundai Kona EV with a Learner2Driver roof board">
             <figcaption class="chip glass" data-keep>Toyota Yaris</figcaption>
             <div class="switch glass" data-keep role="group" aria-label="Choose a car">
               <button type="button" data-car="manual" aria-pressed="true">Manual</button>
@@ -90,8 +90,8 @@
             </div>
           </figure>
           <figure class="photo photo--inset" data-slot="hero-other" data-alt="The other Learner2Driver car">
-            <img class="is-shown" data-car="automatic" src="img/kona.jpg" width="800" height="600" alt="">
-            <img data-car="manual" src="img/yaris.jpg" width="800" height="600" alt="">
+            <img class="is-shown" data-car="automatic" data-img="kona" src="img/kona.jpg" width="800" height="600" alt="">
+            <img data-car="manual" data-img="yaris" src="img/yaris.jpg" width="800" height="600" alt="">
             <figcaption class="chip glass" data-keep>Electric automatic</figcaption>
             <button class="photo__swap" type="button" data-keep data-car="automatic" aria-label="Show the automatic car"></button>
           </figure>
@@ -166,7 +166,7 @@
         <div class="grid2">
           <article class="cell reveal">
             <figure class="photo" data-slot="yaris" data-alt="Toyota Yaris" data-car="yaris">
-              <img src="img/yaris.jpg" width="800" height="600" alt="The silver Toyota Yaris from the side" loading="lazy" style="object-position: 70% 50%">
+              <img data-img="yaris" src="img/yaris.jpg" width="800" height="600" alt="The silver Toyota Yaris from the side" loading="lazy" style="object-position: 70% 50%">
               <figcaption class="chip glass" data-keep>Manual</figcaption>
               <button class="hotspot" type="button" data-keep style="--x: 30%; --y: 50%" aria-expanded="false" aria-controls="hs-yaris-1"><span class="visually-hidden">Biting point clutch</span></button>
               <div class="hotspot__note glass" id="hs-yaris-1" data-keep style="--x: 30%; --y: 50%">
@@ -189,7 +189,7 @@
           </article>
           <article class="cell reveal" style="--i: 1">
             <figure class="photo" data-slot="kona" data-alt="Hyundai Kona EV" data-car="kona">
-              <img src="img/kona.jpg" width="800" height="600" alt="A dark grey Hyundai Kona EV with a Learner2Driver roof board" loading="lazy">
+              <img data-img="kona" src="img/kona.jpg" width="800" height="600" alt="A dark grey Hyundai Kona EV with a Learner2Driver roof board" loading="lazy">
               <figcaption class="chip glass" data-keep>Electric automatic</figcaption>
             </figure>
             <div class="cell__body">
@@ -313,16 +313,16 @@
             <p class="tile__label" data-key="pass_rate_label">of our learners pass first time</p>
           </div>
           <figure class="photo photo--square reveal" style="--i: 1" data-slot="pass-1" data-alt="A student with a pass certificate">
-            <img src="img/pass-1.jpg" width="746" height="664" alt="A student holding his pass certificate beside the Learner2Driver car" loading="lazy" style="object-position: 30% 50%">
+            <img data-img="pass-1" src="img/pass-1.jpg" width="746" height="664" alt="A student holding his pass certificate beside the Learner2Driver car" loading="lazy" style="object-position: 30% 50%">
           </figure>
           <figure class="photo photo--square reveal" style="--i: 2" data-slot="pass-2" data-alt="A student with a pass certificate">
-            <img src="img/pass-2.jpg" width="746" height="746" alt="A student holding his pass certificate next to the Learner2Driver roof board" loading="lazy">
+            <img data-img="pass-2" src="img/pass-2.jpg" width="746" height="746" alt="A student holding his pass certificate next to the Learner2Driver roof board" loading="lazy">
           </figure>
           <figure class="photo photo--square reveal" data-slot="pass-3" data-alt="A student with a pass certificate">
-            <img src="img/pass-3.jpg" width="746" height="746" alt="A student holding her pass certificate" loading="lazy">
+            <img data-img="pass-3" src="img/pass-3.jpg" width="746" height="746" alt="A student holding her pass certificate" loading="lazy">
           </figure>
           <figure class="photo photo--square reveal" style="--i: 1" data-slot="pass-4" data-alt="A student with a pass certificate">
-            <img src="img/pass-4.jpg" width="746" height="561" alt="A student holding his pass certificate in front of the Toyota Yaris" loading="lazy" style="object-position: 45% 50%">
+            <img data-img="pass-4" src="img/pass-4.jpg" width="746" height="561" alt="A student holding his pass certificate in front of the Toyota Yaris" loading="lazy" style="object-position: 45% 50%">
           </figure>
           <a class="tile tile--google reveal" style="--i: 2" href="#reviews">
             <p class="figure num" data-google="count">103</p>
@@ -402,8 +402,8 @@
       <div>
         <p class="footer__title">Students and staff</p>
         <ul>
-          <li><a href="../course.html">Video course</a></li>
-          <li><a href="../course.html#adminHubContainer">Instructor sign-in</a></li>
+          <li><a href="course.html">Video course</a></li>
+          <li><button class="footer__button" type="button" id="open-signin">Instructor sign-in</button></li>
         </ul>
       </div>
     </div>
@@ -411,6 +411,25 @@
       <p>© 2026 Learner2Driver. Photographs are the school’s own. Reviews are from Google.</p>
     </div>
   </footer>
+
+  <dialog class="dialog" id="signin" aria-labelledby="signin-head">
+    <form class="dialog__form" id="signin-form">
+      <h2 id="signin-head">Instructor sign-in</h2>
+      <label class="dialog__field" for="si-email">
+        <span>Email</span>
+        <input class="input" type="email" id="si-email" name="email" autocomplete="username" required>
+      </label>
+      <label class="dialog__field" for="si-pass">
+        <span>Password</span>
+        <input class="input" type="password" id="si-pass" name="password" autocomplete="current-password" required>
+      </label>
+      <p class="dialog__error" id="si-error" role="alert"></p>
+      <div class="actions">
+        <button class="btn" type="submit">Sign in</button>
+        <button class="link dialog__cancel" type="button" data-close>Cancel</button>
+      </div>
+    </form>
+  </dialog>
 
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin="" defer></script>
   <script type="module" src="js/main.js"></script>

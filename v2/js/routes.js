@@ -12,6 +12,27 @@ function plain(text) {
   return box.value.replace(/^\s*\d+\.\s*/, '').replace(/\s+/g, ' ').trim();
 }
 
+let placed = [];
+let pinMoved = null;
+
+// A pin the signed-in instructor can drag to a new place.
+function arm({ input, pin }) {
+  if (!pinMoved || !pin.dragging || pin.dragging.enabled()) return;
+  pin.dragging.enable();
+  pin.on('dragend', () => {
+    const { lat, lng } = pin.getLatLng();
+    input.dataset.lat = lat;
+    input.dataset.lng = lng;
+    pinMoved(Number(input.value), lat, lng);
+  });
+}
+
+// Called by the editing code: `moved` receives the spot number and its new position.
+export function editPins(moved) {
+  pinMoved = moved;
+  placed.forEach(arm);
+}
+
 function inputs() {
   return Array.from(document.querySelectorAll('#spots input[name="spot"]'));
 }
@@ -50,6 +71,8 @@ function buildMap() {
     pin.on('click', () => { input.checked = true; input.dispatchEvent(new Event('change', { bubbles: true })); });
     return { input, pin };
   });
+  placed = pins;
+  placed.forEach(arm);
 
   // Leave room at the foot for the tip card that sits over the map on wide screens.
   const wide = window.matchMedia('(min-width: 60rem)').matches;

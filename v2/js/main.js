@@ -5,6 +5,7 @@ import { initRoutes } from './routes.js';
 import { initReviews } from './reviews.js';
 import { initInstagram } from './instagram.js';
 import { initReveal, initNav, initHotspots, initQuiz } from './ui.js';
+import { initAccount } from './account.js';
 
 // Everything that works without the network first.
 initReveal();
@@ -21,3 +22,6 @@ loadContent().then((settings) => {
 initRoutes();
 initHotspots();
 initInstagram();
+
+// The instructor's sign-in and, once signed in, click-to-edit.
+initAccount();
