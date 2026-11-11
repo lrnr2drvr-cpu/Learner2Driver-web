@@ -7,11 +7,18 @@ const still = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 // One entrance, used everywhere. Content is visible without script.
 export function initReveal() {
   const items = document.querySelectorAll('.reveal');
-  const showAll = () => items.forEach((el) => el.classList.add('is-in'));
+  // Once an element has arrived, its entrance classes come off, so the entrance
+  // can never override that element's own hover or press movement afterwards.
+  const show = (el) => {
+    if (!el.classList.contains('reveal')) return;
+    el.classList.add('is-in');
+    setTimeout(() => el.classList.remove('reveal', 'is-in'), 1200);
+  };
+  const showAll = () => items.forEach(show);
   if (!('IntersectionObserver' in window)) { showAll(); return; }
   const seen = new IntersectionObserver((entries) => {
     entries.forEach((entry) => {
-      if (entry.isIntersecting) { entry.target.classList.add('is-in'); seen.unobserve(entry.target); }
+      if (entry.isIntersecting) { show(entry.target); seen.unobserve(entry.target); }
     });
   }, { rootMargin: '0px 0px -8% 0px', threshold: 0.08 });
   items.forEach((el) => seen.observe(el));
@@ -41,15 +48,20 @@ export function initNav() {
   document.addEventListener('keydown', (event) => { if (event.key === 'Escape') menu.open = false; });
 }
 
-// Car hotspots: a dot on the photo opens a short note. Saved hotspots replace the built-in one.
+// Car hotspots: a dot on the photo shows a short note on hover or keyboard focus (in the
+// stylesheet) and stays open when tapped or clicked. Saved hotspots replace the built-in one.
 function wireHotspot(dot) {
-  const note = document.getElementById(dot.getAttribute('aria-controls'));
-  if (!note) return;
   dot.addEventListener('click', () => {
     const open = dot.getAttribute('aria-expanded') === 'true';
+    document.querySelectorAll('.hotspot[aria-expanded="true"]').forEach((other) => other.setAttribute('aria-expanded', 'false'));
     dot.setAttribute('aria-expanded', String(!open));
-    note.hidden = open;
   });
+}
+
+function closeHotspots(event) {
+  if (event.type === 'keydown' && event.key !== 'Escape') return;
+  if (event.type === 'click' && event.target.closest('.hotspot, .hotspot__note')) return;
+  document.querySelectorAll('.hotspot[aria-expanded="true"]').forEach((dot) => dot.setAttribute('aria-expanded', 'false'));
 }
 
 function hotspotNodes(car, spot, index) {
@@ -72,7 +84,6 @@ function hotspotNodes(car, spot, index) {
   note.className = 'hotspot__note glass';
   note.id = id;
   note.dataset.keep = '';
-  note.hidden = true;
   note.style.cssText = place;
   const title = document.createElement('strong');
   title.textContent = spot.title;
@@ -85,6 +96,8 @@ function hotspotNodes(car, spot, index) {
 
 export async function initHotspots() {
   document.querySelectorAll('.hotspot').forEach(wireHotspot);
+  document.addEventListener('click', closeHotspots);
+  document.addEventListener('keydown', closeHotspots);
 
   const rows = await readTable('fleet_hotspots?select=vehicle_id,hotspots');
   rows.forEach((row) => {

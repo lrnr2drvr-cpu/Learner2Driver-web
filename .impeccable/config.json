@@ -11,6 +11,15 @@
         ],
         "createdAt": "2026-11-11T21:48:48.193Z",
         "reason": "Claude: false positive. The detector read h2 and h3 as 16px because their sizes come from clamp() tokens in the imported tokens.css and base.css; rendered at 1440 wide they are about 52px and 25px against a 16px body (checked in screenshots)."
+      },
+      {
+        "rule": "flat-type-hierarchy",
+        "value": "*",
+        "files": [
+          "v2/index.html"
+        ],
+        "createdAt": "2026-11-11T22:11:44.684Z",
+        "reason": "Claude: false positive. The detector reads h2 and h3 as 16px because their sizes come from clamp() tokens in the imported css/tokens.css and css/base.css; rendered at 1440 wide they are about 52px and 25px against a 16px body (checked in screenshots)."
       }
     ]
   }

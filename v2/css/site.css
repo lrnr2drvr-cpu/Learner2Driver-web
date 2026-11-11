@@ -54,7 +54,7 @@ p { color: var(--color-ink-2); }
 
 .photo { margin: 0; aspect-ratio: 4 / 3; border-radius: var(--radius-card); transition: transform var(--dur-long) var(--ease-out); }
 .photo--square { aspect-ratio: 1; }
-.bento > .photo:hover { transform: translateY(-6px); }
+.cell:hover > .photo, .bento > .photo:hover { transform: translateY(-6px); }
 
 .section { padding-block: var(--section-gap) 0; }
 .head { display: grid; gap: var(--space-md); margin-bottom: var(--space-2xl); }
@@ -148,7 +148,9 @@ a.rating:hover { color: var(--color-mark); }
 .hotspot::before { content: ""; position: absolute; inset: 12px; border-radius: inherit; background: var(--color-paper); box-shadow: 0 0 0 5px var(--color-mark); transition: transform var(--dur-short) var(--ease-out); }
 .hotspot:hover::before, .hotspot[aria-expanded="true"]::before { transform: scale(1.25); }
 .hotspot:focus-visible { outline: 2px solid var(--color-paper); outline-offset: 2px; }
-.hotspot__note { position: absolute; z-index: 3; inset-inline-start: calc(var(--x) + var(--space-lg)); inset-block-start: calc(var(--y) - var(--space-lg)); display: grid; gap: var(--space-2xs); max-width: min(17rem, 55%); padding: var(--space-sm) var(--space-md); border-radius: var(--radius-control); font-size: var(--text-sm); color: var(--color-ink); animation: swap-in var(--dur-short) var(--ease-out); }
+/* the note shows on hover or keyboard focus, and stays open once the dot is tapped or clicked */
+.hotspot:hover + .hotspot__note, .hotspot:focus-visible + .hotspot__note, .hotspot[aria-expanded="true"] + .hotspot__note { display: grid; }
+.hotspot__note { position: absolute; z-index: 3; inset-inline-start: calc(var(--x) + var(--space-lg)); inset-block-start: calc(var(--y) - var(--space-lg)); display: none; gap: var(--space-2xs); max-width: min(17rem, 55%); padding: var(--space-sm) var(--space-md); border-radius: var(--radius-control); font-size: var(--text-sm); color: var(--color-ink); animation: swap-in var(--dur-short) var(--ease-out); }
 
 /* ---------- test routes: pick a spot, read the tip, see it on the map ---------- */
 .routes { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--gap-columns); row-gap: var(--space-xl); align-items: start; }
@@ -210,15 +212,16 @@ a.rating:hover { color: var(--color-mark); }
 .quote figcaption a { color: var(--color-ink); text-decoration: none; }
 .quote figcaption a:hover { color: var(--color-mark); }
 
-/* ---------- instagram: a rail ---------- */
-.rail { display: flex; gap: var(--space-md); padding-inline: max(var(--gutter), calc((100% - var(--container)) / 2 + var(--gutter))); overflow-x: auto; scroll-snap-type: x mandatory; scroll-padding-inline: var(--gutter); scrollbar-width: none; }
-.rail::-webkit-scrollbar { display: none; }
-.rail:focus-visible { outline: 2px solid var(--color-focus); outline-offset: 4px; }
-.post { flex: 0 0 auto; display: grid; align-content: start; gap: var(--space-xs); width: clamp(15rem, 22vw, 19rem); scroll-snap-align: start; text-decoration: none; color: var(--color-ink); }
-.post__frame { display: block; aspect-ratio: 5 / 4; border-radius: var(--radius-card); background: var(--color-paper-2); overflow: hidden; transition: transform var(--dur-long) var(--ease-out); }
+/* ---------- instagram: a centred grid of the latest posts ---------- */
+.posts { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-xl) var(--gap-columns); }
+.post { display: grid; align-content: start; gap: var(--space-xs); text-decoration: none; color: var(--color-ink); }
+.post:focus-visible { outline: 2px solid var(--color-focus); outline-offset: 4px; border-radius: var(--radius-card); }
+.post__frame { position: relative; display: block; aspect-ratio: 5 / 4; margin-bottom: var(--space-xs); border-radius: var(--radius-card); background: var(--color-paper-2); overflow: hidden; transition: transform var(--dur-long) var(--ease-out); }
 .post:hover .post__frame { transform: translateY(-6px); }
-.post__frame img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 56%; }
-.post__text { font-size: var(--text-sm); font-weight: 500; line-height: 1.35; }
+.post__frame img { width: 100%; height: 100%; object-fit: cover; }
+/* placed by instagram.js so the photograph inside a tall reel cover fills the frame, centred */
+.post__frame img.is-placed { position: absolute; max-width: none; object-fit: fill; }
+.post__text { font-weight: 500; line-height: 1.35; }
 .post__date { font-size: var(--text-sm); color: var(--color-muted); }
 
 /* ---------- phone booking bar ---------- */
@@ -255,6 +258,7 @@ a.rating:hover { color: var(--color-mark); }
   .bento > .photo { grid-column: span 6; }
   .tile { grid-column: 1 / -1; }
   .quotes { grid-template-columns: minmax(0, 1fr); }
+  .posts { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-lg) var(--gap-columns); }
   .dock { position: fixed; z-index: var(--z-sticky); inset-inline: var(--space-sm); inset-block-end: var(--space-sm); display: flex; align-items: center; justify-content: space-between; gap: var(--space-md); padding: var(--space-xs) var(--space-lg) var(--space-xs) var(--space-xs); border-radius: var(--radius-pill); }
   .footer { padding-block-end: var(--space-4xl); }
   .footer__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
@@ -266,12 +270,12 @@ a.rating:hover { color: var(--color-mark); }
   .cell--type { padding: var(--space-lg); min-height: 0; }
   .specs { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .hotspot__note { inset-inline-start: var(--space-sm); inset-block-start: auto; inset-block-end: calc(var(--space-md) + 44px); max-width: calc(100% - 2 * var(--space-sm)); }
-  .post { width: 14rem; }
+  .post__text { font-size: var(--text-sm); }
   .footer__grid { grid-template-columns: minmax(0, 1fr); }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .js .reveal { opacity: 1; transform: none; transition: none; }
   .price, .tip, .menu__panel, .hotspot__note { animation: none; }
-  .btn:hover, .btn:active, .spots label:hover, .bento > .photo:hover, .post:hover .post__frame, .pin.is-on { transform: none; }
+  .btn:hover, .btn:active, .spots label:hover, .cell:hover > .photo, .bento > .photo:hover, .post:hover .post__frame, .pin.is-on { transform: none; }
 }
