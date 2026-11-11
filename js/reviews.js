@@ -12,188 +12,15 @@ const HARDCODED_GOOGLE_PLACE_ID = (window.L2D_CONFIG && typeof window.L2D_CONFIG
   ? window.L2D_CONFIG.getGooglePlaceId() 
   : (window.L2D_ENV && window.L2D_ENV.GOOGLE_PLACE_ID ? window.L2D_ENV.GOOGLE_PLACE_ID : 'ChIJ_RNj_7Vze0gRHMPMQcHfW-I');
 
-const DEFAULT_REVIEWS = [
-  {
-    id: 'g-live-1',
-    author: 'Samundra G Chhetri',
-    rating: 5,
-    date: '1 month ago',
-    tag: 'Verified Google Business Review',
-    text: 'I highly recommend Learner2Driver Driving School to anyone looking to learn to drive in Preston UK! My instructor was extremely patient, professional, and supportive throughout my learning journey. Passed yesterday!',
-    instructor: 'Farhan & Binish',
-    avatarUrl: 'https://lh3.googleusercontent.com/a-/ALV-UjUZ9ypJmSSYMWTLCETO1dO08K5J3HM7Jk5VAH5MZ6H8e6pFv33x=s128-c0x00000000-cc-rp-mo'
-  },
-  {
-    id: 'g-live-2',
-    author: 'Kishore',
-    rating: 5,
-    date: '2 months ago',
-    tag: 'Verified Google Business Review',
-    text: 'I passed my driving test thanks to Farhan at Learner2Driver! He is a brilliant instructor, very patient, calm and supportive throughout my lessons. Focused exactly on what I needed to improve.',
-    instructor: 'Farhan Hussaini',
-    avatarUrl: 'https://lh3.googleusercontent.com/a-/ALV-UjW8oBTje4HAWAdLHwbsQvlcblqDFgOIxWKU4COYWNAqi_evVw8=s128-c0x00000000-cc-rp-mo'
-  },
-  {
-    id: 'g-live-3',
-    author: 'Ella',
-    rating: 5,
-    date: '3 weeks ago',
-    tag: 'Verified Google Business Review',
-    text: 'I am so happy to say that I passed my driving test first time! A huge thank you to Farhan for all his help and support. He is a very patient, calm, and encouraging instructor who built my confidence behind the wheel.',
-    instructor: 'Farhan Hussaini',
-    avatarUrl: 'https://lh3.googleusercontent.com/a/ACg8ocKU2nELpbGgbw43LminlFA5H0GvPKTZxYqS-ixYdSfzfHKSMw=s128-c0x00000000-cc-rp-mo'
-  },
-  {
-    id: 'g-live-4',
-    author: 'Awais Iqbal',
-    rating: 5,
-    date: '5 months ago',
-    tag: 'Verified Google Business Review',
-    text: 'Great experience learning to drive with Farhan. Very patient, calm, and professional. I passed my driving test successfully after just 4 hours of lessons with him with only 4 minor faults!',
-    instructor: 'Farhan Hussaini',
-    avatarUrl: 'https://lh3.googleusercontent.com/a/ACg8ocK4PGHU6mfSiyv8V0OYG5Atd6Nt0gCW1qEfuu62b_Ud2gKiDNw=s128-c0x00000000-cc-rp-mo'
-  },
-  {
-    id: 'g-live-5',
-    author: 'Huzayfah Vorajee',
-    rating: 5,
-    date: '3 months ago',
-    tag: 'Verified Google Business Review',
-    text: 'Farhan is a brilliant instructor. He helped with fine-tuning my skills in driving and ensured that if I didn\'t get something, he would try other methods to make it understandable. Passed successfully!',
-    instructor: 'Farhan Hussaini',
-    avatarUrl: 'https://lh3.googleusercontent.com/a/ACg8ocLWhMw__5aHBGsSE_MVFevyPcQqlkOyYDTJqPmyRW-gRffMrw=s128-c0x00000000-cc-rp-mo'
-  },
-  {
-    id: 'g-live-6',
-    author: 'Mohammed Al-Mansoori',
-    rating: 5,
-    date: '3 weeks ago',
-    tag: 'Verified Google Business Review',
-    text: 'Farhan and Binish are top tier instructors in Lancashire! Passed my practical test at Preston DVSA with flying colors. Clutch control and roundabout practice made test day a breeze.',
-    instructor: 'Farhan & Binish',
-    avatarUrl: ''
-  },
-  {
-    id: 'g-live-7',
-    author: 'Chloe Bennett',
-    rating: 5,
-    date: '1 month ago',
-    tag: 'Verified Google Business Review',
-    text: 'Learning in the Kona EV with Binish was the best decision! Zero stalling, smooth acceleration, and her reference points for parallel parking are unmatched.',
-    instructor: 'Binish Moazzam',
-    avatarUrl: ''
-  },
-  {
-    id: 'g-live-8',
-    author: 'Usman Raza',
-    rating: 5,
-    date: '2 months ago',
-    tag: 'Verified Google Business Review',
-    text: 'Passed 1st time after completing an intensive course with Farhan! Extremely clear instructions, professional environment, and great mock tests.',
-    instructor: 'Farhan Hussaini',
-    avatarUrl: ''
-  },
-  {
-    id: 1,
-    author: 'Hajra',
-    rating: 5,
-    date: '30 Jul 2026',
-    tag: '1st Time Pass • Manual Yaris',
-    text: 'SECOND one today! I am so happy and proud! Farhan taught me appropriate speed is the key. Passed 1st time with smooth driving!',
-    instructor: 'Farhan Hussaini',
-    avatarUrl: ''
-  },
-  {
-    id: 2,
-    author: 'Aisha',
-    rating: 5,
-    date: '30 Jul 2026',
-    tag: '1st Time Pass • Auto Kona EV',
-    text: 'Super calm and smooth drive! Passed at 17 years old with full confidence. Excellent observation skills and slow speed control for clearance around Preston!',
-    instructor: 'Binish Moazzam',
-    avatarUrl: ''
-  },
-  {
-    id: 3,
-    author: 'Vaishali',
-    rating: 5,
-    date: '25 Jul 2026',
-    tag: '1st Time Pass • Manual Yaris',
-    text: 'Super drive! Well done!! I am so happy for my pass. Farhan made sure speed control was perfect. Drive safe for life!',
-    instructor: 'Farhan Hussaini',
-    avatarUrl: ''
-  },
-  {
-    id: 4,
-    author: 'Hassan',
-    rating: 5,
-    date: '19 Jul 2026',
-    tag: '1st Time Pass • Manual Yaris',
-    text: 'Passed today FIRST attempt with ONLY 3 driver faults! Excellent drive around Preston DVSA test centre.',
-    instructor: 'Farhan Hussaini',
-    avatarUrl: ''
-  },
-  {
-    id: 5,
-    author: 'Tanveer',
-    rating: 5,
-    date: '19 Jul 2026',
-    tag: '1st Time Pass • Auto Kona EV',
-    text: 'Huge congratulations! Smooth drive and smashed the test on the first go. Top quality coaching from Binish & Farhan.',
-    instructor: 'Farhan & Binish',
-    avatarUrl: ''
-  },
-  {
-    id: 6,
-    author: 'Ali',
-    rating: 5,
-    date: '08 Jul 2026',
-    tag: '1st Time Pass • Manual Yaris',
-    text: 'Pro driving! Passed first time. Speed control and road safety routines prepared me 100% for test day.',
-    instructor: 'Farhan Hussaini',
-    avatarUrl: ''
-  },
-  {
-    id: 7,
-    author: 'Ayesha Patel',
-    rating: 5,
-    date: '2 weeks ago',
-    tag: '1st Time Pass • Manual Yaris',
-    text: 'Farhan is an incredible driving instructor! Passed 1st time with ZERO faults at the Preston DVSA test centre.',
-    instructor: 'Farhan Hussaini',
-    avatarUrl: 'https://images.unsplash.com/photo-1549399542-7e3f8b79c341?w=160&auto=format&fit=crop'
-  },
-  {
-    id: 8,
-    author: 'Dimitri Papachristos',
-    rating: 5,
-    date: '1 month ago',
-    tag: '1st Time Pass • Manual Yaris',
-    text: 'Best driving academy in Preston! Farhan was super patient with my clutch control on hill starts.',
-    instructor: 'Farhan Hussaini',
-    avatarUrl: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=160&auto=format&fit=crop'
-  },
-  {
-    id: 9,
-    author: 'Laeeqah Patel',
-    rating: 5,
-    date: '1 month ago',
-    tag: '1st Time Pass • Auto Kona EV',
-    text: 'Binish is such a calm and empowering female instructor! Learning in the electric Kona EV was amazing—no stalling.',
-    instructor: 'Binish Moazzam',
-    avatarUrl: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=160&auto=format&fit=crop'
-  },
-  {
-    id: 10,
-    author: 'Liam O\'Connor',
-    rating: 5,
-    date: '2 months ago',
-    tag: '10-Hr Block • Auto Kona EV',
-    text: 'Did the 10-Hour block discount course in the automatic Kona EV. Passed first time! Genuinely professional academy.',
-    instructor: 'Farhan & Binish',
-    avatarUrl: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=160&auto=format&fit=crop'
-  }
-];
+// No built-in reviews. Every review shown comes from the Google Business profile.
+const DEFAULT_REVIEWS = [];
+
+// Reviews pulled from Google have ids that start with "g-" followed by Google's own
+// reference. "g-live-" was a hardcoded list and is not shown.
+function isGoogleReview(rev) {
+  const id = String(rev && rev.id !== undefined && rev.id !== null ? rev.id : '');
+  return id.startsWith('g-') && !id.startsWith('g-live-');
+}
 
 let currentReviewFilter = 'all';
 let reviewsDisplayLimit = 6;
@@ -233,11 +60,12 @@ async function fetchGoogleBusinessReviews() {
     if (!response || !response.ok) return;
     const data = await response.json();
 
-    const userRatingsTotal = data?.userRatingCount || data?.result?.user_ratings_total || 81;
-    const ratingVal = data?.rating || data?.result?.rating || 5;
+    // Store Google's own figures only; never fall back to a made-up count or rating.
+    const userRatingsTotal = data?.userRatingCount || data?.result?.user_ratings_total;
+    const ratingVal = data?.rating || data?.result?.rating;
 
-    localStorage.setItem('l2d_google_reviews_total', String(userRatingsTotal));
-    localStorage.setItem('l2d_google_reviews_rating', String(ratingVal));
+    if (userRatingsTotal) localStorage.setItem('l2d_google_reviews_total', String(userRatingsTotal));
+    if (ratingVal) localStorage.setItem('l2d_google_reviews_rating', String(ratingVal));
 
     const fetchedReviews = data?.reviews || data?.result?.reviews;
     if (Array.isArray(fetchedReviews) && fetchedReviews.length > 0) {
@@ -286,7 +114,7 @@ function loadReviewsFromStorage() {
     if (data) {
       const parsed = JSON.parse(data);
       if (Array.isArray(parsed) && parsed.length > 0) {
-        const valid = parsed.filter(r => r && r.author && r.author !== 'undefined');
+        const valid = parsed.filter(r => r && r.author && r.author !== 'undefined' && isGoogleReview(r));
         if (valid.length > 0) {
           return valid;
         }
@@ -334,7 +162,7 @@ function renderReviewFilterPills() {
   if (!wrapper) return;
 
   const reviews = loadReviewsFromStorage();
-  const googleTotal = parseInt(localStorage.getItem('l2d_google_reviews_total') || '81', 10);
+  const googleTotal = parseInt(localStorage.getItem('l2d_google_reviews_total') || '0', 10);
   const totalCount = Math.max(reviews.length, googleTotal);
 
   let firstTimeCount = 0;
@@ -355,7 +183,8 @@ function renderReviewFilterPills() {
     { id: 'auto', label: '<span data-editable-key="rev_cat_auto">⚡ Automatic Kona EV</span>', count: autoCount }
   ];
 
-  wrapper.innerHTML = categories.map(cat => `
+  // Category pills only appear when there are reviews in them.
+  wrapper.innerHTML = categories.filter(cat => cat.id === 'all' || cat.count > 0).map(cat => `
     <button class="review-filter-pill ${currentReviewFilter === cat.id ? 'active' : ''}" data-filter="${cat.id}" onclick="if(event && event.target && event.target.hasAttribute('contenteditable')) return; filterReviews('${cat.id}', this)">
       ${cat.label} <span class="pill-count">${cat.count}</span>
     </button>
@@ -379,7 +208,8 @@ function renderReviews(filter) {
 
   const addBtn = document.getElementById('adminAddReviewBtn');
   if (addBtn) {
-    addBtn.style.display = isAdminEdit ? 'inline-flex' : 'none';
+    // Reviews come from Google only, so there is nothing to add by hand.
+    addBtn.style.display = 'none';
   }
 
   const filtered = reviews.filter(rev => {
@@ -395,7 +225,7 @@ function renderReviews(filter) {
   if (filtered.length === 0) {
     container.innerHTML = `
       <div style="grid-column: 1 / -1; text-align: center; padding: 2rem; color: var(--text-light);">
-        <p>No student reviews found for "${filter}".</p>
+        <p>Our reviews are on Google. <a href="https://search.google.com/local/reviews?placeid=${encodeURIComponent(HARDCODED_GOOGLE_PLACE_ID)}" target="_blank" rel="noopener noreferrer">Read them there</a>.</p>
       </div>
     `;
     return;

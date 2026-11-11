@@ -1032,12 +1032,8 @@
         if (typeof window.refreshShowroomDisplay === 'function') window.refreshShowroomDisplay();
       }
 
-      // Pull student reviews
-      const cloudReviews = await window.fetchReviewsFromSupabase();
-      if (cloudReviews && cloudReviews.length > 0) {
-        localStorage.setItem('l2d_custom_reviews', JSON.stringify(cloudReviews));
-        if (typeof window.renderReviewsGrid === 'function') window.renderReviewsGrid();
-      }
+      // Reviews arrive with the site settings above (custom_reviews_json). The separate
+      // student_reviews table held rows in a different shape and is no longer read here.
     }
   }
 

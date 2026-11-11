@@ -6,32 +6,8 @@
  * ==========================================================================
  */
 
-const FALLBACK_INSTA_POSTS = [
-  {
-    id: 101,
-    title: '1st Timers 🎉',
-    img: 'https://images.unsplash.com/photo-1549399542-7e3f8b79c341?w=400&auto=format&fit=crop',
-    date: '2 hours ago',
-    caption: '🎉 ZERO FAULTS! Massive congratulations to Ayesha Patel on passing 1st time with Farhan in Preston! #Learner2Driver #FirstTimePass',
-    url: 'https://www.instagram.com/reel/C7xPq8toDV2/'
-  },
-  {
-    id: 102,
-    title: 'Instructors 🚗',
-    img: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&auto=format&fit=crop',
-    date: '1 day ago',
-    caption: '🚗 Meet your Preston DVSA-approved driving team: Farhan Hussaini & Binish Moazzam! Manual & Automatic tuition.',
-    url: 'https://www.instagram.com/reel/C8aM12pqL91/'
-  },
-  {
-    id: 103,
-    title: 'Kona EV ⚡',
-    img: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&auto=format&fit=crop',
-    date: '3 days ago',
-    caption: '⚡ 100% Electric, Zero Stalling! Experience our 2024 Hyundai Kona EV Ultimate with dual pedals and 360 surround cameras.',
-    url: 'https://www.instagram.com/reel/C9kR34vwE05/'
-  }
-];
+// No built-in posts. If the Instagram feed cannot be loaded, the section links to the account instead.
+const FALLBACK_INSTA_POSTS = [];
 
 let activeInstaPosts = [...FALLBACK_INSTA_POSTS];
 
@@ -101,6 +77,15 @@ function renderInstaFeedGrid() {
   if (!grid) return;
 
   const feedItems = activeInstaPosts.slice(0, 3);
+
+  if (feedItems.length === 0) {
+    grid.innerHTML = `
+      <p style="grid-column: 1 / -1; text-align: center; color: var(--text-light);">
+        See our latest passes on <a href="https://www.instagram.com/lrnr2drvr/" target="_blank" rel="noopener noreferrer">Instagram</a>.
+      </p>
+    `;
+    return;
+  }
 
   grid.innerHTML = feedItems.map(post => `
     <div class="glass-card insta-embed-wrapper" style="padding: 1.25rem; display: flex; flex-direction: column; justify-content: space-between; background: var(--bg-surface); border: 1px solid var(--border-color); border-radius: var(--radius-lg); overflow: hidden; box-shadow: var(--shadow-sm);">
