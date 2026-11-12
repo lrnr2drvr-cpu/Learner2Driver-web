@@ -39,6 +39,14 @@ DirectoryIndex index.html
 <IfModule mod_rewrite.c>
     RewriteEngine On
     RewriteRule \.(md|sql)$ - [F,L,NC]
-    RewriteRule ^(scripts|supabase)/ - [F,L,NC]
-    RewriteRule ^package(-lock)?\.json$ - [F,L,NC]
+    RewriteRule ^supabase/ - [F,L,NC]
+    RewriteRule ^\.(hallmark|impeccable)/ - [F,L,NC]
+</IfModule>
+
+# 6. Scripts and styles: always check with the server before reusing a saved copy,
+#    so an update to the site reaches returning visitors straight away.
+<IfModule mod_headers.c>
+    <FilesMatch "\.(js|css)$">
+        Header set Cache-Control "no-cache"
+    </FilesMatch>
 </IfModule>
