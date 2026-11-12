@@ -1,0 +1,186 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex">
+  <title>Video course for Learner2Driver students</title>
+  <meta name="description" content="The Learner2Driver video course. Students sign in to watch their lessons and keep track of what they have covered.">
+  <meta name="theme-color" content="#f8f7f4">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%232e7d32'/%3E%3Cpath d='M22 14h9v27h13v9H22z' fill='%23f8f7f4'/%3E%3C/svg%3E">
+  <script>document.documentElement.classList.add('js');</script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Radio+Canada+Big:wght@400;700&family=Radio+Canada:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/site.css">
+</head>
+<body id="top" class="course-page">
+
+  <a class="skip" href="#main">Skip to content</a>
+
+  <header class="nav">
+    <div class="container">
+      <div class="nav__row glass">
+        <a class="wordmark" href="index.html" aria-label="Learner2Driver, home"><span class="wordmark__l">L</span>earner<span class="wordmark__2">2</span><span class="wordmark__d">D</span>river</a>
+        <div class="nav__end">
+          <a class="link nav__back" href="index.html">Back to the main site</a>
+          <a class="btn btn--small" href="index.html#book">Book a lesson</a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main id="main">
+
+    <!-- Student sign-in -->
+    <section class="gate" id="gate" aria-labelledby="gate-head">
+      <div class="container gate__grid">
+        <div class="gate__text">
+          <h1 id="gate-head">Your video course.</h1>
+          <p class="lead">Sign in with the username and password your instructor gave you.</p>
+        </div>
+        <form class="gate__form panel" id="student-form">
+          <label class="dialog__field" for="st-user">
+            <span>Username</span>
+            <input class="input" type="text" id="st-user" name="username" autocomplete="username" required>
+          </label>
+          <label class="dialog__field" for="st-pass">
+            <span>Password</span>
+            <input class="input" type="password" id="st-pass" name="password" autocomplete="current-password" required>
+          </label>
+          <p class="dialog__error" id="student-error" role="alert"></p>
+          <button class="btn" type="submit">Sign in</button>
+          <p class="gate__note" id="gate-note">No account yet? Ask your instructor, or <a class="link" href="index.html#book">book a lesson</a>.</p>
+        </form>
+      </div>
+    </section>
+
+    <!-- The course, for a signed-in student -->
+    <section class="course" id="course" hidden aria-labelledby="course-who">
+      <div class="container">
+        <div class="course__top">
+          <div>
+            <h1 id="course-who">Hello.</h1>
+            <p class="lead" id="course-progress" aria-live="polite"></p>
+          </div>
+          <button class="link course__out" type="button" id="student-out">Sign out</button>
+        </div>
+        <div class="course__bar" aria-hidden="true"><span id="course-bar"></span></div>
+
+        <div class="course__grid">
+          <nav class="course__list" id="lesson-list" aria-label="Lessons"></nav>
+          <article class="course__player">
+            <div class="player" id="player"></div>
+            <div class="course__lesson">
+              <div>
+                <h2 id="lesson-title"></h2>
+                <p id="lesson-tip"></p>
+              </div>
+              <div class="actions">
+                <button class="btn" type="button" id="lesson-done" aria-pressed="false">Mark as done</button>
+                <button class="link course__next" type="button" id="lesson-next">Next lesson</button>
+              </div>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- The instructor's desk -->
+    <section class="desk" id="desk" hidden aria-labelledby="desk-head">
+      <div class="container">
+        <div class="course__top">
+          <div>
+            <h1 id="desk-head">Students and lessons.</h1>
+            <p class="lead" id="desk-status" role="status">Signed in as an instructor.</p>
+          </div>
+          <button class="link course__out" type="button" id="desk-out">Sign out</button>
+        </div>
+
+        <div class="desk__grid">
+          <div class="desk__panel panel">
+            <h2>Students</h2>
+            <div class="students" id="student-rows"></div>
+            <form class="student-add" id="student-add">
+              <h3>Add or update a student</h3>
+              <div class="student-add__fields">
+                <label class="dialog__field" for="sa-user"><span>Username</span><input class="input" type="text" id="sa-user" name="username" minlength="2" maxlength="40" required></label>
+                <label class="dialog__field" for="sa-pass"><span>Password</span><input class="input" type="text" id="sa-pass" name="password" minlength="8" autocomplete="off" placeholder="At least 8 characters"></label>
+                <label class="dialog__field" for="sa-inst"><span>Instructor</span>
+                  <select class="input" id="sa-inst" name="instructor"><option>Male instructor</option><option>Female instructor</option></select>
+                </label>
+                <label class="dialog__field" for="sa-trans"><span>Car</span>
+                  <select class="input" id="sa-trans" name="transmission"><option>Manual</option><option>Automatic</option></select>
+                </label>
+              </div>
+              <p class="gate__note">To change a student, type the same username. Leave the password empty to keep the one they have.</p>
+              <button class="btn" type="submit">Save student</button>
+            </form>
+          </div>
+
+          <div class="desk__panel panel">
+            <h2>Lessons</h2>
+            <div class="modules" id="module-rows"></div>
+            <div class="actions">
+              <button class="btn btn--quiet" type="button" id="module-add">Add a module</button>
+              <button class="btn" type="button" id="course-save">Save lessons</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="footer">
+    <div class="container footer__grid">
+      <div class="footer__brand">
+        <a class="wordmark wordmark--large" href="index.html" aria-label="Learner2Driver, home"><span class="wordmark__l">L</span>earner<span class="wordmark__2">2</span><span class="wordmark__d">D</span>river</a>
+        <p>Driving lessons in Preston and the surrounding area, PR1 to PR5.</p>
+      </div>
+      <div>
+        <p class="footer__title">Book</p>
+        <ul>
+          <li><a href="https://wa.me/447427330827" target="_blank" rel="noopener">WhatsApp</a></li>
+          <li><a href="tel:07427330827">07427 330827</a></li>
+        </ul>
+      </div>
+      <div>
+        <p class="footer__title">Site</p>
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="index.html#book">Prices and booking</a></li>
+        </ul>
+      </div>
+      <div>
+        <p class="footer__title">Staff</p>
+        <ul>
+          <li><button class="footer__button" type="button" id="open-signin">Instructor sign-in</button></li>
+        </ul>
+      </div>
+    </div>
+  </footer>
+
+  <dialog class="dialog" id="signin" aria-labelledby="signin-head">
+    <form class="dialog__form" id="signin-form">
+      <h2 id="signin-head">Instructor sign-in</h2>
+      <label class="dialog__field" for="si-email">
+        <span>Email</span>
+        <input class="input" type="email" id="si-email" name="email" autocomplete="username" required>
+      </label>
+      <label class="dialog__field" for="si-pass">
+        <span>Password</span>
+        <input class="input" type="password" id="si-pass" name="password" autocomplete="current-password" required>
+      </label>
+      <p class="dialog__error" id="si-error" role="alert"></p>
+      <div class="actions">
+        <button class="btn" type="submit">Sign in</button>
+        <button class="link dialog__cancel" type="button" data-close>Cancel</button>
+      </div>
+    </form>
+  </dialog>
+
+  <script type="module" src="js/course.js"></script>
+
+</body>
+</html>
