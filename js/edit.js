@@ -58,8 +58,9 @@ function editable(el, commit) {
     el.textContent = text;
     if (!(await commit(text))) el.textContent = before;
   });
-  // A link or label that is being edited must not also be followed or toggled.
-  el.addEventListener('click', (event) => { if (el.closest('a, label')) event.preventDefault(); });
+  // A link that is being edited must not also be followed. (A route spot's label still
+  // selects its spot, which is how the instructor reaches the other spots' tips.)
+  el.addEventListener('click', (event) => { if (el.closest('a')) event.preventDefault(); });
 }
 
 function editWording() {

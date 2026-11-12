@@ -6,6 +6,7 @@ const $ = (id) => document.getElementById(id);
 let modules = [];
 let students = [];
 let progress = [];
+let started = false;
 
 function el(tag, props = {}, ...children) {
   const node = Object.assign(document.createElement(tag), props);
@@ -179,6 +180,8 @@ async function saveCourse() {
 // ---------- start ----------
 
 export async function startDesk(email) {
+  if (started) return;
+  started = true;
   $('gate').hidden = true;
   $('course').hidden = true;
   $('desk').hidden = false;

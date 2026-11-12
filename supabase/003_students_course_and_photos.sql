@@ -228,6 +228,7 @@ revoke all on function public.student_sign_in(text, text), public.student_course
   public.admin_save_student(text, text, text, text), public.admin_delete_student(uuid) from public;
 grant execute on function public.student_sign_in(text, text), public.student_course(uuid),
   public.student_set_lesson(uuid, text, boolean), public.student_sign_out(uuid) to anon, authenticated;
+revoke execute on function public.admin_save_student(text, text, text, text), public.admin_delete_student(uuid) from anon;
 grant execute on function public.admin_save_student(text, text, text, text), public.admin_delete_student(uuid) to authenticated;
 
 -- 5. Photo storage -----------------------------------------------------------

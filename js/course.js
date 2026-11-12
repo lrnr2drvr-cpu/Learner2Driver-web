@@ -228,7 +228,11 @@ function initInstructor() {
 initStudent();
 initInstructor();
 
+// An instructor who is already signed in goes straight to the desk; otherwise a
+// student with a saved session goes straight to the course.
 const saved = store.get(KEY);
-if (saved) {
+if (hasSession()) {
+  openDesk();
+} else if (saved) {
   open(saved).catch(() => { /* offline or not set up: the sign-in form stays */ });
 }
