@@ -1,5 +1,5 @@
 // Booking: a few choices become one pre-written WhatsApp message.
-import { config } from './config.js';
+import { whatsappNumber } from './content.js';
 
 const WORDS = {
   instructor: { male: 'the male instructor', female: 'the female instructor' },
@@ -92,7 +92,7 @@ function update() {
   }
 
   const link = document.getElementById('book-whatsapp');
-  if (link) link.href = `https://wa.me/${config.whatsapp}?text=${encodeURIComponent(buildMessage(choice))}`;
+  if (link) link.href = `https://wa.me/${whatsappNumber()}?text=${encodeURIComponent(buildMessage(choice))}`;
 }
 
 export function initBooking() {

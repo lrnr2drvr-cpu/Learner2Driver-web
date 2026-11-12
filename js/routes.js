@@ -19,15 +19,24 @@ let pinMoved = null;
 function arm({ input, pin }) {
   if (!pinMoved || !pin.dragging || pin.dragging.enabled()) return;
   pin.dragging.enable();
+  let from = pin.getLatLng();
+  const place = (at) => {
+    pin.setLatLng(at);
+    input.dataset.lat = at.lat;
+    input.dataset.lng = at.lng;
+  };
+  pin.on('dragstart', () => { from = pin.getLatLng(); });
   pin.on('dragend', () => {
-    const { lat, lng } = pin.getLatLng();
-    input.dataset.lat = lat;
-    input.dataset.lng = lng;
-    pinMoved(Number(input.value), lat, lng);
+    const to = pin.getLatLng();
+    const back = from;
+    place(to);
+    // `undo` puts the pin back where it was on the map.
+    pinMoved(Number(input.value), to, back, () => place(back));
   });
 }
 
-// Called by the editing code: `moved` receives the spot number and its new position.
+// Called by the editing code: `moved` receives the spot number, where the pin now is,
+// where it was, and a function that moves it back on the map.
 export function editPins(moved) {
   pinMoved = moved;
   placed.forEach(arm);

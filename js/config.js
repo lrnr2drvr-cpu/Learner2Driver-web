@@ -4,7 +4,6 @@ export const config = {
   supabaseUrl: 'https://uxgychlmmnpfrnkhrhbc.supabase.co',
   supabaseKey: 'sb_publishable_LM5nEdUBi1dJ0l8Cu26S9g_-muMtCPV',
   instagramFeed: 'https://feeds.behold.so/JnT3KNlUepSxi6fR755B',
-  whatsapp: '447427330827',
 };
 
 // Read rows from a Supabase table as a visitor. Returns [] if the request fails.

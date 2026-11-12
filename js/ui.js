@@ -50,7 +50,7 @@ export function initNav() {
 
 // Car hotspots: a dot on the photo shows a short note on hover or keyboard focus (in the
 // stylesheet) and stays open when tapped or clicked. Saved hotspots replace the built-in one.
-function wireHotspot(dot) {
+export function wireHotspot(dot) {
   dot.addEventListener('click', () => {
     const open = dot.getAttribute('aria-expanded') === 'true';
     document.querySelectorAll('.hotspot[aria-expanded="true"]').forEach((other) => other.setAttribute('aria-expanded', 'false'));
@@ -60,11 +60,11 @@ function wireHotspot(dot) {
 
 function closeHotspots(event) {
   if (event.type === 'keydown' && event.key !== 'Escape') return;
-  if (event.type === 'click' && event.target.closest('.hotspot, .hotspot__note')) return;
+  if (event.type === 'click' && event.target.closest('.hotspot, .hotspot__note, .hotspot-add')) return;
   document.querySelectorAll('.hotspot[aria-expanded="true"]').forEach((dot) => dot.setAttribute('aria-expanded', 'false'));
 }
 
-function hotspotNodes(car, spot, index) {
+export function hotspotNodes(car, spot, index) {
   const id = `hs-${car}-${index + 1}`;
   const place = `--x: ${Number(spot.x)}%; --y: ${Number(spot.y)}%`;
 
@@ -94,10 +94,18 @@ function hotspotNodes(car, spot, index) {
   return [dot, note];
 }
 
-export async function initHotspots() {
+// Settles once the saved hotspots are on the page; the editing code waits for it.
+export let hotspotsReady = Promise.resolve();
+
+export function initHotspots() {
   document.querySelectorAll('.hotspot').forEach(wireHotspot);
   document.addEventListener('click', closeHotspots);
   document.addEventListener('keydown', closeHotspots);
+  hotspotsReady = loadHotspots();
+  return hotspotsReady;
+}
+
+async function loadHotspots() {
 
   const rows = await readTable('fleet_hotspots?select=vehicle_id,hotspots');
   rows.forEach((row) => {

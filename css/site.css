@@ -285,11 +285,22 @@ a.rating:hover { color: var(--color-mark); }
 .is-editing .is-editable { outline: 1px dashed var(--color-muted); outline-offset: 4px; border-radius: var(--space-2xs); cursor: text; }
 .is-editing .is-editable:hover { outline-color: var(--color-ink); }
 .is-editing .is-editable:focus { outline: 2px solid var(--color-focus); }
+.is-editing .is-editable.is-unsaved { outline: 2px solid var(--color-error); }
 .is-editing body { padding-block-end: var(--space-3xl); }
 .editbar { position: fixed; z-index: var(--z-toast); inset-inline: var(--space-sm); inset-block-end: var(--space-sm); display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-xs) var(--space-lg); max-width: 60rem; margin-inline: auto; padding: var(--space-xs) var(--space-xs) var(--space-xs) var(--space-lg); border-radius: var(--radius-card); font-size: var(--text-sm); }
 .editbar__who { font-weight: 500; color: var(--color-ink); }
 .editbar__status { flex: 1 1 12rem; color: var(--color-ink-2); }
 .editbar__status.is-problem { color: var(--color-error); font-weight: 500; }
+.editbar__actions { display: flex; flex-wrap: wrap; gap: var(--space-xs); }
+.editbar .btn--quiet { background: var(--color-paper-2); }
+.editbar .btn--quiet:hover { background: var(--color-paper-3); }
+
+/* hotspots while editing: drag a dot, edit its note, add or remove one */
+.is-editing .hotspot { cursor: grab; touch-action: none; }
+.is-editing .hotspot:active { cursor: grabbing; }
+.hotspot-add { position: absolute; z-index: 4; inset-block-start: var(--space-md); inset-inline-start: var(--space-md); min-height: 44px; padding: 0 var(--space-md); border-radius: var(--radius-pill); color: var(--color-ink); font: 500 var(--text-sm)/1 var(--font-body); cursor: pointer; }
+.hotspot-add:focus-visible { outline: 2px solid var(--color-focus); outline-offset: 2px; }
+.hotspot__remove { justify-self: start; min-height: 32px; padding: 0; border: 0; background: none; color: var(--color-error); font: 500 var(--text-sm)/1 var(--font-body); text-decoration: underline var(--rule-hair); text-underline-offset: 0.3em; cursor: pointer; }
 .is-editing .dock { display: none; }
 .replace { position: absolute; z-index: 4; inset-block-start: var(--space-md); inset-inline-end: var(--space-md); min-height: 44px; padding: 0 var(--space-md); border-radius: var(--radius-pill); color: var(--color-ink); font: 500 var(--text-sm)/1 var(--font-body); cursor: pointer; }
 .replace:focus-visible { outline: 2px solid var(--color-focus); outline-offset: 2px; }
