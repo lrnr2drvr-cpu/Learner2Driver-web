@@ -1,0 +1,10 @@
+{
+  "name": "learner2driver-web",
+  "version": "4.0.0",
+  "description": "Learner2Driver website. Plain HTML, CSS and JavaScript: this file exists only because the host's deploy looks for it.",
+  "private": true,
+  "scripts": {
+    "build": "echo Static site, nothing to build.",
+    "start": "npx serve ."
+  }
+}

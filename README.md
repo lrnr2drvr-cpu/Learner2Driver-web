@@ -3,7 +3,7 @@
 The website for Learner2Driver, a driving school in Preston: a homepage that ends in a
 WhatsApp booking message, and a video course for current students.
 
-Plain HTML, CSS and JavaScript modules. There is no build step. Data and sign-in are on Supabase.
+Plain HTML, CSS and JavaScript modules. There is no build step; `package.json` is there only because Hostinger's deploy refuses a repository without one, and its build script does nothing. Data and sign-in are on Supabase.
 
 ## What is where
 

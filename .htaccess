@@ -40,6 +40,7 @@ DirectoryIndex index.html
     RewriteEngine On
     RewriteRule \.(md|sql)$ - [F,L,NC]
     RewriteRule ^supabase/ - [F,L,NC]
+    RewriteRule ^package(-lock)?\.json$ - [F,L,NC]
     RewriteRule ^\.(hallmark|impeccable)/ - [F,L,NC]
 </IfModule>
 
