@@ -332,8 +332,10 @@ export function startEditing(email) {
     window.location.reload();
   });
 
+  const desk = Object.assign(document.createElement('a'), { className: 'btn btn--small btn--quiet', href: 'course.html', textContent: 'Students and settings' });
+
   const actions = Object.assign(document.createElement('span'), { className: 'editbar__actions' });
-  actions.append(retry, undo, restore, leave);
+  actions.append(retry, undo, restore, desk, leave);
   el.append(who, status, actions);
   document.body.append(el);
   bar = { status, retry, undo, restore };

@@ -108,13 +108,15 @@ function card(post) {
   return link;
 }
 
-export async function initInstagram() {
+// `feed` is the address saved in the instructor's settings; the built-in one is used without it.
+export async function initInstagram(feed) {
   const section = document.getElementById('instagram');
   const grid = document.getElementById('insta-grid');
   if (!section || !grid) return;
 
   try {
-    const res = await fetch(config.instagramFeed, { headers: { Accept: 'application/json' } });
+    const address = typeof feed === 'string' && /^https:\/\/\S+$/.test(feed.trim()) ? feed.trim() : config.instagramFeed;
+    const res = await fetch(address, { headers: { Accept: 'application/json' } });
     if (!res.ok) return;
     const data = await res.json();
     const cards = (Array.isArray(data) ? data : data.posts || []).map(card).filter(Boolean).slice(0, SHOWN);

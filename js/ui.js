@@ -122,6 +122,14 @@ async function loadHotspots() {
   });
 }
 
+// HubSpot (enquiry tracking and chat) loads only when the instructor has saved a portal ID.
+export function initHubSpot(portal) {
+  const id = String(portal || '').trim();
+  if (!/^\d{5,12}$/.test(id) || document.getElementById('hs-script-loader')) return;
+  const script = Object.assign(document.createElement('script'), { id: 'hs-script-loader', async: true, defer: true, src: `https://js.hs-scripts.com/${id}.js` });
+  document.head.append(script);
+}
+
 // Readiness score: the same sum the previous site used, shown as a score out of 100.
 export function initQuiz() {
   const hours = document.getElementById('q-hours');
@@ -152,6 +160,10 @@ export function initQuiz() {
         : total >= 60 ? 'Nearly there. A mock test with us will show what is left.'
           : 'Early days. A few more lessons will move this quickly.';
     }
+
+    // The panel changes colour with the score: dark below 60, amber from 60, green from 85.
+    const panel = out.closest('.quiz__score');
+    if (panel) panel.dataset.level = total >= 85 ? 'high' : total >= 60 ? 'mid' : 'low';
 
     cancelAnimationFrame(frame);
     if (still) { shown = total; out.textContent = total; return; }

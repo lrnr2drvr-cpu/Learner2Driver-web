@@ -79,7 +79,7 @@ export async function loadContent() {
   const cached = store.get(CACHE);
   if (cached) apply(cached);
 
-  const rows = await readTable('site_settings?select=key,value&or=(key.like.v2_*,key.eq.google_reviews_config)');
+  const rows = await readTable('site_settings?select=key,value&or=(key.like.v2_*,key.in.(google_reviews_config,google_cache,hubspot_portal_id))');
   if (!rows.length) return cached || {};
 
   const map = Object.fromEntries(rows.map((row) => [row.key, row.value]));

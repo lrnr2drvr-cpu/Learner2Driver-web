@@ -223,6 +223,10 @@ a.rating:hover { color: var(--color-mark); }
 .range input:active::-webkit-slider-thumb { transform: scale(1.12); }
 .range input:focus-visible { outline: 2px solid var(--color-focus); outline-offset: 2px; border-radius: var(--radius-control); }
 .quiz__score { grid-column: 8 / span 5; display: grid; align-content: space-between; gap: var(--space-2xl); padding: var(--field-pad); }
+/* the panel follows the score: dark below 60, amber from 60, green from 85 */
+.quiz__score { transition: background-color var(--dur-long) var(--ease-out), color var(--dur-long) var(--ease-out); }
+.quiz__score[data-level="mid"] { background: var(--color-nearly); color: var(--color-ink); --color-focus: var(--color-ink); }
+.quiz__score[data-level="high"] { background: var(--color-field); color: var(--color-field-ink); --color-focus: var(--color-field-ink); }
 .score { display: grid; gap: var(--space-sm); color: inherit; }
 .score__figure { font: var(--display-weight) clamp(5.5rem, 12vw, 11rem)/0.82 var(--font-display); letter-spacing: -0.055em; }
 .score__label { font-size: var(--text-lead); font-weight: 500; }
@@ -318,6 +322,9 @@ a.rating:hover { color: var(--color-mark); }
 .nav__back { font-size: var(--text-sm); }
 .course-page h1 { font-size: var(--text-display-s); line-height: 1; letter-spacing: -0.04em; }
 .course-page .panel { background: var(--color-paper-2); }
+/* fields on a tinted panel are lighter than it, so they can be seen */
+.course-page .panel .input { flex: none; width: 100%; background: var(--color-paper); box-shadow: inset 0 0 0 1px var(--color-rule); }
+.course-page .panel .input:hover { background: var(--color-paper); }
 .course-page .panel .btn--quiet { background: var(--color-paper-3); }
 .course-page .panel .btn--quiet:hover { background: var(--color-rule); }
 select.input { appearance: auto; }
@@ -367,6 +374,9 @@ select.input { appearance: auto; }
 .student-add__fields { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-md); }
 .student-add .btn { justify-self: start; }
 .desk .input { flex: none; width: 100%; background: var(--color-paper); }
+.desk__panel--wide { grid-column: 1 / -1; }
+.settings { display: grid; gap: var(--space-md); justify-items: start; }
+.settings__fields { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-md); width: 100%; }
 .modules { display: grid; gap: var(--space-xl); }
 .module-edit { display: grid; gap: var(--space-md); }
 .lesson-edit { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-sm) var(--space-md); padding: var(--space-md); border-radius: var(--radius-control); background: var(--color-paper-3); }
@@ -409,7 +419,7 @@ select.input { appearance: auto; }
   .hotspot__note { inset-inline-start: var(--space-sm); inset-block-start: auto; inset-block-end: calc(var(--space-md) + 44px); max-width: calc(100% - 2 * var(--space-sm)); }
   .post__text { font-size: var(--text-sm); }
   .footer__grid { grid-template-columns: minmax(0, 1fr); }
-  .student-add__fields, .lesson-edit { grid-template-columns: minmax(0, 1fr); }
+  .student-add__fields, .lesson-edit, .settings__fields { grid-template-columns: minmax(0, 1fr); }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -417,5 +427,5 @@ select.input { appearance: auto; }
   .price, .tip, .menu__panel, .hotspot__note { animation: none; }
   .btn:hover, .btn:active, .spots label:hover, .cell:hover > .photo, .bento > .photo:hover, .post:hover .post__frame, .photo--inset:hover, .pin.is-on { transform: none; }
   .js #hero-cars img { transition: none; }
-  .course__bar span { transition: none; }
+  .course__bar span, .quiz__score { transition: none; }
 }

@@ -177,6 +177,61 @@ async function saveCourse() {
   } catch (error) { say(`The lessons were not saved. ${error.message}`, true); }
 }
 
+// ---------- settings ----------
+
+const SETTINGS = ['google_reviews_config', 'v2_instagram_feed', 'hubspot_portal_id'];
+let loadedSettings = null; // what the form held when it was filled in, so only real changes are saved
+
+function settingsNow(form) {
+  return {
+    google_reviews_config: JSON.stringify({ apiKey: form.elements.googleKey.value.trim(), placeId: form.elements.googlePlace.value.trim() }),
+    v2_instagram_feed: form.elements.instagram.value.trim(),
+    hubspot_portal_id: form.elements.hubspot.value.trim(),
+  };
+}
+
+async function loadSettings() {
+  const rows = await read(`site_settings?select=key,value&key=in.(${SETTINGS.join(',')})`);
+  const saved = Object.fromEntries(rows.map((row) => [row.key, row.value]));
+  let google = {};
+  try { google = JSON.parse(saved.google_reviews_config) || {}; } catch { /* nothing saved yet */ }
+  const form = $('settings-form');
+  form.elements.googleKey.value = google.apiKey || '';
+  form.elements.googlePlace.value = google.placeId || '';
+  form.elements.instagram.value = saved.v2_instagram_feed || '';
+  form.elements.hubspot.value = saved.hubspot_portal_id || '';
+  loadedSettings = settingsNow(form);
+}
+
+async function saveSettings(form) {
+  // Never save a form that was not filled from the database first: that could wipe a setting.
+  if (!loadedSettings) { say('The settings could not be loaded, so nothing was saved. Reload the page and try again.', true); return; }
+  const now = new Date().toISOString();
+  const current = settingsNow(form);
+  const rows = SETTINGS.filter((key) => current[key] !== loadedSettings[key]).map((key) => ({ key, value: current[key], updated_at: now }));
+  if (!rows.length) { say('Nothing has changed.'); return; }
+  try {
+    await send('site_settings?on_conflict=key', rows, 'resolution=merge-duplicates,return=minimal');
+    loadedSettings = current;
+    say('Settings saved. They take effect the next time the homepage is opened.');
+  } catch (error) { say(`The settings were not saved. ${error.message}`, true); }
+}
+
+async function changePassword(form) {
+  if (form.elements.password.value !== form.elements.again.value) { say('The two passwords do not match.', true); return; }
+  try {
+    const res = await authed('/auth/v1/user', {
+      method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ password: form.elements.password.value }),
+    });
+    if (!res.ok) {
+      const detail = await res.json().catch(() => ({}));
+      throw new Error(detail.msg || detail.message || `The server answered ${res.status}.`);
+    }
+    form.reset();
+    say('Your password was changed.');
+  } catch (error) { say(`Your password was not changed. ${error.message}`, true); }
+}
+
 // ---------- start ----------
 
 export async function startDesk(email) {
@@ -211,9 +266,13 @@ export async function startDesk(email) {
     } catch (error) { say(`${name} was not saved. ${error.message}`, true); }
   });
 
+  $('settings-form').addEventListener('submit', (event) => { event.preventDefault(); saveSettings(event.currentTarget); });
+  $('password-form').addEventListener('submit', (event) => { event.preventDefault(); changePassword(event.currentTarget); });
+
   try {
     await loadCourse();
     await loadStudents();
+    await loadSettings();
   } catch (error) {
     say(error.message, true);
   }
