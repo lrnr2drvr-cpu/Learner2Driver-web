@@ -1,4 +1,4 @@
-// The instructor's desk on the course page: student accounts and the lessons.
+// The instructor's desk on the course page: students, lessons and settings, one tab each.
 // Loaded only for a signed-in instructor; the database checks the token on every request.
 import { authed, signOut } from './auth.js';
 
@@ -38,6 +38,37 @@ async function send(path, body, prefer) {
   }
 }
 
+// ---------- tabs ----------
+
+function showTab(name) {
+  ['students', 'lessons', 'settings'].forEach((tab) => {
+    const on = tab === name;
+    const button = $(`tab-${tab}`);
+    button.setAttribute('aria-selected', String(on));
+    button.tabIndex = on ? 0 : -1;
+    $(`panel-${tab}`).hidden = !on;
+  });
+  try { sessionStorage.setItem('l2d_desk_tab', name); } catch { /* not remembered */ }
+}
+
+function initTabs() {
+  const tabs = Array.from(document.querySelectorAll('.tab'));
+  tabs.forEach((tab, index) => {
+    tab.addEventListener('click', () => showTab(tab.id.replace('tab-', '')));
+    // Arrow keys move between tabs, as tabs do everywhere else.
+    tab.addEventListener('keydown', (event) => {
+      const step = event.key === 'ArrowRight' ? 1 : event.key === 'ArrowLeft' ? -1 : 0;
+      if (!step) return;
+      const next = tabs[(index + step + tabs.length) % tabs.length];
+      next.focus();
+      next.click();
+    });
+  });
+  let remembered = null;
+  try { remembered = sessionStorage.getItem('l2d_desk_tab'); } catch { /* start on students */ }
+  showTab(['students', 'lessons', 'settings'].includes(remembered) ? remembered : 'students');
+}
+
 // ---------- students ----------
 
 function lessonsFor(transmission) {
@@ -47,39 +78,62 @@ function lessonsFor(transmission) {
   });
 }
 
+// Puts the form into "add" or "change" mode.
+function studentForm(student) {
+  const form = $('student-add');
+  form.reset();
+  $('student-add-head').textContent = student ? `Change ${student.username}` : 'Add a student';
+  $('student-save').textContent = student ? 'Save changes' : 'Add student';
+  $('student-cancel').hidden = !student;
+  $('student-add-note').textContent = student
+    ? 'Leave the password empty to keep the one they have. A new password signs them out everywhere.'
+    : 'Give the username and password to the student.';
+  form.elements.username.readOnly = Boolean(student);
+  form.elements.password.required = !student;
+  if (student) {
+    form.elements.username.value = student.username;
+    form.elements.instructor.value = student.instructor || 'Male instructor';
+    form.elements.transmission.value = student.transmission;
+    form.elements.password.focus();
+  }
+}
+
 function drawStudents() {
-  const rows = $('student-rows');
+  const box = $('student-rows');
   if (!students.length) {
-    rows.replaceChildren(el('p', { className: 'gate__note', textContent: 'No students yet. Add the first one below.' }));
+    box.replaceChildren(el('p', { className: 'desk__empty', textContent: 'No students yet. Add the first one with the form.' }));
     return;
   }
-  rows.replaceChildren(...students.map((student) => {
+  const head = el('tr', {}, ...['Student', 'Instructor', 'Car', 'Progress', ''].map((name) => el('th', { scope: 'col', textContent: name })));
+  const rows = students.map((student) => {
     const mine = lessonsFor(student.transmission);
     const done = progress.filter((row) => row.student_id === student.id && mine.some((lesson) => lesson.id === row.lesson_id)).length;
-    const edit = el('button', { type: 'button', className: 'link', textContent: 'Change' });
-    edit.addEventListener('click', () => {
-      const form = $('student-add');
-      form.elements.username.value = student.username;
-      form.elements.password.value = '';
-      form.elements.instructor.value = student.instructor || 'Male instructor';
-      form.elements.transmission.value = student.transmission;
-      form.elements.password.focus();
-    });
-    const remove = el('button', { type: 'button', className: 'link', textContent: 'Remove' });
+
+    const bar = el('span', { className: 'meter' }, el('span', {}));
+    bar.firstChild.style.transform = `scaleX(${mine.length ? done / mine.length : 0})`;
+    bar.setAttribute('aria-hidden', 'true');
+
+    const change = el('button', { type: 'button', className: 'btn btn--small btn--quiet', textContent: 'Change' });
+    change.addEventListener('click', () => studentForm(student));
+    const remove = el('button', { type: 'button', className: 'btn btn--small btn--quiet btn--danger', textContent: 'Remove' });
     remove.addEventListener('click', async () => {
       if (!window.confirm(`Remove ${student.username} and their progress?`)) return;
       try {
         await send('rpc/admin_delete_student', { p_id: student.id });
         say(`${student.username} was removed.`);
+        studentForm(null);
         await loadStudents();
       } catch (error) { say(`${student.username} was not removed. ${error.message}`, true); }
     });
-    return el('div', { className: 'student-row' },
-      el('strong', { textContent: student.username }),
-      el('span', { textContent: `${student.instructor || 'No instructor set'}, ${student.transmission.toLowerCase()}` }),
-      el('span', { className: 'num', textContent: `${done} of ${mine.length} lessons` }),
-      el('span', { className: 'student-row__actions' }, edit, remove));
-  }));
+
+    return el('tr', { className: 'student-row' },
+      el('th', { scope: 'row', textContent: student.username }),
+      el('td', { textContent: student.instructor || 'Not set' }),
+      el('td', { textContent: student.transmission }),
+      el('td', { className: 'student-row__progress' }, bar, el('span', { className: 'num', textContent: `${done} of ${mine.length}` })),
+      el('td', { className: 'student-row__actions' }, change, remove));
+  });
+  box.replaceChildren(el('table', { className: 'table' }, el('thead', {}, head), el('tbody', {}, ...rows)));
 }
 
 async function loadStudents() {
@@ -90,9 +144,28 @@ async function loadStudents() {
   drawStudents();
 }
 
+async function saveStudent(form) {
+  const name = form.elements.username.value.trim();
+  try {
+    await send('rpc/admin_save_student', {
+      p_username: name,
+      p_password: form.elements.password.value,
+      p_instructor: form.elements.instructor.value,
+      p_transmission: form.elements.transmission.value,
+    });
+    studentForm(null);
+    say(`${name} was saved.`);
+    await loadStudents();
+  } catch (error) { say(`${name} was not saved. ${error.message}`, true); }
+}
+
 // ---------- lessons ----------
 
 const newId = (prefix) => `${prefix}-${Date.now().toString(36)}${Math.floor(Math.random() * 1296).toString(36)}`;
+
+function dirty(on = true) {
+  $('course-dirty').hidden = !on;
+}
 
 function youtubeId(text) {
   const match = String(text || '').trim().match(/(?:v=|youtu\.be\/|embed\/|shorts\/)([\w-]{11})/);
@@ -100,15 +173,15 @@ function youtubeId(text) {
   return /^[\w-]{11}$/.test(String(text || '').trim()) ? String(text).trim() : '';
 }
 
-function field(label, control) {
-  return el('label', { className: 'dialog__field' }, el('span', { textContent: label }), control);
+function field(label, control, className = '') {
+  return el('label', { className: `dialog__field ${className}`.trim() }, el('span', { textContent: label }), control);
 }
 
 function drawLesson(module, lesson) {
   const title = el('input', { className: 'input', type: 'text', value: lesson.title || '', maxLength: 120 });
   title.addEventListener('input', () => { lesson.title = title.value; });
 
-  const video = el('input', { className: 'input', type: 'text', value: lesson.youtubeUrl || (lesson.videoId ? `https://youtu.be/${lesson.videoId}` : ''), placeholder: 'YouTube link' });
+  const video = el('input', { className: 'input', type: 'text', value: lesson.youtubeUrl || (lesson.videoId ? `https://youtu.be/${lesson.videoId}` : ''), placeholder: 'https://youtu.be/...' });
   video.addEventListener('input', () => {
     lesson.youtubeUrl = video.value.trim();
     lesson.videoId = youtubeId(video.value);
@@ -122,39 +195,53 @@ function drawLesson(module, lesson) {
   who.value = String(lesson.transmission || 'All').toLowerCase().startsWith('auto') ? 'Auto' : (lesson.transmission === 'Manual' ? 'Manual' : 'All');
   who.addEventListener('change', () => { lesson.transmission = who.value; });
 
-  const tip = el('input', { className: 'input', type: 'text', value: lesson.tip || lesson.instructorTip || lesson.tips || '', maxLength: 240 });
+  const tip = el('input', { className: 'input', type: 'text', value: lesson.tip || lesson.instructorTip || lesson.tips || '', maxLength: 240, placeholder: 'Optional' });
   tip.addEventListener('input', () => { lesson.tip = tip.value; });
 
-  const remove = el('button', { type: 'button', className: 'link', textContent: 'Remove lesson' });
+  const remove = el('button', { type: 'button', className: 'btn btn--small btn--quiet btn--danger lesson-edit__remove', textContent: 'Remove' });
+  remove.setAttribute('aria-label', `Remove the lesson ${lesson.title || ''}`.trim());
   remove.addEventListener('click', () => {
     module.lessons = module.lessons.filter((other) => other !== lesson);
+    dirty();
     drawModules();
   });
 
-  return el('div', { className: 'lesson-edit' }, field('Lesson', title), field('Video', video), field('For', who), field('Tip', tip), remove);
+  return el('div', { className: 'lesson-edit' },
+    field('Lesson', title, 'lesson-edit__title'),
+    field('YouTube link', video, 'lesson-edit__video'),
+    field('For', who, 'lesson-edit__for'),
+    remove,
+    field('Tip shown under the video', tip, 'lesson-edit__tip'));
 }
 
 function drawModules() {
-  $('module-rows').replaceChildren(...modules.map((module) => {
+  const box = $('module-rows');
+  if (!modules.length) {
+    box.replaceChildren(el('p', { className: 'desk__empty', textContent: 'No modules yet. Add one to start building the course.' }));
+    return;
+  }
+  box.replaceChildren(...modules.map((module, index) => {
     const title = el('input', { className: 'input', type: 'text', value: module.title || '', maxLength: 120 });
     title.addEventListener('input', () => { module.title = title.value; });
 
-    const add = el('button', { type: 'button', className: 'link', textContent: 'Add a lesson' });
+    const add = el('button', { type: 'button', className: 'btn btn--small btn--quiet', textContent: 'Add a lesson' });
     add.addEventListener('click', () => {
       module.lessons.push({ id: newId('les'), title: '', transmission: 'All', videoId: '', youtubeUrl: '', tip: '' });
+      dirty();
       drawModules();
     });
-    const remove = el('button', { type: 'button', className: 'link', textContent: 'Remove module' });
+    const remove = el('button', { type: 'button', className: 'btn btn--small btn--quiet btn--danger', textContent: 'Remove module' });
     remove.addEventListener('click', () => {
       if (module.lessons.length && !window.confirm(`Remove "${module.title || 'this module'}" and its lessons?`)) return;
       modules = modules.filter((other) => other !== module);
+      dirty();
       drawModules();
     });
 
-    return el('div', { className: 'module-edit' },
-      field('Module', title),
+    return el('section', { className: 'module-edit panel' },
+      el('div', { className: 'module-edit__head' }, field(`Module ${index + 1}`, title, 'module-edit__title'), remove),
       ...module.lessons.map((lesson) => drawLesson(module, lesson)),
-      el('div', { className: 'actions' }, add, remove));
+      el('div', { className: 'module-edit__foot' }, add));
   }));
 }
 
@@ -163,6 +250,7 @@ async function loadCourse() {
   const saved = rows[0] && Array.isArray(rows[0].modules) ? rows[0].modules : [];
   modules = saved.map((module) => ({ ...module, id: module.id || newId('mod'), lessons: Array.isArray(module.lessons) ? module.lessons.map((lesson) => ({ ...lesson, id: lesson.id || newId('les') })) : [] }));
   drawModules();
+  dirty(false);
 }
 
 async function saveCourse() {
@@ -172,6 +260,7 @@ async function saveCourse() {
   if (untitled) { say('Give every module and lesson a name before saving.', true); return; }
   try {
     await send('course_content?on_conflict=id', [{ id: 1, modules, updated_at: new Date().toISOString() }], 'resolution=merge-duplicates,return=minimal');
+    dirty(false);
     say('Lessons saved.');
     drawStudents();
   } catch (error) { say(`The lessons were not saved. ${error.message}`, true); }
@@ -241,31 +330,26 @@ export async function startDesk(email) {
   $('course').hidden = true;
   $('desk').hidden = false;
   say(`Signed in as ${email || 'an instructor'}.`);
+  initTabs();
 
-  $('desk-out').addEventListener('click', async () => { await signOut(); window.location.reload(); });
+  $('desk-out').addEventListener('click', async () => {
+    if (!$('course-dirty').hidden && !window.confirm('Your lesson changes are not saved. Sign out anyway?')) return;
+    await signOut();
+    window.location.reload();
+  });
+  window.addEventListener('beforeunload', (event) => { if (!$('course-dirty').hidden) event.preventDefault(); });
+
   $('course-save').addEventListener('click', saveCourse);
   $('module-add').addEventListener('click', () => {
     modules.push({ id: newId('mod'), title: '', lessons: [] });
+    dirty();
     drawModules();
   });
+  $('module-rows').addEventListener('input', () => dirty());
+  $('module-rows').addEventListener('change', () => dirty());
 
-  const form = $('student-add');
-  form.addEventListener('submit', async (event) => {
-    event.preventDefault();
-    const name = form.elements.username.value.trim();
-    try {
-      await send('rpc/admin_save_student', {
-        p_username: name,
-        p_password: form.elements.password.value,
-        p_instructor: form.elements.instructor.value,
-        p_transmission: form.elements.transmission.value,
-      });
-      form.reset();
-      say(`${name} was saved.`);
-      await loadStudents();
-    } catch (error) { say(`${name} was not saved. ${error.message}`, true); }
-  });
-
+  $('student-add').addEventListener('submit', (event) => { event.preventDefault(); saveStudent(event.currentTarget); });
+  $('student-cancel').addEventListener('click', () => studentForm(null));
   $('settings-form').addEventListener('submit', (event) => { event.preventDefault(); saveSettings(event.currentTarget); });
   $('password-form').addEventListener('submit', (event) => { event.preventDefault(); changePassword(event.currentTarget); });
 
