@@ -132,6 +132,7 @@ a.rating:hover { color: var(--color-mark); }
 .seg legend { float: left; width: 6.5rem; padding: 0; font-size: var(--text-sm); font-weight: 500; color: var(--color-muted); }
 .seg input { position: absolute; opacity: 0; width: 1px; height: 1px; }
 .seg label { display: inline-flex; align-items: center; min-height: 48px; padding: 0 var(--space-md); border-radius: var(--radius-control); background: var(--color-paper-2); font-weight: 500; cursor: pointer; transition: background-color var(--dur-short) var(--ease-out), color var(--dur-short) var(--ease-out), transform var(--dur-micro) var(--ease-out); }
+.seg label small { margin-inline-start: var(--space-xs); font-size: var(--text-sm); font-weight: 400; }
 .seg label:hover { background: var(--color-paper-3); }
 .seg label:active { transform: scale(0.97); }
 .seg input:checked + label { background: var(--color-ink); color: var(--color-paper); }
@@ -290,6 +291,8 @@ a.rating:hover { color: var(--color-mark); }
 .dialog__field { display: grid; gap: var(--space-2xs); font-size: var(--text-sm); font-weight: 500; color: var(--color-muted); }
 .dialog__field .input { flex: none; width: 100%; }
 .dialog__error { min-height: 1lh; font-size: var(--text-sm); color: var(--color-error); }
+/* no gap is held open for a message that is not there */
+.gate__form .dialog__error:empty { display: none; }
 .dialog__cancel { border: 0; background: none; font: 500 var(--text-md)/1 var(--font-body); cursor: pointer; min-height: 44px; }
 
 .is-editing .is-editable { outline: 1px dashed var(--color-muted); outline-offset: 4px; border-radius: var(--space-2xs); cursor: text; }
@@ -427,7 +430,11 @@ select.input { appearance: auto; }
   .photo--inset { inset-inline-start: var(--space-sm); inset-block-end: calc(-1 * var(--space-xl)); width: 44%; }
   .photo--inset .chip { display: none; }
   .nav__links { display: none; }
+  /* the booking bar at the foot of the screen carries this button instead */
+  .nav__end:has(.menu) .btn { display: none; }
   .menu { display: block; }
+  /* a solid panel: glass inside the glass bar cannot blur what is behind it, so the page showed through */
+  .menu__panel { background: var(--color-paper); border-color: var(--color-rule); box-shadow: var(--shadow-card); -webkit-backdrop-filter: none; backdrop-filter: none; }
   .nav__row { padding-inline: var(--space-md) var(--space-xs); min-height: 56px; }
   .head--split { grid-template-columns: minmax(0, 1fr); }
   .gate__text, .gate__form, .course__list, .course__player { grid-column: 1 / -1; }
@@ -441,27 +448,120 @@ select.input { appearance: auto; }
   .lesson-edit__for { grid-column: 1; order: 3; }
   .lesson-edit__remove { justify-self: start; order: 5; }
   .nav__back { display: none; }
-  .map { min-height: 320px; }
+  .map { min-height: 0; }
   .tips { position: static; max-width: none; margin-block-start: var(--space-md); background: var(--color-paper-2); border: 0; box-shadow: none; -webkit-backdrop-filter: none; backdrop-filter: none; }
   .bento > .photo { grid-column: span 6; }
   .tile { grid-column: 1 / -1; }
   .quotes { grid-template-columns: minmax(0, 1fr); }
   .posts { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-lg) var(--gap-columns); }
-  .dock { position: fixed; z-index: var(--z-sticky); inset-inline: var(--space-sm); inset-block-end: var(--space-sm); display: flex; align-items: center; justify-content: space-between; gap: var(--space-md); padding: var(--space-xs) var(--space-lg) var(--space-xs) var(--space-xs); border-radius: var(--radius-pill); }
-  .footer { padding-block-end: var(--space-4xl); }
+  .dock { position: fixed; z-index: var(--z-sticky); inset-inline: var(--space-sm); inset-block-end: max(var(--space-sm), env(safe-area-inset-bottom)); display: flex; align-items: center; gap: var(--space-xs); max-width: 26rem; margin-inline: auto; padding: var(--space-xs); border-radius: var(--radius-pill); transition: transform var(--dur-long) var(--ease-out), opacity var(--dur-short) var(--ease-out), visibility 0s; }
+  .dock .btn { flex: 1 1 auto; }
+  .dock .btn--quiet { flex: 0 0 auto; }
+  /* out of the way while the hero's own button, the booking block or the footer is on screen */
+  .js .dock:not(.is-shown) { transform: translateY(150%); opacity: 0; visibility: hidden; transition: transform var(--dur-long) var(--ease-in), opacity var(--dur-short) var(--ease-out), visibility 0s var(--dur-long); }
+  .footer { padding-block-end: var(--space-2xl); }
   .footer__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .footer__brand { grid-column: 1 / -1; }
 }
 @media (max-width: 40rem) {
-  .seg legend { float: none; width: 100%; }
-  .row__label { width: 100%; }
+  /* rhythm: less air under a heading and inside the coloured blocks */
+  :root { --field-pad: var(--space-lg); }
+  .head { gap: var(--space-xs); margin-bottom: var(--space-lg); }
+  .hero__grid { row-gap: var(--space-lg); padding-block: var(--space-lg) var(--space-xl); }
+  .hero__text { gap: var(--space-md); }
+  /* one photograph in the hero; the switch on it changes the car */
+  .photo--inset { display: none; }
   .switch button { padding: 0 var(--space-sm); }
-  .grid2 { grid-template-columns: minmax(0, 1fr); }
-  .cell--type { padding: var(--space-lg); min-height: 0; }
-  .specs { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+
+  /* booking: each group is a row of equal buttons under its label */
+  .offer { padding-block-start: 0; }
+  .offer__choices { padding-block: var(--space-lg); }
+  .offer__choices .lead { margin-bottom: 0; }
+  .seg { display: grid; grid-template-columns: repeat(var(--seg-cols, 2), minmax(0, 1fr)); }
+  .seg--3 { --seg-cols: 3; }
+  .seg legend { float: none; width: 100%; padding-block-end: var(--space-xs); }
+  .seg label { flex-direction: column; justify-content: center; min-height: 52px; padding: var(--space-xs) var(--space-sm); line-height: 1.25; text-align: center; }
+  .seg label small { margin-inline-start: 0; }
+  .seg__more { display: none; }
+  .row__label { width: 100%; }
+  .row .input { flex: 1 1 7rem; }
+  .row .input[type="date"] { flex-basis: 100%; }
+  .row .input--short { flex: 0 0 10.5rem; }
+  .offer__field { gap: var(--space-lg); }
+  .price { gap: var(--space-sm); }
+
+  /* cars: the details as a short list, name on the left and value on the right */
+  .grid2 { grid-template-columns: minmax(0, 1fr); row-gap: var(--space-xl); }
+  .specs { grid-template-columns: minmax(0, 1fr); gap: 0; padding-block-start: 0; border-block-start: 0; }
+  .specs div { display: flex; align-items: baseline; justify-content: space-between; gap: var(--space-md); padding-block: var(--space-sm); border-block-start: var(--rule-hair) solid var(--color-rule); }
+  .specs dd { text-align: end; }
+  .cell--type { grid-template-rows: none; gap: var(--space-xs); padding: var(--space-lg); min-height: 0; }
+  .cell--type h3 { font-size: var(--text-2xl); }
+  .cell--type + .cell--type { margin-block-start: calc(-1 * var(--space-md)); }
   .hotspot__note { inset-inline-start: var(--space-sm); inset-block-start: auto; inset-block-end: calc(var(--space-md) + 44px); max-width: calc(100% - 2 * var(--space-sm)); }
+
+  /* learn the area: the map, then the four spots numbered like its pins, then the chosen tip */
+  .routes { row-gap: var(--space-md); }
+  .routes__side, .routes__map { display: contents; }
+  .routes .head, .map, .spots, .tips { grid-column: 1 / -1; }
+  .routes .head { order: 1; margin-bottom: var(--space-xs); }
+  .map { order: 2; }
+  .spots { order: 3; counter-reset: spot; justify-items: stretch; gap: 0; }
+  .spots label { counter-increment: spot; display: flex; align-items: center; gap: var(--space-sm); min-height: 52px; border-block-end: var(--rule-hair) solid var(--color-rule); font-size: var(--text-lg); line-height: 1.2; letter-spacing: -0.02em; color: var(--color-ink-2); }
+  .spots label::before { content: counter(spot); flex: 0 0 auto; display: grid; place-items: center; width: 28px; height: 28px; border-radius: var(--radius-pill); background: var(--color-ink); color: var(--color-paper); font-size: var(--text-sm); letter-spacing: 0; transition: background-color var(--dur-short) var(--ease-out); }
+  .spots label:hover { transform: none; }
+  .spots input:checked + label { color: var(--color-ink); }
+  .spots input:checked + label::before { background: var(--color-mark); }
+  .tips { order: 4; margin-block-start: 0; }
+  /* the chosen spot is already named in the list above the tip */
+  .tip h3 { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+
+  /* readiness: the score sits above the sliders, so it is in view while they move */
+  .quiz { row-gap: var(--space-lg); }
+  .quiz__controls { display: contents; }
+  .quiz .head, .quiz .range, .quiz .seg, .quiz__score { grid-column: 1 / -1; }
+  .quiz .head { order: 1; margin-bottom: 0; }
+  .quiz__score { order: 2; grid-template-columns: auto minmax(0, 1fr); align-items: center; gap: var(--space-md); padding: var(--space-lg) var(--space-md); }
+  .quiz .range, .quiz .seg { order: 3; }
+  .score { gap: var(--space-2xs); }
+  .score__figure { min-width: 2ch; font-size: 4.5rem; }
+  .score__label { font-size: var(--text-sm); }
+  .score__foot { gap: var(--space-xs); }
+
+  /* passes: the two figures side by side, then the photographs */
+  .tile { grid-column: span 6; order: -1; gap: var(--space-md); padding: var(--space-md); }
+  .figure { font-size: clamp(2.25rem, 11vw, 3rem); font-variant-numeric: tabular-nums; }
+  .tile__label { font-size: var(--text-sm); line-height: 1.4; }
+
+  .quotes { gap: var(--space-sm); }
+  .quote { gap: var(--space-md); padding: var(--space-lg); }
+  .quote blockquote p { font-size: 1.125rem; }
+
+  .posts { gap: var(--space-lg) var(--gap-columns); }
+  .post:nth-child(n + 5) { display: none; }
   .post__text { font-size: var(--text-sm); }
-  .footer__grid { grid-template-columns: minmax(0, 1fr); }
+
+  .footer { padding-block-start: var(--space-2xl); }
+  .footer__grid > div:nth-child(2) { grid-column: 1 / -1; }
+  .footer ul { gap: 0; }
+  .footer li a, .footer__button { min-height: 44px; }
+  .footer li:not(:has(a, button)) { padding-block: var(--space-xs); }
+  .footer__note { margin-block-start: var(--space-xl); }
+
+  /* editing on a phone: a shorter bar, so more of the page stays in view */
+  .editbar { gap: var(--space-xs); padding: var(--space-sm); }
+  .editbar__who { display: none; }
+  .editbar__status { flex-basis: 100%; }
+  .editbar__actions { width: 100%; }
+  .editbar__actions .btn { flex: 1 1 auto; min-height: 40px; padding-inline: var(--space-sm); }
+
+  /* course page */
+  .gate { padding-block-start: var(--space-xl); }
+  .gate__text { gap: var(--space-sm); }
+  .gate__form { padding: var(--space-lg); }
+  .course, .desk { padding-block-start: var(--space-lg); }
+  .course__bar { margin-bottom: var(--space-lg); }
+
   .lesson-edit { grid-template-columns: minmax(0, 1fr); }
   .lesson-edit__tip, .lesson-edit__for { grid-column: auto; }
   .tab { padding: 0 var(--space-md); }
@@ -472,6 +572,11 @@ select.input { appearance: auto; }
   .table th, .table td { padding: 0; border: 0; }
   .table tbody th { grid-column: 1 / -1; }
   .table .student-row__actions { grid-column: 1 / -1; text-align: start; padding-block-start: var(--space-xs); }
+}
+
+/* fingers need a taller target than a line of text: the extra is added around text links without moving anything */
+@media (pointer: coarse) {
+  .link, .quote figcaption a { padding-block: var(--space-sm); margin-block: calc(-1 * var(--space-sm)); }
 }
 
 @media (prefers-reduced-motion: reduce) {

@@ -48,6 +48,23 @@ export function initNav() {
   document.addEventListener('keydown', (event) => { if (event.key === 'Escape') menu.open = false; });
 }
 
+// The phone booking bar. It steps aside while the hero's own booking button, the booking
+// block or the footer is on screen, so the same button is never shown twice.
+export function initDock() {
+  const dock = document.querySelector('.dock');
+  if (!dock) return;
+  const places = [document.querySelector('.hero .actions'), document.getElementById('book'), document.querySelector('.footer')].filter(Boolean);
+  if (!places.length || !('IntersectionObserver' in window)) { dock.classList.add('is-shown'); return; }
+  const onScreen = new Set();
+  const seen = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => { if (entry.isIntersecting) onScreen.add(entry.target); else onScreen.delete(entry.target); });
+    const shown = onScreen.size === 0;
+    dock.classList.toggle('is-shown', shown);
+    dock.inert = !shown;
+  });
+  places.forEach((place) => seen.observe(place));
+}
+
 // Car hotspots: a dot on the photo shows a short note on hover or keyboard focus (in the
 // stylesheet) and stays open when tapped or clicked. Saved hotspots replace the built-in one.
 export function wireHotspot(dot) {

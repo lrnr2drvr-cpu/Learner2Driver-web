@@ -56,6 +56,7 @@
               <a href="#quiz">Readiness</a>
               <a href="#passes">Passes</a>
               <a href="#reviews">Reviews</a>
+              <a href="course.html">Video course</a>
             </div>
           </details>
         </div>
@@ -107,14 +108,14 @@
 
           <fieldset class="seg">
             <legend>Instructor</legend>
-            <input type="radio" name="instructor" id="i-m" value="male" checked><label for="i-m">Male instructor</label>
-            <input type="radio" name="instructor" id="i-f" value="female"><label for="i-f">Female instructor</label>
+            <input type="radio" name="instructor" id="i-m" value="male" checked><label for="i-m">Male<span class="seg__more">&nbsp;instructor</span></label>
+            <input type="radio" name="instructor" id="i-f" value="female"><label for="i-f">Female<span class="seg__more">&nbsp;instructor</span></label>
           </fieldset>
 
           <fieldset class="seg">
             <legend>Car</legend>
-            <input type="radio" name="car" id="c-m" value="manual" checked><label for="c-m">Manual, Toyota Yaris</label>
-            <input type="radio" name="car" id="c-a" value="automatic"><label for="c-a">Automatic, Hyundai Kona EV</label>
+            <input type="radio" name="car" id="c-m" value="manual" checked><label for="c-m"><span>Manual</span><small>Toyota Yaris</small></label>
+            <input type="radio" name="car" id="c-a" value="automatic"><label for="c-a"><span>Automatic</span><small>Hyundai Kona EV</small></label>
           </fieldset>
 
           <fieldset class="seg">
@@ -283,7 +284,7 @@
             <input type="range" id="q-hours" min="0" max="60" value="35">
           </label>
 
-          <fieldset class="seg" id="q-theory">
+          <fieldset class="seg seg--3" id="q-theory">
             <legend>Theory test</legend>
             <input type="radio" name="theory" id="t-p" value="15" checked><label for="t-p">Passed</label>
             <input type="radio" name="theory" id="t-b" value="5"><label for="t-b">Booked</label>
@@ -382,7 +383,7 @@
 
   <div class="dock glass" role="region" aria-label="Book a lesson">
     <a class="btn" href="#book">Book a lesson</a>
-    <a class="link" href="tel:07427330827">Call</a>
+    <a class="btn btn--quiet" href="tel:07427330827">Call</a>
   </div>
 
   <footer class="footer">

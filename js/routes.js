@@ -71,7 +71,10 @@ function buildMap() {
   el.replaceChildren();
 
   const still = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const map = window.L.map(el, { scrollWheelZoom: false, zoomControl: true });
+  // On a touch screen one finger scrolls the page past the map; the list, the pins,
+  // the zoom buttons and a pinch still move it.
+  const touch = window.matchMedia('(pointer: coarse)').matches;
+  const map = window.L.map(el, { scrollWheelZoom: false, zoomControl: true, dragging: !touch });
   window.L.tileLayer(TILES, { maxZoom: 19, attribution: ATTRIBUTION }).addTo(map);
 
   const pins = inputs().map((input) => {

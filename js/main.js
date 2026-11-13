@@ -4,12 +4,13 @@ import { initHero } from './hero.js';
 import { initRoutes } from './routes.js';
 import { initReviews } from './reviews.js';
 import { initInstagram } from './instagram.js';
-import { initReveal, initNav, initHotspots, initQuiz, initHubSpot } from './ui.js';
+import { initReveal, initNav, initDock, initHotspots, initQuiz, initHubSpot } from './ui.js';
 import { initAccount } from './account.js';
 
 // Everything that works without the network first.
 initReveal();
 initNav();
+initDock();
 initBooking();
 initHero();
 initQuiz();
