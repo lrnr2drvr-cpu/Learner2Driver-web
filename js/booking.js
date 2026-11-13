@@ -43,16 +43,18 @@ function count(el, from) {
   const to = Number(real);
   if (still() || !Number.isFinite(to) || !Number.isFinite(from) || from === to) { el.textContent = real; return; }
   el.dataset.real = real;
-  const start = performance.now();
-  const length = 520;
-  (function step(now) {
-    const t = Math.min((now - start) / length, 1);
+  // Counted in frames, not by the clock, so it always finishes and can never overshoot.
+  const frames = 30;
+  let frame = 0;
+  (function step() {
+    frame += 1;
+    const t = frame / frames;
     const eased = 1 - (1 - t) ** 3;
     el.textContent = String(Math.round(from + (to - from) * eased));
-    if (t < 1) { requestAnimationFrame(step); return; }
+    if (frame < frames) { requestAnimationFrame(step); return; }
     el.textContent = real;
     delete el.dataset.real;
-  }(start));
+  }());
 }
 
 let wasBlock = false;
@@ -64,12 +66,11 @@ function update() {
   const block = picked('hours') === '10';
   const shown = block ? blockPrice : hour;
 
+  // The saving is worked out from the two prices, wherever it is printed.
   const saving = Number(priceOf(was)) - Number(priceOf(blockPrice));
-  const save = document.getElementById('price-save');
-  if (save) {
-    save.textContent = String(saving);
-    save.closest('.price__save').hidden = !(saving > 0);
-  }
+  document.querySelectorAll('[data-saving]').forEach((el) => { el.textContent = String(saving); });
+  const pill = document.querySelector('.price__save');
+  if (pill) pill.hidden = !(saving > 0);
 
   if (block !== wasBlock && shown) count(shown, Number(priceOf(block ? hour : blockPrice)));
   wasBlock = block;
@@ -105,6 +106,7 @@ export function initBooking() {
     day.min = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
   }
 
+  wasBlock = picked('hours') === '10'; // no counting on first load, only when the choice changes
   book.addEventListener('change', update);
   book.addEventListener('input', update);
 

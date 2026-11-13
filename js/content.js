@@ -34,6 +34,30 @@ export function syncPhone() {
   });
 }
 
+// The headline echoes the wordmark: the L that starts it in the brand red, and the D of
+// the first word that starts with one in the brand green. Left plain while being edited.
+export function paintBrandLetters() {
+  const head = document.querySelector('[data-key="hero_head"]');
+  if (!head || document.activeElement === head) return;
+  const text = head.textContent;
+  const red = text.search(/\bL/);
+  const green = text.search(/\b[Dd]/);
+  const marks = [[red, 'wordmark__l'], [green, 'wordmark__d']].filter(([at]) => at > -1).sort((a, b) => a[0] - b[0]);
+  const parts = [];
+  let from = 0;
+  marks.forEach(([at, name]) => {
+    if (at < from) return;
+    parts.push(text.slice(from, at));
+    const letter = document.createElement('span');
+    letter.className = name;
+    letter.textContent = text[at];
+    parts.push(letter);
+    from = at + 1;
+  });
+  parts.push(text.slice(from));
+  head.replaceChildren(...parts);
+}
+
 function apply(map) {
   document.querySelectorAll('[data-key]').forEach((el) => {
     // Remember the built-in wording once, so an edit can always be taken back to it.
@@ -46,6 +70,7 @@ function apply(map) {
     if (typeof address === 'string' && address.startsWith(PHOTOS) && img.src !== address) img.src = address;
   });
   syncPhone();
+  paintBrandLetters();
 }
 
 // Shows the last known edits straight away, then refreshes them. Returns every row

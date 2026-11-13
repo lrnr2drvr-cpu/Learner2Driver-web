@@ -1,4 +1,4 @@
-// Test routes: four spots, each with a tip and a pin on the map.
+// Learn the area: four spots, each with a tip and a pin on the map.
 // The spots in the HTML are the defaults; the instructor's saved versions replace them.
 import { readTable } from './config.js';
 

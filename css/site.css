@@ -2,6 +2,7 @@
  * hero: Stage · nav: floating pill · footer: index columns · imagery: photographs (the school's own) · signature: the lesson price at poster scale on a green field, changing as you choose
  * axes: light/grotesk-sans/cool · posture: full-palette · contrast: pass · fold: pass · brand: Learner2Driver (spec 2026-11-11) · v2.0.0 */
 /* Hallmark · pre-emit critique: P4 H4 E4 S5 R3 V4 · weakest: R, the owner asked for corners, colour photographs, motion and glass; kept to one entrance, one field per screen and glass only over pictures and scrolled content */
+/* The hero head's L and D take the wordmark's red and green at the owner's request (gate 38iii stands as flagged). */
 /* By the owner's request: rounded corners, photographs in colour, motion, and glass on the floating nav, photo labels, map tips and phone booking bar. The Grid theme ships square, duotone, still and opaque. */
 @import url("./tokens.css");
 @import url("./base.css");
@@ -36,7 +37,6 @@ p { color: var(--color-ink-2); }
 .actions { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-md) var(--space-lg); }
 
 .field { background: var(--color-field); color: var(--color-field-ink); --color-focus: var(--color-field-ink); }
-.field--mark { background: var(--color-mark); color: var(--color-mark-ink); --color-focus: var(--color-ink); }
 .field p, .field .link, .panel--ink p, .panel--ink .link { color: inherit; }
 .field .link:hover, .panel--ink .link:hover { color: inherit; text-decoration-thickness: 2px; }
 .panel { border-radius: var(--radius-card); }
@@ -150,10 +150,16 @@ a.rating:hover { color: var(--color-mark); }
 .input[type="date"] { flex: 0 1 14rem; }
 
 .offer__field { grid-column: 7 / span 6; display: grid; align-content: space-between; gap: var(--space-2xl); padding: var(--field-pad); border-radius: var(--radius-card); }
-.price { display: grid; gap: var(--space-sm); animation: swap-in var(--dur-long) var(--ease-out); }
-.price__figure { font: var(--display-weight) clamp(5.5rem, 13vw, 12rem)/0.82 var(--font-display); letter-spacing: -0.055em; }
-.price__label { font-size: var(--text-lead); font-weight: 500; }
-.price__save { justify-self: start; padding: var(--space-2xs) var(--space-md); border-radius: var(--radius-pill); background: var(--color-field-ink); color: var(--color-field); font-size: var(--text-sm); font-weight: 500; }
+.price { display: grid; justify-items: start; gap: var(--space-md); animation: swap-in var(--dur-long) var(--ease-out); }
+.price__name { font-size: var(--text-lead); font-weight: 500; }
+.price__row { display: flex; flex-wrap: wrap; align-items: baseline; gap: var(--space-xs) var(--space-md); }
+.price__figure { font: var(--display-weight) clamp(3.5rem, 6.5vw, 6rem)/0.9 var(--font-display); letter-spacing: -0.045em; }
+.price__was { font-size: var(--text-lead); font-weight: 500; }
+.field .price__save { padding: var(--space-xs) var(--space-lg); border-radius: var(--radius-pill); background: var(--color-field-ink); color: var(--color-field); font: var(--display-weight) var(--text-xl)/1.2 var(--font-display); letter-spacing: -0.02em; }
+.price__other { font-size: var(--text-lead); line-height: 1.4; max-width: 28ch; }
+.price__other strong { font-family: var(--font-display); font-weight: var(--display-weight); letter-spacing: -0.02em; }
+.price__switch { padding: 0; border: 0; background: none; font: inherit; font-weight: 500; cursor: pointer; }
+.price__switch:focus-visible { outline: 2px solid var(--color-focus); outline-offset: 2px; }
 .price--10 { display: none; }
 .offer:has(#h-10:checked) .price--1 { display: none; }
 .offer:has(#h-10:checked) .price--10 { display: grid; }
@@ -180,7 +186,7 @@ a.rating:hover { color: var(--color-mark); }
 .hotspot:hover + .hotspot__note, .hotspot:focus-visible + .hotspot__note, .hotspot[aria-expanded="true"] + .hotspot__note { display: grid; }
 .hotspot__note { position: absolute; z-index: 3; inset-inline-start: calc(var(--x) + var(--space-lg)); inset-block-start: calc(var(--y) - var(--space-lg)); display: none; gap: var(--space-2xs); max-width: min(17rem, 55%); padding: var(--space-sm) var(--space-md); border-radius: var(--radius-control); font-size: var(--text-sm); color: var(--color-ink); animation: swap-in var(--dur-short) var(--ease-out); }
 
-/* ---------- test routes: pick a spot, read the tip, see it on the map ---------- */
+/* ---------- learn the area: pick a spot, read the tip, see it on the map ---------- */
 .routes { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--gap-columns); row-gap: var(--space-xl); align-items: start; }
 .routes__side { grid-column: 1 / span 5; display: grid; }
 .spots { margin: 0; padding: 0; border: 0; min-width: 0; display: grid; justify-items: start; gap: var(--space-xs); }

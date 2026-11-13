@@ -11,7 +11,7 @@
 //   - Every change can be undone, and any wording can be put back to the built-in original.
 import { config } from './config.js';
 import { authed, signOut } from './auth.js';
-import { syncPhone } from './content.js';
+import { syncPhone, paintBrandLetters } from './content.js';
 import { refreshBooking } from './booking.js';
 import { editPins } from './routes.js';
 import { editHotspots } from './edit-hotspots.js';
@@ -113,6 +113,7 @@ export function editable(el, { label = 'the wording', commit, kind = 'text', max
   }
 
   el.addEventListener('focus', () => {
+    if (el.firstElementChild) el.textContent = el.textContent; // plain text while typing
     if (!unsaved.has(el)) starting.set(el, el.textContent);
     lastField = el;
     refreshBar();
@@ -133,6 +134,7 @@ export function editable(el, { label = 'the wording', commit, kind = 'text', max
     if (!text || text === before.trim()) {
       if (!unsaved.has(el)) el.textContent = before;
       refreshBar();
+      setTimeout(paintBrandLetters);
       return;
     }
     const problem = problemWith(kind, text);
@@ -151,6 +153,7 @@ function showWording(key, text) {
   document.querySelectorAll(`[data-key="${key}"]`).forEach((twin) => { twin.textContent = text; });
   syncPhone();
   refreshBooking();
+  setTimeout(paintBrandLetters);
 }
 
 // Saves a wording value. A value equal to the built-in original removes the saved row.

@@ -32,7 +32,7 @@ Learner2Driver is a Preston driving school run by two instructors. The website e
 - A choice of a male or a female instructor.
 - A choice of manual (Toyota Yaris) or fully electric automatic (Hyundai Kona EV), both dual-controlled.
 
-Supporting, not leading: local knowledge of the Preston test centre routes, and first-time pass results.
+Supporting, not leading: local knowledge of Preston's roads, and first-time pass results.
 
 ## Operating Context
 
@@ -45,13 +45,13 @@ Supporting, not leading: local knowledge of the Preston test centre routes, and 
 
 ## Capabilities and Constraints
 
-Homepage features to keep: instructors, the two cars with their feature hotspots, test readiness quiz, Preston test-route map with danger-spot tips, Instagram feed, booking wizard ending in WhatsApp or call, pass photo gallery, reviews.
+Homepage features to keep: instructors, the cars with their feature hotspots, readiness quiz, a "Learn the area" map of tricky local spots with tips, Instagram feed, booking wizard ending in WhatsApp or call, pass photo gallery, reviews.
 
 Dropped: dark mode.
 
 Video course hub: for current students only, each with their own login and saved progress. The instructor creates the accounts. Student logins are paused until this is rebuilt with real accounts.
 
-Pricing (as published on the live site): £38 per hour for manual and for automatic; 10-hour block £360 (was £380).
+Pricing (set by the owner, 13 November 2026): £37 per hour for manual and for automatic; 10-hour block £350 (£20 less than ten single hours).
 
 Terminology on the live site: the instructors are presented as "Male Instructor" and "Female Instructor", not by name. The female instructor is described as a PDI.
 
@@ -62,6 +62,8 @@ Undecided: whether instructors are named and pictured on the new site.
 - Name: Learner2Driver, written as one word.
 - Wordmark: red capital L, amber 2, green capital D. Green is the main brand colour. Both are to be kept.
 - Tone: sharp and professional.
+- The school teaches people to drive, not only to pass. Do not frame the site around "test routes".
+- Do not make the school sound small: no counting of cars or instructors in headings.
 
 ## Evidence on Hand
 
