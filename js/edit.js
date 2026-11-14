@@ -52,6 +52,7 @@ async function request(path, options) {
     const detail = await res.json().catch(() => ({}));
     throw new Error(detail.message || `The server answered ${res.status}.`);
   }
+  return res;
 }
 
 export function upsert(table, conflict, row) {
@@ -196,6 +197,30 @@ function restoreOriginal() {
   }).then(refreshBar);
 }
 
+// A map spot already has a row, so one part of it (its name, its tip or its position) is
+// changed in place. Sending only that part as a new row is refused by the database, which
+// wants the whole spot. If the spot has never been saved, it is written whole from the page.
+async function saveSpot(id, fields) {
+  const res = await request(`/rest/v1/preston_routes?spot_id=eq.${id}`, {
+    method: 'PATCH',
+    headers: { 'Content-Type': 'application/json', Prefer: 'return=representation' },
+    body: JSON.stringify({ ...fields, updated_at: new Date().toISOString() }),
+  });
+  const rows = await res.json().catch(() => []);
+  if (Array.isArray(rows) && rows.length) return;
+  const input = document.getElementById(`s-${id}`);
+  const tip = document.querySelector(`.tip--${id}`);
+  await upsert('preston_routes', 'spot_id', {
+    spot_id: id,
+    title: tip.querySelector('h3').textContent.trim(),
+    location: '',
+    tip: tip.querySelector('p').textContent.trim(),
+    lat: Number(input.dataset.lat),
+    lng: Number(input.dataset.lng),
+    ...fields,
+  });
+}
+
 function editRoutes() {
   document.querySelectorAll('#spots input[name="spot"]').forEach((input) => {
     const id = Number(input.value);
@@ -210,9 +235,9 @@ function editRoutes() {
       label: 'the spot',
       max: 60,
       commit: async (value, before) => {
-        await upsert('preston_routes', 'spot_id', { spot_id: id, title: value });
+        await saveSpot(id, { title: value });
         showTitle(value);
-        return async () => { await upsert('preston_routes', 'spot_id', { spot_id: id, title: before }); showTitle(before); };
+        return async () => { await saveSpot(id, { title: before }); showTitle(before); };
       },
     });
     titleField(label);
@@ -221,17 +246,17 @@ function editRoutes() {
       label: 'the tip',
       max: 240,
       commit: async (value, before) => {
-        await upsert('preston_routes', 'spot_id', { spot_id: id, tip: value });
-        return async () => { await upsert('preston_routes', 'spot_id', { spot_id: id, tip: before }); text.textContent = before; };
+        await saveSpot(id, { tip: value });
+        return async () => { await saveSpot(id, { tip: before }); text.textContent = before; };
       },
     });
   });
 
   editPins(async (id, to, from, moveBack) => {
-    const ok = await save('the pin', () => upsert('preston_routes', 'spot_id', { spot_id: id, lat: to.lat, lng: to.lng }));
+    const ok = await save('the pin', () => saveSpot(id, { lat: to.lat, lng: to.lng }));
     if (!ok) { moveBack(); return; }
     pushUndo('the pin', async () => {
-      await upsert('preston_routes', 'spot_id', { spot_id: id, lat: from.lat, lng: from.lng });
+      await saveSpot(id, { lat: from.lat, lng: from.lng });
       moveBack();
     });
   });
