@@ -248,7 +248,7 @@ a.rating:hover { color: var(--color-mark); }
 .quote blockquote { margin: 0; }
 .quote blockquote p { font: 400 var(--text-lg)/1.35 var(--font-display); letter-spacing: -0.015em; color: var(--color-ink); text-indent: -0.42em; }
 .quote figcaption { font-size: var(--text-sm); font-weight: 500; color: var(--color-muted); }
-.quote figcaption a { color: var(--color-ink); text-decoration: none; }
+.quote figcaption a { color: var(--color-ink); text-decoration: underline var(--rule-hair); text-underline-offset: 0.3em; }
 .quote figcaption a:hover { color: var(--color-mark); }
 
 /* ---------- instagram: a centred grid of the latest posts ---------- */
@@ -333,6 +333,9 @@ a.rating:hover { color: var(--color-mark); }
 select.input { appearance: auto; }
 
 .gate { padding-block: var(--space-3xl) 0; }
+/* someone already signed in: hold the sign-in form back until their own screen is ready */
+.is-returning .gate { display: none; }
+.is-returning main { min-height: 100vh; }
 .gate__grid { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--gap-columns); row-gap: var(--space-xl); align-items: center; }
 .gate__text { grid-column: 1 / span 6; display: grid; gap: var(--space-lg); }
 .gate__form { grid-column: 8 / span 5; display: grid; gap: var(--space-md); padding: var(--space-xl); }
@@ -417,6 +420,7 @@ select.input { appearance: auto; }
 .setting { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 2fr); gap: var(--space-md) var(--gap-columns); padding-block: var(--space-lg); border-block-start: var(--rule-hair) solid var(--color-rule); }
 .setting__about { display: grid; align-content: start; gap: var(--space-2xs); }
 .setting__about p { font-size: var(--text-sm); }
+.desk .setting__name { font-size: var(--text-lg); line-height: 1.2; }
 .setting__fields { display: grid; gap: var(--space-md); justify-items: start; max-width: 32rem; }
 .setting__fields .dialog__field { width: 100%; }
 
@@ -436,6 +440,8 @@ select.input { appearance: auto; }
   /* a solid panel: glass inside the glass bar cannot blur what is behind it, so the page showed through */
   .menu__panel { background: var(--color-paper); border-color: var(--color-rule); box-shadow: var(--shadow-card); -webkit-backdrop-filter: none; backdrop-filter: none; }
   .nav__row { padding-inline: var(--space-md) var(--space-xs); min-height: 56px; }
+  .wordmark { font-size: min(var(--text-xl), 6.6vw); }
+  .wordmark--large { font-size: min(var(--text-3xl), 10.5vw); }
   .head--split { grid-template-columns: minmax(0, 1fr); }
   .gate__text, .gate__form, .course__list, .course__player { grid-column: 1 / -1; }
   .course__player { order: -1; }
@@ -499,6 +505,9 @@ select.input { appearance: auto; }
   .row .input[type="date"] { flex-basis: 100%; }
   .row .input--short { flex: 0 0 10.5rem; }
   .offer__field { gap: var(--space-lg); }
+  /* with text enlarged, the price block and its button stay inside the screen */
+  .offer__field, .price, .offer__send { grid-template-columns: minmax(0, 1fr); }
+  .btn { max-width: 100%; padding-block: var(--space-xs); line-height: 1.2; white-space: normal; text-align: center; }
   .price { gap: var(--space-sm); }
 
   /* cars: the details as a short list, name on the left and value on the right */

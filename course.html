@@ -8,10 +8,12 @@
   <meta name="description" content="The Learner2Driver video course. Students sign in to watch their lessons and keep track of what they have covered.">
   <meta name="theme-color" content="#f8f7f4">
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%232e7d32'/%3E%3Cpath d='M22 14h9v27h13v9H22z' fill='%23f8f7f4'/%3E%3C/svg%3E">
-  <script>document.documentElement.classList.add('js');</script>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Radio+Canada+Big:wght@400;700&family=Radio+Canada:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="apple-touch-icon" href="img/touch-icon.png">
+  <script>document.documentElement.classList.add('js'); try { if (localStorage.getItem('l2d_v2_session') || localStorage.getItem('l2d_v2_student')) { document.documentElement.classList.add('is-returning'); setTimeout(function () { document.documentElement.classList.remove('is-returning'); }, 6000); } } catch (e) {}</script>
+  <link rel="preload" href="fonts/radio-canada-big-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="fonts/radio-canada-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="css/tokens.css" as="style">
+  <link rel="preload" href="css/base.css" as="style">
   <link rel="stylesheet" href="css/site.css">
 </head>
 <body id="top" class="course-page">
@@ -39,7 +41,7 @@
           <h1 id="gate-head">Your video course.</h1>
           <p class="lead">Sign in with the username and password your instructor gave you.</p>
         </div>
-        <form class="gate__form panel" id="student-form">
+        <form class="gate__form panel" id="student-form" method="post" onsubmit="return false">
           <label class="dialog__field" for="st-user">
             <span>Username</span>
             <input class="input" type="text" id="st-user" name="username" autocomplete="username" autocapitalize="none" autocorrect="off" spellcheck="false" required>
@@ -148,7 +150,7 @@
           <form class="settings" id="settings-form">
             <div class="setting">
               <div class="setting__about">
-                <h3>Google reviews</h3>
+                <h2 class="setting__name">Google reviews</h2>
                 <p>The key and place ID used to show your rating, review count and latest reviews.</p>
               </div>
               <div class="setting__fields">
@@ -158,7 +160,7 @@
             </div>
             <div class="setting">
               <div class="setting__about">
-                <h3>Instagram</h3>
+                <h2 class="setting__name">Instagram</h2>
                 <p>The feed address the homepage reads your latest posts from. Leave empty to use the built-in one.</p>
               </div>
               <div class="setting__fields">
@@ -167,7 +169,7 @@
             </div>
             <div class="setting">
               <div class="setting__about">
-                <h3>HubSpot</h3>
+                <h2 class="setting__name">HubSpot</h2>
                 <p>Loads HubSpot on the homepage. Leave empty to switch it off.</p>
               </div>
               <div class="setting__fields">
@@ -179,7 +181,7 @@
           <form class="settings" id="password-form">
             <div class="setting">
               <div class="setting__about">
-                <h3>Password</h3>
+                <h2 class="setting__name">Password</h2>
                 <p>Changes the password you sign in with. At least 8 characters.</p>
               </div>
               <div class="setting__fields">
@@ -225,7 +227,7 @@
   </footer>
 
   <dialog class="dialog" id="signin" aria-labelledby="signin-head">
-    <form class="dialog__form" id="signin-form">
+    <form class="dialog__form" id="signin-form" method="post" onsubmit="return false">
       <h2 id="signin-head">Instructor sign-in</h2>
       <label class="dialog__field" for="si-email">
         <span>Email</span>

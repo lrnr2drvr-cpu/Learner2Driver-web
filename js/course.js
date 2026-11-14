@@ -231,8 +231,11 @@ initInstructor();
 // An instructor who is already signed in goes straight to the desk; otherwise a
 // student with a saved session goes straight to the course.
 const saved = store.get(KEY);
+const settled = () => document.documentElement.classList.remove('is-returning');
 if (hasSession()) {
-  openDesk();
+  openDesk().catch(() => false).then(settled);
 } else if (saved) {
-  open(saved).catch(() => { /* offline or not set up: the sign-in form stays */ });
+  open(saved).catch(() => { /* offline or not set up: the sign-in form stays */ }).then(settled);
+} else {
+  settled();
 }

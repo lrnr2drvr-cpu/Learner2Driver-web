@@ -9,13 +9,25 @@
   <meta property="og:title" content="Learner2Driver, driving lessons in Preston">
   <meta property="og:description" content="Choose a male or female instructor, and a manual or electric car. £37 an hour.">
   <meta property="og:type" content="website">
+  <meta property="og:url" content="https://learner2driver.co.uk/">
+  <meta property="og:image" content="https://learner2driver.co.uk/img/share.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Learner2Driver, driving lessons in Preston, with the school's silver Toyota Yaris">
+  <meta name="twitter:card" content="summary_large_image">
   <meta name="theme-color" content="#f8f7f4">
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%232e7d32'/%3E%3Cpath d='M22 14h9v27h13v9H22z' fill='%23f8f7f4'/%3E%3C/svg%3E">
-  <script>document.documentElement.classList.add('js');</script>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Radio+Canada+Big:wght@400;700&family=Radio+Canada:wght@400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
+  <link rel="apple-touch-icon" href="img/touch-icon.png">
+  <link rel="modulepreload" href="js/config.js">
+  <link rel="modulepreload" href="js/content.js">
+  <link rel="modulepreload" href="js/booking.js">
+  <link rel="modulepreload" href="js/hero.js">
+  <link rel="modulepreload" href="js/ui.js">
+  <script>document.documentElement.classList.add('js'); window.l2dPlain = function () { window.l2dWentPlain = true; document.documentElement.classList.remove('js'); }; window.l2dWait = setTimeout(window.l2dPlain, 6000);</script>
+  <link rel="preload" href="fonts/radio-canada-big-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="fonts/radio-canada-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="css/tokens.css" as="style">
+  <link rel="preload" href="css/base.css" as="style">
   <link rel="stylesheet" href="css/site.css">
   <script type="application/ld+json">
   {
@@ -423,7 +435,7 @@
   </footer>
 
   <dialog class="dialog" id="signin" aria-labelledby="signin-head">
-    <form class="dialog__form" id="signin-form">
+    <form class="dialog__form" id="signin-form" method="post" onsubmit="return false">
       <h2 id="signin-head">Instructor sign-in</h2>
       <label class="dialog__field" for="si-email">
         <span>Email</span>
@@ -441,8 +453,7 @@
     </form>
   </dialog>
 
-  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin="" defer></script>
-  <script type="module" src="js/main.js"></script>
+  <script type="module" src="js/main.js" onerror="window.l2dPlain()"></script>
 
 </body>
 </html>

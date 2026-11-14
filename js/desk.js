@@ -104,7 +104,8 @@ function drawStudents() {
     box.replaceChildren(el('p', { className: 'desk__empty', textContent: 'No students yet. Add the first one with the form.' }));
     return;
   }
-  const head = el('tr', {}, ...['Student', 'Instructor', 'Car', 'Progress', ''].map((name) => el('th', { scope: 'col', textContent: name })));
+  const head = el('tr', {}, ...['Student', 'Instructor', 'Car', 'Progress'].map((name) => el('th', { scope: 'col', textContent: name })),
+    el('th', { scope: 'col' }, el('span', { className: 'visually-hidden', textContent: 'Actions' })));
   const rows = students.map((student) => {
     const mine = lessonsFor(student.transmission);
     const done = progress.filter((row) => row.student_id === student.id && mine.some((lesson) => lesson.id === row.lesson_id)).length;

@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://learner2driver.co.uk/sitemap.xml

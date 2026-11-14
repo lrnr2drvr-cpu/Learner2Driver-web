@@ -102,10 +102,36 @@ function buildMap() {
   return map;
 }
 
+// The map library is served from this site and fetched only as the map comes near the screen.
+function loadLeaflet() {
+  if (window.L) return Promise.resolve();
+  const style = new Promise((resolve) => {
+    const link = Object.assign(document.createElement('link'), { rel: 'stylesheet', href: 'vendor/leaflet/leaflet.css' });
+    link.onload = resolve;
+    link.onerror = resolve;
+    // Placed ahead of the site's stylesheet, so the site's own rules for the map and its pins still win.
+    const site = document.querySelector('link[rel="stylesheet"][href*="site.css"]');
+    if (site) site.before(link); else document.head.prepend(link);
+  });
+  const script = new Promise((resolve, reject) => {
+    const el = Object.assign(document.createElement('script'), { src: 'vendor/leaflet/leaflet.js' });
+    el.onload = resolve;
+    el.onerror = reject;
+    document.head.append(el);
+  });
+  return Promise.all([style, script]);
+}
+
 export async function initRoutes() {
-  if (!document.getElementById('spots')) return;
+  const el = document.getElementById('map');
+  if (!document.getElementById('spots') || !el) return;
   await applySaved();
-  // Leaflet loads with "defer", so it may arrive after this module runs.
-  if (window.L) buildMap();
-  else window.addEventListener('load', buildMap, { once: true });
+  const start = () => loadLeaflet().then(buildMap).catch(() => { /* the fallback link to OpenStreetMap stays */ });
+  if (!('IntersectionObserver' in window)) { start(); return; }
+  const near = new IntersectionObserver((entries) => {
+    if (!entries.some((entry) => entry.isIntersecting)) return;
+    near.disconnect();
+    start();
+  }, { rootMargin: '800px 0px' });
+  near.observe(el);
 }

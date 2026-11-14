@@ -17,6 +17,9 @@ Plain HTML, CSS and JavaScript modules. There is no build step; `package.json` i
 | `js/course.js`, `js/desk.js` | The course page for students, and for the instructor |
 | `js/auth.js`, `js/edit.js` | Instructor sign-in and click-to-edit |
 | `img/` | The built-in photographs |
+| `fonts/` | The two typefaces (Radio Canada and Radio Canada Big, SIL Open Font License), served from the site |
+| `vendor/leaflet/` | The map library (Leaflet 1.9.4, BSD 2-Clause), loaded only when the map comes near the screen |
+| `robots.txt`, `sitemap.xml` | For search engines |
 | `supabase/` | Database scripts, run by hand in the Supabase SQL Editor, in number order |
 | `PRODUCT.md` | Who the site is for and what it has to do |
 
