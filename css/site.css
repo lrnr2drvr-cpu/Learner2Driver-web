@@ -454,7 +454,7 @@ select.input { appearance: auto; }
   .tile { grid-column: 1 / -1; }
   .quotes { grid-template-columns: minmax(0, 1fr); }
   .posts { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-lg) var(--gap-columns); }
-  .dock { position: fixed; z-index: var(--z-sticky); inset-inline: var(--space-sm); inset-block-end: max(var(--space-sm), env(safe-area-inset-bottom)); display: flex; align-items: center; gap: var(--space-xs); max-width: 26rem; margin-inline: auto; padding: var(--space-xs); border-radius: var(--radius-pill); transition: transform var(--dur-long) var(--ease-out), opacity var(--dur-short) var(--ease-out), visibility 0s; }
+  .dock { position: fixed; z-index: var(--z-sticky); inset-inline: var(--gutter); inset-block-end: max(var(--space-sm), env(safe-area-inset-bottom)); display: flex; align-items: center; gap: var(--space-xs); max-width: 26rem; margin-inline: auto; padding: var(--space-xs); border-radius: var(--radius-pill); transition: transform var(--dur-long) var(--ease-out), opacity var(--dur-short) var(--ease-out), visibility 0s; }
   .dock .btn { flex: 1 1 auto; }
   .dock .btn--quiet { flex: 0 0 auto; }
   /* out of the way while the hero's own button, the booking block or the footer is on screen */
@@ -465,20 +465,22 @@ select.input { appearance: auto; }
 }
 @media (max-width: 40rem) {
   /* rhythm: less air under a heading and inside the coloured blocks */
-  :root { --field-pad: var(--space-lg); }
+  :root { --field-pad: var(--space-lg); --gutter: 20px; }
   .head { gap: var(--space-xs); margin-bottom: var(--space-lg); }
   /* hero: the headline on two lines, the action, and both cars, all on the first screen */
-  .hero__grid { row-gap: var(--space-md); padding-block: var(--space-md) var(--space-2xl); }
-  .hero__text { gap: var(--space-sm); }
-  .hero__text h1 { max-width: none; font-size: clamp(2.75rem, 14.5vw, 3.75rem); }
+  .hero__grid { row-gap: var(--space-lg); padding-block: var(--space-xl) var(--space-2xl); }
+  .hero__text { gap: var(--space-md); }
+  .hero__text h1 { max-width: none; font-size: clamp(2.5rem, 12.3vw, 3rem); line-height: 1; letter-spacing: -0.04em; }
   .hero__text .lead { max-width: none; font-size: clamp(1rem, 4.6vw, 1.125rem); text-wrap: balance; }
-  .hero__text .actions { gap: var(--space-sm) var(--space-md); }
+  .hero__text .actions { gap: var(--space-sm) var(--space-md); margin-block-start: var(--space-2xs); }
+  /* the rating keeps a finger-sized target without holding the rows around it apart */
+  .hero__text a.rating { min-height: 0; padding-block: var(--space-sm); margin-block: calc(-1 * var(--space-sm)); }
   .photo--hero { aspect-ratio: 3 / 2; }
   .photo--hero .chip { inset-block-start: var(--space-sm); inset-inline-start: var(--space-sm); }
   .switch { inset-block-end: var(--space-xs); inset-inline-end: var(--space-xs); }
   .switch button { padding: 0 var(--space-sm); }
   /* the other car, small, hanging off the lower corner as it does on a wide screen */
-  .photo--inset { inset-inline-start: var(--space-xs); inset-block-end: calc(-1 * var(--space-xl)); width: 30%; box-shadow: 0 0 0 4px var(--color-paper); }
+  .photo--inset { inset-inline-start: var(--space-xs); inset-block-end: calc(-1 * var(--space-lg)); width: 30%; box-shadow: 0 0 0 4px var(--color-paper); }
   /* too small to hold the photo button while editing; both photographs can be replaced in the cars section */
   .is-editing .photo--inset { display: none; }
 
